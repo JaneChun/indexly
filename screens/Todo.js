@@ -1,16 +1,21 @@
 import { View, Text, StyleSheet } from 'react-native';
 import CollapsibleView from '../components/Todo/CollapsibleView';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
 const DAILY = 'Daily';
 
-const Todo = () => {
+const Todo = ({ route }) => {
 	const [contentHeight, setContentHeight] = useState(0);
 	const [activeSections, setActiveSections] = useState(new Set());
+	const { params: { type } = {} } = route;
 
-	const handleToggle = (section) => {
+	useEffect(() => {
+		if (type) handleToggle(type);
+	}, [type, handleToggle, route]);
+
+	const handleToggle = useCallback((section) => {
 		if (activeSections.has(section)) {
 			setActiveSections((curActiveSections) => {
 				const updatedSections = new Set(curActiveSections);
@@ -39,7 +44,7 @@ const Todo = () => {
 				return updatedSections;
 			});
 		}
-	};
+	});
 
 	return (
 		<View

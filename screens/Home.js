@@ -6,8 +6,7 @@ import Circle from '../components/Home/Circle';
 const Home = () => {
 	const navigation = useNavigation();
 	const onPress = ({ type }) => {
-		console.log(type);
-		navigation.navigate('Todo');
+		navigation.navigate('Todo', { type });
 	};
 	return (
 		<View style={styles.container}>
