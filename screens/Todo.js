@@ -27,6 +27,34 @@ const Todo = ({ route }) => {
 		if (type) toggleSection(type);
 	}, [type, toggleSection]);
 
+	const collapsibleConfigs = [
+		{
+			type: MONTHLY,
+			width: '100%',
+			offsetX: -180,
+			offsetY: 0,
+			isEllipsed: activeSections.has(WEEKLY) || activeSections.has(DAILY),
+		},
+		{
+			type: WEEKLY,
+			width: '95%',
+			offsetX: -90,
+			offsetY:
+				isKeyboardVisible &&
+				(currentSection === WEEKLY || currentSection === DAILY)
+					? 0
+					: 100,
+			isEllipsed: activeSections.has(DAILY),
+		},
+		{
+			type: DAILY,
+			width: '90%',
+			offsetX: 0,
+			offsetY: isKeyboardVisible && currentSection === DAILY ? 0 : 200,
+			isEllipsed: false,
+		},
+	];
+
 	return (
 		<SafeAreaView style={styles.screen}>
 			<View
@@ -36,43 +64,19 @@ const Todo = ({ route }) => {
 					setContentHeight(height);
 				}}
 			>
-				<CollapsibleView
-					type={MONTHLY}
-					width='100%'
-					offsetX={-180}
-					offsetY={0}
-					contentHeight={contentHeight}
-					isCollapsed={activeSections.has(MONTHLY)}
-					onToggle={() => toggleSection(MONTHLY)}
-					isEllipsed={activeSections.has(WEEKLY) || activeSections.has(DAILY)}
-				/>
-
-				<CollapsibleView
-					type={WEEKLY}
-					width='95%'
-					offsetX={-90}
-					offsetY={
-						isKeyboardVisible &&
-						(currentSection === WEEKLY || currentSection === DAILY)
-							? 0
-							: 100
-					}
-					contentHeight={contentHeight}
-					isCollapsed={activeSections.has(WEEKLY)}
-					onToggle={() => toggleSection(WEEKLY)}
-					isEllipsed={activeSections.has(DAILY)}
-				/>
-
-				<CollapsibleView
-					type={DAILY}
-					width='90%'
-					offsetX={0}
-					offsetY={isKeyboardVisible && currentSection === DAILY ? 0 : 200}
-					contentHeight={contentHeight}
-					isCollapsed={activeSections.has(DAILY)}
-					onToggle={() => toggleSection(DAILY)}
-					isEllipsed={false}
-				/>
+				{collapsibleConfigs.map((config) => (
+					<CollapsibleView
+						key={config.type}
+						type={config.type}
+						width={config.width}
+						contentHeight={contentHeight}
+						offsetX={config.offsetX}
+						offsetY={config.offsetY}
+						isCollapsed={activeSections.has(config.type)}
+						isEllipsed={config.isEllipsed}
+						onToggle={() => toggleSection(config.type)}
+					/>
+				))}
 			</View>
 			<KeyboardAvoidingView
 				enabled={true}
