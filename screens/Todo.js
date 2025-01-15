@@ -2,8 +2,44 @@ import { View, Text, StyleSheet } from 'react-native';
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import { useState } from 'react';
 
+const MONTHLY = 'Monthly';
+const WEEKLY = 'Weekly';
+const DAILY = 'Daily';
+
 const Todo = () => {
 	const [contentHeight, setContentHeight] = useState(0);
+	const [activeSections, setActiveSections] = useState(new Set());
+
+	const handleToggle = (section) => {
+		if (activeSections.has(section)) {
+			setActiveSections((curActiveSections) => {
+				const updatedSections = new Set(curActiveSections);
+				if (section === DAILY) {
+					updatedSections.delete(section);
+				} else if (section === WEEKLY) {
+					updatedSections.delete(DAILY);
+					updatedSections.delete(WEEKLY);
+				} else {
+					updatedSections.delete(DAILY);
+					updatedSections.delete(WEEKLY);
+					updatedSections.delete(MONTHLY);
+				}
+				return updatedSections;
+			});
+		} else {
+			setActiveSections((curActiveSections) => {
+				const updatedSections = new Set(curActiveSections);
+				if (section === DAILY) {
+					updatedSections.add(DAILY).add(WEEKLY).add(MONTHLY);
+				} else if (section === WEEKLY) {
+					updatedSections.add(WEEKLY).add(MONTHLY);
+				} else {
+					updatedSections.add(MONTHLY);
+				}
+				return updatedSections;
+			});
+		}
+	};
 
 	return (
 		<View
@@ -14,31 +50,37 @@ const Todo = () => {
 			}}
 		>
 			<CollapsibleView
-				title='Monthly'
+				title={MONTHLY}
 				width='100%'
-				contentHeight={contentHeight}
 				offsetX={-180}
 				offsetY={0}
+				contentHeight={contentHeight}
+				isCollapsed={activeSections.has(MONTHLY)}
+				onToggle={() => handleToggle(MONTHLY)}
 			>
 				<Text>Monthly Todos</Text>
 			</CollapsibleView>
 
 			<CollapsibleView
-				title='Weekly'
+				title={WEEKLY}
 				width='95%'
-				contentHeight={contentHeight}
 				offsetX={-90}
 				offsetY={100}
+				contentHeight={contentHeight}
+				isCollapsed={activeSections.has(WEEKLY)}
+				onToggle={() => handleToggle(WEEKLY)}
 			>
 				<Text>Weekly Todos</Text>
 			</CollapsibleView>
 
 			<CollapsibleView
-				title='Daily'
+				title={DAILY}
 				width='90%'
-				contentHeight={contentHeight}
 				offsetX={0}
 				offsetY={200}
+				contentHeight={contentHeight}
+				isCollapsed={activeSections.has(DAILY)}
+				onToggle={() => handleToggle(DAILY)}
 			>
 				<Text>Daily Todos</Text>
 				<Text>Daily Todos</Text>
