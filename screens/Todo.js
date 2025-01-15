@@ -3,6 +3,7 @@ import {
 	StyleSheet,
 	SafeAreaView,
 	KeyboardAvoidingView,
+	Alert,
 } from 'react-native';
 import { useEffect, useState } from 'react';
 
@@ -10,7 +11,7 @@ import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
-import { insertTodo, fetchAllTodos } from '@/util/database';
+import { insertTodo, updateTodo, fetchAllTodos } from '@/util/database';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -18,6 +19,8 @@ const DAILY = 'Daily';
 
 const Todo = ({ route }) => {
 	const [contentHeight, setContentHeight] = useState(0);
+	const [id, setId] = useState(null);
+	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
 	const { isKeyboardVisible } = useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } =
@@ -49,12 +52,30 @@ const Todo = ({ route }) => {
 	};
 
 	const handleInputValueSubmit = async ({ inputValue }) => {
+		if (!inputValue.trim()) {
+			Alert.alert('할 일을 입력해주세요.', '');
+			setIsInputVisible(false);
+			return;
+		}
+
 		try {
-			await insertTodo({ type: currentSection, text: inputValue });
+			if (!id) {
+				await insertTodo({ type: currentSection, text: inputValue });
+			} else {
+				await updateTodo({ id, text: inputValue });
+				setId(null);
+			}
 		} catch (err) {
 			console.log(err);
 		}
+
 		setIsInputVisible(false);
+	};
+
+	const handleTodoLongPress = async ({ id, text }) => {
+		setIsInputVisible(true);
+		setInputValue(text);
+		setId(id);
 	};
 
 	const collapsibleConfigs = [
@@ -106,6 +127,7 @@ const Todo = ({ route }) => {
 						isEllipsed={config.isEllipsed}
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}
+						onLongPress={handleTodoLongPress}
 					/>
 				))}
 			</View>
@@ -115,7 +137,11 @@ const Todo = ({ route }) => {
 				keyboardVerticalOffset={60}
 			>
 				{isInputVisible && (
-					<Input onSubmitInputValue={handleInputValueSubmit} />
+					<Input
+						inputValue={inputValue}
+						setInputValue={setInputValue}
+						onSubmitInputValue={handleInputValueSubmit}
+					/>
 				)}
 			</KeyboardAvoidingView>
 		</SafeAreaView>

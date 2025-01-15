@@ -29,6 +29,10 @@ export const insertTodo = async ({ type, text }) => {
 	);
 };
 
+export const updateTodo = async ({ id, text }) => {
+	return await db.runAsync('UPDATE todo SET text = ? WHERE id = ?', [text, id]);
+};
+
 export const fetchAllTodos = async () => {
 	return await db.getAllAsync('SELECT * FROM todo');
 };

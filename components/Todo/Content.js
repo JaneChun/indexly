@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import TodoItem from './TodoItem';
 import { fetchTypedTodos } from '../../util/database';
 
-const Content = ({ type, isEllipsed, onPressBackground }) => {
+const Content = ({ type, isEllipsed, onPressBackground, onLongPress }) => {
 	const [todos, setTodos] = useState([]);
 
 	useEffect(() => {
@@ -20,8 +20,8 @@ const Content = ({ type, isEllipsed, onPressBackground }) => {
 		loadTodo();
 	}, []);
 
-	const checkHandler = () => {
-		// db
+	const handleCheckboxPress = () => {
+		// console.log('Checkbox pressed for ID:', id);
 	};
 
 	if (isEllipsed) {
@@ -48,9 +48,9 @@ const Content = ({ type, isEllipsed, onPressBackground }) => {
 				keyExtractor={({ id }) => id}
 				renderItem={({ item }) => (
 					<TodoItem
-						text={item.text}
-						isCompleted={item.isCompleted}
-						onPress={checkHandler}
+						{...item}
+						onPress={handleCheckboxPress}
+						onLongPress={onLongPress}
 					/>
 				)}
 			/>

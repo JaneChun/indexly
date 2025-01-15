@@ -14,6 +14,7 @@ const CollapsibleView = ({
 	onToggle,
 	isEllipsed,
 	onPressBackground,
+	onLongPress,
 }) => {
 	const [animation] = useState(new Animated.Value(0));
 
@@ -90,6 +91,7 @@ const CollapsibleView = ({
 						isEllipsed={isEllipsed}
 						type={type}
 						onPressBackground={onPressBackground}
+						onLongPress={onLongPress}
 					/>
 				</View>
 			</Animated.View>
