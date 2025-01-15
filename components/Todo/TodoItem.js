@@ -11,6 +11,7 @@ const TodoItem = ({
 	onPress,
 	onLongPress,
 	onEditButtonPress,
+	onDeleteButtonPress,
 }) => {
 	return (
 		<TouchableHighlight
@@ -45,7 +46,7 @@ const TodoItem = ({
 							icon='remove-circle'
 							color={Colors.weekly}
 							size={16}
-							onPress={() => {}}
+							onPress={() => onDeleteButtonPress({ id })}
 						/>
 					</View>
 				)}

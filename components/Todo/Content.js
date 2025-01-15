@@ -9,6 +9,7 @@ const Content = ({
 	isEllipsed,
 	onPressBackground,
 	onEditButtonPress,
+	onDeleteButtonPress,
 }) => {
 	const [todos, setTodos] = useState([]);
 	const [selectedTodoId, setSelectedTodoId] = useState(null);
@@ -71,6 +72,7 @@ const Content = ({
 						onPress={handleCheckboxPress}
 						onLongPress={handleTodoLongPress}
 						onEditButtonPress={onEditButtonPress}
+						onDeleteButtonPress={onDeleteButtonPress}
 					/>
 				)}
 			/>

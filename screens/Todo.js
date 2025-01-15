@@ -11,7 +11,12 @@ import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
-import { insertTodo, updateTodo, fetchAllTodos } from '@/util/database';
+import {
+	insertTodo,
+	updateTodo,
+	deleteTodo,
+	fetchAllTodos,
+} from '@/util/database';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -78,6 +83,14 @@ const Todo = ({ route }) => {
 		setId(id);
 	};
 
+	const handleDeleteButtonPress = async ({ id }) => {
+		try {
+			await deleteTodo({ id });
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const collapsibleConfigs = [
 		{
 			type: MONTHLY,
@@ -128,6 +141,7 @@ const Todo = ({ route }) => {
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}
 						onEditButtonPress={handleEditButtonPress}
+						onDeleteButtonPress={handleDeleteButtonPress}
 					/>
 				))}
 			</View>

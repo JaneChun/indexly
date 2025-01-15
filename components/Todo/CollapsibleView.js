@@ -15,6 +15,7 @@ const CollapsibleView = ({
 	isEllipsed,
 	onPressBackground,
 	onEditButtonPress,
+	onDeleteButtonPress,
 }) => {
 	const [animation] = useState(new Animated.Value(0));
 
@@ -92,6 +93,7 @@ const CollapsibleView = ({
 						type={type}
 						onPressBackground={onPressBackground}
 						onEditButtonPress={onEditButtonPress}
+						onDeleteButtonPress={onDeleteButtonPress}
 					/>
 				</View>
 			</Animated.View>
