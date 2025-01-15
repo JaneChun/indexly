@@ -10,7 +10,7 @@ import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
-import { insertTodo } from '@/util/database';
+import { insertTodo, fetchAllTodos } from '@/util/database';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -28,6 +28,15 @@ const Todo = ({ route }) => {
 	useEffect(() => {
 		if (type) toggleSection(type);
 	}, [type, toggleSection]);
+
+	useEffect(() => {
+		const loadTodos = async () => {
+			const todos = await fetchAllTodos();
+			console.log(todos);
+		};
+
+		loadTodos();
+	}, []);
 
 	const handleBackgroundPress = () => {
 		setIsInputVisible(true);
