@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
+
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
 import {
@@ -138,6 +139,7 @@ const Todo = ({ route }) => {
 						offsetY={config.offsetY}
 						isCollapsed={activeSections.has(config.type)}
 						isEllipsed={config.isEllipsed}
+						currentSection={currentSection}
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}
 						onEditButtonPress={handleEditButtonPress}

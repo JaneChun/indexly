@@ -13,6 +13,7 @@ const CollapsibleView = ({
 	isCollapsed,
 	onToggle,
 	isEllipsed,
+	currentSection,
 	onPressBackground,
 	onEditButtonPress,
 	onDeleteButtonPress,
@@ -89,8 +90,9 @@ const CollapsibleView = ({
 			>
 				<View style={styles.content}>
 					<Content
-						isEllipsed={isEllipsed}
 						type={type}
+						isEllipsed={isEllipsed}
+						currentSection={currentSection}
 						onPressBackground={onPressBackground}
 						onEditButtonPress={onEditButtonPress}
 						onDeleteButtonPress={onDeleteButtonPress}

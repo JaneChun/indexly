@@ -7,6 +7,7 @@ import { fetchTypedTodos } from '../../util/database';
 const Content = ({
 	type,
 	isEllipsed,
+	currentSection,
 	onPressBackground,
 	onEditButtonPress,
 	onDeleteButtonPress,
@@ -26,6 +27,10 @@ const Content = ({
 
 		loadTodo();
 	}, []);
+
+	useEffect(() => {
+		setSelectedTodoId(null);
+	}, [currentSection]);
 
 	const handleCheckboxPress = () => {
 		// console.log('Checkbox pressed for ID:', id);
@@ -52,6 +57,7 @@ const Content = ({
 						key={item.id}
 						text={item.text}
 						isCompleted={item.isCompleted}
+						isReadOnly={true}
 					/>
 				))}
 				{todos.length > 1 && (

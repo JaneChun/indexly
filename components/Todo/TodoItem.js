@@ -8,6 +8,7 @@ const TodoItem = ({
 	text,
 	isCompleted,
 	isButtonsVisible,
+	isReadOnly,
 	onPress,
 	onLongPress,
 	onEditButtonPress,
@@ -18,6 +19,7 @@ const TodoItem = ({
 			style={styles.touchableHighlight}
 			onLongPress={() => onLongPress(id)}
 			underlayColor={Colors.daily_light}
+			disabled={isReadOnly}
 		>
 			<View style={styles.container}>
 				<View style={styles.todo}>
