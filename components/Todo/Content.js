@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import TodoItem from './TodoItem';
 
-const Content = ({ isEllipsed, type }) => {
+const Content = ({ isEllipsed, type, onPressBackground }) => {
 	const checkHandler = () => {
 		// db
 	};
@@ -24,7 +24,7 @@ const Content = ({ isEllipsed, type }) => {
 		);
 	}
 	return (
-		<View style={styles.container}>
+		<Pressable onPress={onPressBackground}>
 			<FlatList
 				data={DUMMY_DATA}
 				keyExtractor={({ id }) => id}
@@ -36,7 +36,7 @@ const Content = ({ isEllipsed, type }) => {
 					/>
 				)}
 			/>
-		</View>
+		</Pressable>
 	);
 };
 

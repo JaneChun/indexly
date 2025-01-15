@@ -1,13 +1,22 @@
+import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
-const Input = () => {
+const Input = ({ onSubmitInputValue }) => {
+	const [inputValue, setInputValue] = useState('');
+
+	const handleInputSubmit = async () => {
+		console.log(inputValue);
+		setInputValue('');
+		await onSubmitInputValue({ inputValue });
+	};
+
 	return (
 		<TextInput
 			style={styles.input}
-			// value={inputValue}
-			// onChangeText={setInputValue}
-			// onSubmitEditing={handleInputSubmit}
-			// autoFocus={true}
+			value={inputValue}
+			onChangeText={setInputValue}
+			onSubmitEditing={handleInputSubmit}
+			autoFocus={true}
 		/>
 	);
 };

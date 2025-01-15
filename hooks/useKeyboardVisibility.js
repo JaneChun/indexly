@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Keyboard } from 'react-native';
 
-export const useKeyboardVisibility = () => {
+export const useKeyboardVisibility = (setIsInputVisible) => {
 	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
 	useEffect(() => {
@@ -11,7 +11,10 @@ export const useKeyboardVisibility = () => {
 		);
 		const keyboardDidHideListener = Keyboard.addListener(
 			'keyboardDidHide',
-			() => setKeyboardVisible(false),
+			() => {
+				setKeyboardVisible(false);
+				setIsInputVisible(false);
+			},
 		);
 
 		return () => {

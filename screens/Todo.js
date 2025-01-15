@@ -10,6 +10,7 @@ import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
+import { insertTodo } from '@/util/database';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -17,7 +18,8 @@ const DAILY = 'Daily';
 
 const Todo = ({ route }) => {
 	const [contentHeight, setContentHeight] = useState(0);
-	const { isKeyboardVisible } = useKeyboardVisibility();
+	const [isInputVisible, setIsInputVisible] = useState(false);
+	const { isKeyboardVisible } = useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } =
 		useActiveSections(null);
 
@@ -26,6 +28,19 @@ const Todo = ({ route }) => {
 	useEffect(() => {
 		if (type) toggleSection(type);
 	}, [type, toggleSection]);
+
+	const handleBackgroundPress = () => {
+		setIsInputVisible(true);
+	};
+
+	const handleInputValueSubmit = async ({ inputValue }) => {
+		try {
+			await insertTodo({ type: currentSection, text: inputValue });
+		} catch (err) {
+			console.log(err);
+		}
+		setIsInputVisible(false);
+	};
 
 	const collapsibleConfigs = [
 		{
@@ -75,6 +90,7 @@ const Todo = ({ route }) => {
 						isCollapsed={activeSections.has(config.type)}
 						isEllipsed={config.isEllipsed}
 						onToggle={() => toggleSection(config.type)}
+						onPressBackground={handleBackgroundPress}
 					/>
 				))}
 			</View>
@@ -83,7 +99,9 @@ const Todo = ({ route }) => {
 				behavior='padding'
 				keyboardVerticalOffset={60}
 			>
-				<Input />
+				{isInputVisible && (
+					<Input onSubmitInputValue={handleInputValueSubmit} />
+				)}
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	);

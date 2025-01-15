@@ -18,3 +18,11 @@ export const init = async () => {
       isCompleted BOOLEAN NOT NULL
     )`);
 };
+
+export const insertTodo = async ({ type, text }) => {
+	return await db.runAsync(
+		'INSERT INTO todo (type, text) VALUES (?, ?)',
+		type,
+		text,
+	);
+};
