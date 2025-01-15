@@ -60,7 +60,11 @@ const CollapsibleView = ({
 				]}
 			>
 				<Pressable
-					style={[styles.index, { backgroundColor: primaryColor }]}
+					style={({ pressed }) => [
+						styles.index,
+						{ backgroundColor: primaryColor },
+						pressed && styles.pressed,
+					]}
 					onPress={onToggle}
 				>
 					<Text style={styles.indexText}>{type}</Text>
@@ -110,6 +114,9 @@ const styles = StyleSheet.create({
 	indexText: {
 		fontSize: 12,
 		textAlign: 'center',
+	},
+	pressed: {
+		opacity: 0.7,
 	},
 	contentContainer: {
 		width: '100%',
