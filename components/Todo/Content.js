@@ -42,7 +42,7 @@ const Content = ({ type, isEllipsed, onPressBackground }) => {
 		);
 	}
 	return (
-		<Pressable onPress={onPressBackground}>
+		<Pressable onPress={onPressBackground} style={styles.content}>
 			<FlatList
 				data={todos}
 				keyExtractor={({ id }) => id}
@@ -60,6 +60,9 @@ const Content = ({ type, isEllipsed, onPressBackground }) => {
 
 const styles = StyleSheet.create({
 	container: {},
+	content: {
+		flex: 1,
+	},
 	hiddenCount: {
 		fontSize: 12,
 		marginLeft: 16,
