@@ -14,7 +14,7 @@ const CollapsibleView = ({
 	onToggle,
 	isEllipsed,
 	onPressBackground,
-	onLongPress,
+	onEditButtonPress,
 }) => {
 	const [animation] = useState(new Animated.Value(0));
 
@@ -91,7 +91,7 @@ const CollapsibleView = ({
 						isEllipsed={isEllipsed}
 						type={type}
 						onPressBackground={onPressBackground}
-						onLongPress={onLongPress}
+						onEditButtonPress={onEditButtonPress}
 					/>
 				</View>
 			</Animated.View>
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
 	content: {
 		width: '100%',
 		height: '100%',
-		padding: 24,
+		paddingVertical: 20,
+		paddingHorizontal: 12,
 	},
 });
 

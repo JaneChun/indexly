@@ -72,7 +72,7 @@ const Todo = ({ route }) => {
 		setIsInputVisible(false);
 	};
 
-	const handleTodoLongPress = async ({ id, text }) => {
+	const handleEditButtonPress = async ({ id, text }) => {
 		setIsInputVisible(true);
 		setInputValue(text);
 		setId(id);
@@ -127,7 +127,7 @@ const Todo = ({ route }) => {
 						isEllipsed={config.isEllipsed}
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}
-						onLongPress={handleTodoLongPress}
+						onEditButtonPress={handleEditButtonPress}
 					/>
 				))}
 			</View>

@@ -4,8 +4,14 @@ import { useEffect, useState } from 'react';
 import TodoItem from './TodoItem';
 import { fetchTypedTodos } from '../../util/database';
 
-const Content = ({ type, isEllipsed, onPressBackground, onLongPress }) => {
+const Content = ({
+	type,
+	isEllipsed,
+	onPressBackground,
+	onEditButtonPress,
+}) => {
 	const [todos, setTodos] = useState([]);
+	const [selectedTodoId, setSelectedTodoId] = useState(null);
 
 	useEffect(() => {
 		const loadTodo = async () => {
@@ -22,6 +28,18 @@ const Content = ({ type, isEllipsed, onPressBackground, onLongPress }) => {
 
 	const handleCheckboxPress = () => {
 		// console.log('Checkbox pressed for ID:', id);
+	};
+
+	const handleTodoLongPress = (id) => {
+		setSelectedTodoId(id);
+	};
+
+	const handlePressBackground = () => {
+		if (selectedTodoId) {
+			setSelectedTodoId(null);
+		} else {
+			onPressBackground();
+		}
 	};
 
 	if (isEllipsed) {
@@ -42,15 +60,17 @@ const Content = ({ type, isEllipsed, onPressBackground, onLongPress }) => {
 		);
 	}
 	return (
-		<Pressable onPress={onPressBackground} style={styles.content}>
+		<Pressable onPress={handlePressBackground} style={styles.content}>
 			<FlatList
 				data={todos}
 				keyExtractor={({ id }) => id}
 				renderItem={({ item }) => (
 					<TodoItem
 						{...item}
+						isButtonsVisible={selectedTodoId === item.id}
 						onPress={handleCheckboxPress}
-						onLongPress={onLongPress}
+						onLongPress={handleTodoLongPress}
+						onEditButtonPress={onEditButtonPress}
 					/>
 				)}
 			/>
