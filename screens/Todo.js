@@ -44,7 +44,7 @@ const Todo = ({ route }) => {
 					contentHeight={contentHeight}
 					isCollapsed={activeSections.has(MONTHLY)}
 					onToggle={() => toggleSection(MONTHLY)}
-					isHidden={activeSections.has(WEEKLY) || activeSections.has(DAILY)}
+					isEllipsed={activeSections.has(WEEKLY) || activeSections.has(DAILY)}
 				/>
 
 				<CollapsibleView
@@ -60,7 +60,7 @@ const Todo = ({ route }) => {
 					contentHeight={contentHeight}
 					isCollapsed={activeSections.has(WEEKLY)}
 					onToggle={() => toggleSection(WEEKLY)}
-					isHidden={activeSections.has(DAILY)}
+					isEllipsed={activeSections.has(DAILY)}
 				/>
 
 				<CollapsibleView
@@ -71,7 +71,7 @@ const Todo = ({ route }) => {
 					contentHeight={contentHeight}
 					isCollapsed={activeSections.has(DAILY)}
 					onToggle={() => toggleSection(DAILY)}
-					isHidden={false}
+					isEllipsed={false}
 				/>
 			</View>
 			<KeyboardAvoidingView

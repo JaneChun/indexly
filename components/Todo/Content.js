@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import TodoItem from './TodoItem';
 
-const Content = ({ isHidden, type }) => {
+const Content = ({ isEllipsed, type }) => {
 	const checkHandler = () => {
 		// db
 	};
 
-	if (isHidden) {
+	if (isEllipsed) {
 		const previews = DUMMY_DATA.slice(0, 1);
 		return (
 			<>

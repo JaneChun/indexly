@@ -12,7 +12,7 @@ const CollapsibleView = ({
 	contentHeight,
 	isCollapsed,
 	onToggle,
-	isHidden,
+	isEllipsed,
 }) => {
 	const [animation] = useState(new Animated.Value(0));
 
@@ -85,7 +85,7 @@ const CollapsibleView = ({
 				]}
 			>
 				<View style={styles.content}>
-					<Content isHidden={isHidden} type={type} />
+					<Content isEllipsed={isEllipsed} type={type} />
 				</View>
 			</Animated.View>
 		</View>
