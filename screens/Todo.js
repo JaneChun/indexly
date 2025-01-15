@@ -1,15 +1,15 @@
 import {
 	View,
-	Text,
 	StyleSheet,
 	SafeAreaView,
 	KeyboardAvoidingView,
 } from 'react-native';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
+import { useActiveSections } from '../hooks/useActiveSections';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -17,66 +17,15 @@ const DAILY = 'Daily';
 
 const Todo = ({ route }) => {
 	const [contentHeight, setContentHeight] = useState(0);
-	const [currentSection, setCurrentSection] = useState(null);
-	const [activeSections, setActiveSections] = useState(new Set());
 	const { isKeyboardVisible } = useKeyboardVisibility();
+	const { currentSection, activeSections, toggleSection } =
+		useActiveSections(null);
 
 	const { params: { type } = {} } = route;
 
 	useEffect(() => {
-		if (type) handleToggle(type);
-	}, [type, handleToggle, route]);
-
-	useEffect(() => {
-		if (!isKeyboardVisible) {
-			setActiveSections((curActiveSections) => {
-				const updatedSections = new Set(curActiveSections);
-				if (currentSection === DAILY) {
-					updatedSections.add(DAILY).add(WEEKLY).add(MONTHLY);
-				} else if (currentSection === WEEKLY) {
-					updatedSections.add(WEEKLY).add(MONTHLY);
-				} else {
-					updatedSections.add(MONTHLY);
-				}
-				return updatedSections;
-			});
-		}
-	}, [isKeyboardVisible]);
-
-	const handleToggle = useCallback((section) => {
-		if (activeSections.has(section)) {
-			setActiveSections((curActiveSections) => {
-				const updatedSections = new Set(curActiveSections);
-				if (section === DAILY) {
-					updatedSections.delete(section);
-					setCurrentSection(WEEKLY);
-				} else if (section === WEEKLY) {
-					updatedSections.delete(DAILY);
-					updatedSections.delete(WEEKLY);
-					setCurrentSection(MONTHLY);
-				} else {
-					updatedSections.delete(DAILY);
-					updatedSections.delete(WEEKLY);
-					updatedSections.delete(MONTHLY);
-					setCurrentSection(null);
-				}
-				return updatedSections;
-			});
-		} else {
-			setCurrentSection(section);
-			setActiveSections((curActiveSections) => {
-				const updatedSections = new Set(curActiveSections);
-				if (section === DAILY) {
-					updatedSections.add(DAILY).add(WEEKLY).add(MONTHLY);
-				} else if (section === WEEKLY) {
-					updatedSections.add(WEEKLY).add(MONTHLY);
-				} else {
-					updatedSections.add(MONTHLY);
-				}
-				return updatedSections;
-			});
-		}
-	});
+		if (type) toggleSection(type);
+	}, [type, toggleSection]);
 
 	return (
 		<SafeAreaView style={styles.screen}>
@@ -94,7 +43,7 @@ const Todo = ({ route }) => {
 					offsetY={0}
 					contentHeight={contentHeight}
 					isCollapsed={activeSections.has(MONTHLY)}
-					onToggle={() => handleToggle(MONTHLY)}
+					onToggle={() => toggleSection(MONTHLY)}
 					isHidden={activeSections.has(WEEKLY) || activeSections.has(DAILY)}
 				/>
 
@@ -110,7 +59,7 @@ const Todo = ({ route }) => {
 					}
 					contentHeight={contentHeight}
 					isCollapsed={activeSections.has(WEEKLY)}
-					onToggle={() => handleToggle(WEEKLY)}
+					onToggle={() => toggleSection(WEEKLY)}
 					isHidden={activeSections.has(DAILY)}
 				/>
 
@@ -121,7 +70,7 @@ const Todo = ({ route }) => {
 					offsetY={isKeyboardVisible && currentSection === DAILY ? 0 : 200}
 					contentHeight={contentHeight}
 					isCollapsed={activeSections.has(DAILY)}
-					onToggle={() => handleToggle(DAILY)}
+					onToggle={() => toggleSection(DAILY)}
 					isHidden={false}
 				/>
 			</View>
