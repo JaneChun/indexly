@@ -12,15 +12,15 @@ const Circle = ({ children, type, onPress }) => {
 		let backgroundColor;
 
 		switch (type) {
-			case 'monthly':
+			case 'Monthly':
 				size = monthlySize;
 				backgroundColor = '#FFE2E2';
 				break;
-			case 'weekly':
+			case 'Weekly':
 				size = weeklySize;
 				backgroundColor = '#FFB9B9';
 				break;
-			case 'daily':
+			case 'Daily':
 				size = dailySize;
 				backgroundColor = '#FF8383';
 				break;
@@ -36,6 +36,10 @@ const Circle = ({ children, type, onPress }) => {
 		};
 	};
 
+	const pressHandler = () => {
+		onPress({ type });
+	};
+
 	return (
 		<>
 			<Text style={styles.label}>{type}</Text>
@@ -47,7 +51,7 @@ const Circle = ({ children, type, onPress }) => {
 					getCircleStyle(type),
 					pressed && styles.pressed,
 				]}
-				onPress={onPress}
+				onPress={pressHandler}
 			>
 				{children}
 			</Pressable>
