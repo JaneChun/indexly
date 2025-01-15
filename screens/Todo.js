@@ -38,6 +38,12 @@ const Todo = ({ route }) => {
 		loadTodos();
 	}, []);
 
+	useEffect(() => {
+		if (!isKeyboardVisible) {
+			setIsInputVisible(false);
+		}
+	}, [isKeyboardVisible]);
+
 	const handleBackgroundPress = () => {
 		setIsInputVisible(true);
 	};
