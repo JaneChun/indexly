@@ -4,12 +4,12 @@ import {
 	StyleSheet,
 	SafeAreaView,
 	KeyboardAvoidingView,
-	Keyboard,
 } from 'react-native';
 import { useCallback, useEffect, useState } from 'react';
 
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
+import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -19,7 +19,8 @@ const Todo = ({ route }) => {
 	const [contentHeight, setContentHeight] = useState(0);
 	const [currentSection, setCurrentSection] = useState(null);
 	const [activeSections, setActiveSections] = useState(new Set());
-	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+	const { isKeyboardVisible } = useKeyboardVisibility();
+
 	const { params: { type } = {} } = route;
 
 	useEffect(() => {
@@ -41,22 +42,6 @@ const Todo = ({ route }) => {
 			});
 		}
 	}, [isKeyboardVisible]);
-
-	useEffect(() => {
-		const keyboardDidShowListener = Keyboard.addListener(
-			'keyboardDidShow',
-			() => setKeyboardVisible(true),
-		);
-		const keyboardDidHideListener = Keyboard.addListener(
-			'keyboardDidHide',
-			() => setKeyboardVisible(false),
-		);
-
-		return () => {
-			keyboardDidShowListener.remove();
-			keyboardDidHideListener.remove();
-		};
-	}, []);
 
 	const handleToggle = useCallback((section) => {
 		if (activeSections.has(section)) {
