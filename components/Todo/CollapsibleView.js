@@ -2,20 +2,22 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
 import { Colors } from '../../constants/color';
 
+import Content from './Content';
+
 const CollapsibleView = ({
-	title,
+	type,
 	width,
 	offsetX,
 	offsetY,
 	contentHeight,
 	isCollapsed,
 	onToggle,
-	children,
+	isHidden,
 }) => {
 	const [animation] = useState(new Animated.Value(0));
 
-	const primaryColor = Colors[`${title.toLowerCase()}`];
-	const secondaryColor = Colors[`${title.toLowerCase()}_light`];
+	const primaryColor = Colors[`${type.toLowerCase()}`];
+	const secondaryColor = Colors[`${type.toLowerCase()}_light`];
 
 	const indexXTranslate = animation.interpolate({
 		inputRange: [0, 1],
@@ -61,7 +63,7 @@ const CollapsibleView = ({
 					style={[styles.index, { backgroundColor: primaryColor }]}
 					onPress={onToggle}
 				>
-					<Text style={styles.indexText}>{title}</Text>
+					<Text style={styles.indexText}>{type}</Text>
 				</Pressable>
 			</Animated.View>
 
@@ -78,7 +80,9 @@ const CollapsibleView = ({
 					},
 				]}
 			>
-				<View style={[styles.content, {}]}>{children}</View>
+				<View style={styles.content}>
+					<Content isHidden={isHidden} type={type} />
+				</View>
 			</Animated.View>
 		</View>
 	);
@@ -104,6 +108,7 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 16,
 	},
 	indexText: {
+		fontSize: 12,
 		textAlign: 'center',
 	},
 	contentContainer: {
@@ -118,8 +123,7 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		width: '100%',
-		paddingTop: 12,
-		paddingLeft: 12,
+		padding: 24,
 	},
 });
 

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
-import CollapsibleView from '../components/Todo/CollapsibleView';
 import { useCallback, useEffect, useState } from 'react';
+
+import CollapsibleView from '../components/Todo/CollapsibleView';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -55,42 +56,37 @@ const Todo = ({ route }) => {
 			}}
 		>
 			<CollapsibleView
-				title={MONTHLY}
+				type={MONTHLY}
 				width='100%'
 				offsetX={-180}
 				offsetY={0}
 				contentHeight={contentHeight}
 				isCollapsed={activeSections.has(MONTHLY)}
 				onToggle={() => handleToggle(MONTHLY)}
-			>
-				<Text>Monthly Todos</Text>
-			</CollapsibleView>
+				isHidden={activeSections.has(WEEKLY) || activeSections.has(DAILY)}
+			/>
 
 			<CollapsibleView
-				title={WEEKLY}
+				type={WEEKLY}
 				width='95%'
 				offsetX={-90}
 				offsetY={100}
 				contentHeight={contentHeight}
 				isCollapsed={activeSections.has(WEEKLY)}
 				onToggle={() => handleToggle(WEEKLY)}
-			>
-				<Text>Weekly Todos</Text>
-			</CollapsibleView>
+				isHidden={activeSections.has(DAILY)}
+			/>
 
 			<CollapsibleView
-				title={DAILY}
+				type={DAILY}
 				width='90%'
 				offsetX={0}
 				offsetY={200}
 				contentHeight={contentHeight}
 				isCollapsed={activeSections.has(DAILY)}
 				onToggle={() => handleToggle(DAILY)}
-			>
-				<Text>Daily Todos</Text>
-				<Text>Daily Todos</Text>
-				<Text>Daily Todos</Text>
-			</CollapsibleView>
+				isHidden={false}
+			/>
 		</View>
 	);
 };
