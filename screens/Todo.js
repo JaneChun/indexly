@@ -52,17 +52,17 @@ const Todo = ({ route }) => {
 		}
 
 		try {
-			if (!id) {
-				await addTodo({ type: currentSection, text: inputValue });
-			} else {
-				await editTodo({ id, text: inputValue });
-				setId(null);
-			}
+			const action = id
+				? editTodo({ id, text: inputValue })
+				: addTodo({ type: currentSection, text: inputValue });
+
+			await action;
+			setId(null);
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setIsInputVisible(false);
 		}
-
-		setIsInputVisible(false);
 	};
 
 	const handleEditButtonPress = async ({ id, text }) => {

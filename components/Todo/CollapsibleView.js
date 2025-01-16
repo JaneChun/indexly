@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
 import { Colors } from '../../constants/color';
 
@@ -42,11 +42,13 @@ const CollapsibleView = ({
 		outputRange: [16, 3],
 	});
 
-	Animated.timing(animation, {
-		toValue: isCollapsed ? 0 : 1,
-		duration: 300,
-		useNativeDriver: false,
-	}).start();
+	useEffect(() => {
+		Animated.timing(animation, {
+			toValue: isCollapsed ? 0 : 1,
+			duration: 300,
+			useNativeDriver: false,
+		}).start();
+	}, [isCollapsed]);
 
 	return (
 		<View style={styles.container}>

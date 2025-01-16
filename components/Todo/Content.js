@@ -2,7 +2,7 @@ import { Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 
 import TodoItem from './TodoItem';
-import { useTodoContext } from '../../store/TodoContext';
+import { useTypedTodos } from '../../store/TodoContext';
 
 const Content = ({
 	type,
@@ -11,13 +11,8 @@ const Content = ({
 	onPressBackground,
 	onEditButtonPress,
 }) => {
-	const [todos, setTodos] = useState([]);
+	const todos = useTypedTodos(type);
 	const [selectedTodoId, setSelectedTodoId] = useState(null);
-	const { todos: allTodos } = useTodoContext();
-
-	useEffect(() => {
-		setTodos(allTodos[type]);
-	});
 
 	useEffect(() => {
 		setSelectedTodoId(null);

@@ -62,7 +62,6 @@ export const TodoContextProvider = ({ children }) => {
 	};
 
 	const toggleTodo = async ({ id, isCompleted }) => {
-		console.log('toggle', id);
 		try {
 			await toggleTodoCompletion({ id, isCompleted: !isCompleted });
 			await loadTodos();
@@ -88,3 +87,8 @@ export const TodoContextProvider = ({ children }) => {
 };
 
 export const useTodoContext = () => useContext(TodoContext);
+
+export const useTypedTodos = (type) => {
+	const { todos } = useTodoContext();
+	return todos[type] || [];
+};
