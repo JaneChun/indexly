@@ -51,3 +51,7 @@ export const fetchAllTodos = async () => {
 export const fetchTypedTodos = async ({ type }) => {
 	return await db.getAllAsync('SELECT * FROM todo WHERE type = ?', [type]);
 };
+
+export const deleteAllCompletedTodos = async () => {
+	return await db.runAsync('DELETE FROM todo WHERE isCompleted = ?', [true]);
+};

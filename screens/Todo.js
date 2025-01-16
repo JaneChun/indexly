@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
+import DeleteCompletedButton from '../components/Todo/DeleteCompletedButton';
 
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
@@ -108,6 +109,7 @@ const Todo = ({ route }) => {
 					setContentHeight(height);
 				}}
 			>
+				<DeleteCompletedButton />
 				{collapsibleConfigs.map((config) => (
 					<CollapsibleView
 						key={config.type}

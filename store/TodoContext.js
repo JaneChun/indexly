@@ -5,6 +5,7 @@ import {
 	updateTodo,
 	deleteTodo,
 	toggleTodoCompletion,
+	deleteAllCompletedTodos,
 } from '../util/database';
 
 const TodoContext = createContext();
@@ -66,7 +67,16 @@ export const TodoContextProvider = ({ children }) => {
 			await toggleTodoCompletion({ id, isCompleted: !isCompleted });
 			await loadTodos();
 		} catch (err) {
-			console.error(err);
+			console.log(err);
+		}
+	};
+
+	const removeCompletedTodo = async () => {
+		try {
+			await deleteAllCompletedTodos();
+			await loadTodos();
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
@@ -79,6 +89,7 @@ export const TodoContextProvider = ({ children }) => {
 				editTodo,
 				removeTodo,
 				toggleTodo,
+				removeCompletedTodo,
 			}}
 		>
 			{children}
