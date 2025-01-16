@@ -12,13 +12,7 @@ import Input from '../components/Todo/Input';
 
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
-import {
-	insertTodo,
-	updateTodo,
-	deleteTodo,
-	toggleTodoCompletion,
-	fetchAllTodos,
-} from '@/util/database';
+import { useTodoContext } from '../store/TodoContext';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -32,21 +26,13 @@ const Todo = ({ route }) => {
 	const { isKeyboardVisible } = useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } =
 		useActiveSections(null);
+	const { addTodo, editTodo } = useTodoContext();
 
 	const { params: { type } = {} } = route;
 
 	useEffect(() => {
 		if (type) toggleSection(type);
 	}, [type, toggleSection]);
-
-	useEffect(() => {
-		const loadTodos = async () => {
-			const todos = await fetchAllTodos();
-			console.log(todos);
-		};
-
-		loadTodos();
-	}, []);
 
 	useEffect(() => {
 		if (!isKeyboardVisible) {
@@ -67,9 +53,9 @@ const Todo = ({ route }) => {
 
 		try {
 			if (!id) {
-				await insertTodo({ type: currentSection, text: inputValue });
+				await addTodo({ type: currentSection, text: inputValue });
 			} else {
-				await updateTodo({ id, text: inputValue });
+				await editTodo({ id, text: inputValue });
 				setId(null);
 			}
 		} catch (err) {
@@ -79,26 +65,10 @@ const Todo = ({ route }) => {
 		setIsInputVisible(false);
 	};
 
-	const handleCheckButtonPress = async ({ id, isCompleted }) => {
-		try {
-			await toggleTodoCompletion({ id, isCompleted: !isCompleted });
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 	const handleEditButtonPress = async ({ id, text }) => {
 		setIsInputVisible(true);
 		setInputValue(text);
 		setId(id);
-	};
-
-	const handleDeleteButtonPress = async ({ id }) => {
-		try {
-			await deleteTodo({ id });
-		} catch (err) {
-			console.log(err);
-		}
 	};
 
 	const collapsibleConfigs = [
@@ -151,9 +121,7 @@ const Todo = ({ route }) => {
 						currentSection={currentSection}
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}
-						onCheckButtonPress={handleCheckButtonPress}
 						onEditButtonPress={handleEditButtonPress}
-						onDeleteButtonPress={handleDeleteButtonPress}
 					/>
 				))}
 			</View>

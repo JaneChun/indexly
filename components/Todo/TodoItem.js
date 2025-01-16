@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+
 import { Colors } from '../../constants/color';
 import IconButton from './IconButton';
+import { useTodoContext } from '../../store/TodoContext';
 
 const TodoItem = ({
 	id,
@@ -9,11 +10,17 @@ const TodoItem = ({
 	isCompleted,
 	isButtonsVisible,
 	isReadOnly,
-	onCheckButtonPress,
 	onLongPress,
 	onEditButtonPress,
-	onDeleteButtonPress,
 }) => {
+	const { toggleTodo, removeTodo } = useTodoContext();
+	const handleCheckButtonPress = async ({ id, isCompleted }) => {
+		await toggleTodo({ id, isCompleted });
+	};
+
+	const handleDeleteButtonPress = async ({ id }) => {
+		await removeTodo({ id });
+	};
 	return (
 		<TouchableHighlight
 			style={styles.touchableHighlight}
@@ -29,7 +36,7 @@ const TodoItem = ({
 							icon={isCompleted ? 'check-circle' : 'circle-thin'}
 							color={Colors.daily}
 							size={18}
-							onPress={() => onCheckButtonPress({ id, isCompleted })}
+							onPress={() => handleCheckButtonPress({ id, isCompleted })}
 						/>
 					</View>
 					<Text style={styles.text}>{text}</Text>
@@ -48,7 +55,7 @@ const TodoItem = ({
 							icon='remove-circle'
 							color={Colors.weekly}
 							size={16}
-							onPress={() => onDeleteButtonPress({ id })}
+							onPress={() => handleDeleteButtonPress({ id })}
 						/>
 					</View>
 				)}

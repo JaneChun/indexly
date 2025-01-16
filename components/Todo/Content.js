@@ -2,32 +2,22 @@ import { Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 
 import TodoItem from './TodoItem';
-import { fetchTypedTodos } from '../../util/database';
+import { useTodoContext } from '../../store/TodoContext';
 
 const Content = ({
 	type,
 	isEllipsed,
 	currentSection,
 	onPressBackground,
-	onCheckButtonPress,
 	onEditButtonPress,
-	onDeleteButtonPress,
 }) => {
 	const [todos, setTodos] = useState([]);
 	const [selectedTodoId, setSelectedTodoId] = useState(null);
+	const { todos: allTodos } = useTodoContext();
 
 	useEffect(() => {
-		const loadTodo = async () => {
-			try {
-				const fetchedTodos = await fetchTypedTodos({ type });
-				setTodos(fetchedTodos);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-
-		loadTodo();
-	}, []);
+		setTodos(allTodos[type]);
+	});
 
 	useEffect(() => {
 		setSelectedTodoId(null);
@@ -72,10 +62,8 @@ const Content = ({
 					<TodoItem
 						{...item}
 						isButtonsVisible={selectedTodoId === item.id}
-						onCheckButtonPress={onCheckButtonPress}
 						onLongPress={handleTodoLongPress}
 						onEditButtonPress={onEditButtonPress}
-						onDeleteButtonPress={onDeleteButtonPress}
 					/>
 				)}
 			/>

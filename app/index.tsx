@@ -5,6 +5,7 @@ import Home from '../screens/Home';
 import Todo from '../screens/Todo';
 import Loading from '../screens/Loading';
 
+import { TodoContextProvider } from '../store/TodoContext';
 import { init } from '../util/database';
 
 const Stack = createNativeStackNavigator();
@@ -31,9 +32,11 @@ export default function Index() {
 	}
 
 	return (
-		<Stack.Navigator screenOptions={{ headerShown: false }}>
-			<Stack.Screen name='Home' component={Home} />
-			<Stack.Screen name='Todo' component={Todo} />
-		</Stack.Navigator>
+		<TodoContextProvider>
+			<Stack.Navigator screenOptions={{ headerShown: false }}>
+				<Stack.Screen name='Home' component={Home} />
+				<Stack.Screen name='Todo' component={Todo} />
+			</Stack.Navigator>
+		</TodoContextProvider>
 	);
 }
