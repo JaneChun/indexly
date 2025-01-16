@@ -16,6 +16,7 @@ import {
 	insertTodo,
 	updateTodo,
 	deleteTodo,
+	toggleTodoCompletion,
 	fetchAllTodos,
 } from '@/util/database';
 
@@ -76,6 +77,14 @@ const Todo = ({ route }) => {
 		}
 
 		setIsInputVisible(false);
+	};
+
+	const handleCheckButtonPress = async ({ id, isCompleted }) => {
+		try {
+			await toggleTodoCompletion({ id, isCompleted: !isCompleted });
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const handleEditButtonPress = async ({ id, text }) => {
@@ -142,6 +151,7 @@ const Todo = ({ route }) => {
 						currentSection={currentSection}
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}
+						onCheckButtonPress={handleCheckButtonPress}
 						onEditButtonPress={handleEditButtonPress}
 						onDeleteButtonPress={handleDeleteButtonPress}
 					/>

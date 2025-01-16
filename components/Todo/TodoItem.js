@@ -9,7 +9,7 @@ const TodoItem = ({
 	isCompleted,
 	isButtonsVisible,
 	isReadOnly,
-	onPress,
+	onCheckButtonPress,
 	onLongPress,
 	onEditButtonPress,
 	onDeleteButtonPress,
@@ -29,7 +29,7 @@ const TodoItem = ({
 							icon={isCompleted ? 'check-circle' : 'circle-thin'}
 							color={Colors.daily}
 							size={18}
-							onPress={() => {}}
+							onPress={() => onCheckButtonPress({ id, isCompleted })}
 						/>
 					</View>
 					<Text style={styles.text}>{text}</Text>

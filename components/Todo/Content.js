@@ -9,6 +9,7 @@ const Content = ({
 	isEllipsed,
 	currentSection,
 	onPressBackground,
+	onCheckButtonPress,
 	onEditButtonPress,
 	onDeleteButtonPress,
 }) => {
@@ -31,10 +32,6 @@ const Content = ({
 	useEffect(() => {
 		setSelectedTodoId(null);
 	}, [currentSection]);
-
-	const handleCheckboxPress = () => {
-		// console.log('Checkbox pressed for ID:', id);
-	};
 
 	const handleTodoLongPress = (id) => {
 		setSelectedTodoId(id);
@@ -75,7 +72,7 @@ const Content = ({
 					<TodoItem
 						{...item}
 						isButtonsVisible={selectedTodoId === item.id}
-						onPress={handleCheckboxPress}
+						onCheckButtonPress={onCheckButtonPress}
 						onLongPress={handleTodoLongPress}
 						onEditButtonPress={onEditButtonPress}
 						onDeleteButtonPress={onDeleteButtonPress}

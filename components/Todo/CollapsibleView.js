@@ -15,6 +15,7 @@ const CollapsibleView = ({
 	isEllipsed,
 	currentSection,
 	onPressBackground,
+	onCheckButtonPress,
 	onEditButtonPress,
 	onDeleteButtonPress,
 }) => {
@@ -94,6 +95,7 @@ const CollapsibleView = ({
 						isEllipsed={isEllipsed}
 						currentSection={currentSection}
 						onPressBackground={onPressBackground}
+						onCheckButtonPress={onCheckButtonPress}
 						onEditButtonPress={onEditButtonPress}
 						onDeleteButtonPress={onDeleteButtonPress}
 					/>

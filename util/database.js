@@ -37,6 +37,13 @@ export const deleteTodo = async ({ id }) => {
 	return await db.runAsync('DELETE FROM todo WHERE id = ?', [id]);
 };
 
+export const toggleTodoCompletion = async ({ id, isCompleted }) => {
+	return await db.runAsync('UPDATE todo SET isCompleted = ? WHERE id = ?', [
+		isCompleted,
+		id,
+	]);
+};
+
 export const fetchAllTodos = async () => {
 	return await db.getAllAsync('SELECT * FROM todo');
 };
