@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Home from '../screens/Home';
 import Todo from '../screens/Todo';
@@ -7,6 +8,7 @@ import Loading from '../screens/Loading';
 
 import { TodoContextProvider } from '../store/TodoContext';
 import { init } from '../util/database';
+import { DragDropContextProvider } from '@/store/DragDropContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,11 +34,15 @@ export default function Index() {
 	}
 
 	return (
-		<TodoContextProvider>
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				<Stack.Screen name='Home' component={Home} />
-				<Stack.Screen name='Todo' component={Todo} />
-			</Stack.Navigator>
-		</TodoContextProvider>
+		<GestureHandlerRootView>
+			<DragDropContextProvider>
+				<TodoContextProvider>
+					<Stack.Navigator screenOptions={{ headerShown: false }}>
+						<Stack.Screen name='Home' component={Home} />
+						<Stack.Screen name='Todo' component={Todo} />
+					</Stack.Navigator>
+				</TodoContextProvider>
+			</DragDropContextProvider>
+		</GestureHandlerRootView>
 	);
 }

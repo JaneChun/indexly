@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		bottom: 0,
 		alignSelf: 'flex-end',
-		overflow: 'hidden',
 		borderWidth: 3,
 		borderRadius: 16,
 		borderTopRightRadius: 0,
