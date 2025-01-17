@@ -20,15 +20,27 @@ export const TodoContextProvider = ({ children }) => {
 		})();
 	}, []);
 
+	const sortTodos = (todos) => {
+		todos.sort((a, b) => {
+			if (a.isCompleted !== b.isCompleted) {
+				return a.isCompleted - b.isCompleted;
+			}
+
+			return b.id - a.id;
+		});
+
+		return todos;
+	};
+
 	const loadTodos = async () => {
 		try {
 			const monthlyTodos = await fetchTypedTodos({ type: 'Monthly' });
 			const weeklyTodos = await fetchTypedTodos({ type: 'Weekly' });
 			const dailyTodos = await fetchTypedTodos({ type: 'Daily' });
 			setTodos({
-				Monthly: monthlyTodos,
-				Weekly: weeklyTodos,
-				Daily: dailyTodos,
+				Monthly: sortTodos(monthlyTodos),
+				Weekly: sortTodos(weeklyTodos),
+				Daily: sortTodos(dailyTodos),
 			});
 		} catch (err) {
 			console.log('Failed to load todos:', err);
