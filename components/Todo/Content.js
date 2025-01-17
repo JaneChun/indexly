@@ -1,11 +1,6 @@
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
-import {
-	Gesture,
-	GestureDetector,
-	FlatList,
-} from 'react-native-gesture-handler';
-import { useSharedValue, withSpring, runOnJS } from 'react-native-reanimated';
+import { FlatList } from 'react-native-gesture-handler';
 
 import TodoItem from './TodoItem';
 import { Colors } from '@/constants/color';
@@ -30,9 +25,6 @@ const Content = ({
 	const isInside = useInsideZone(type);
 	const [selectedTodoId, setSelectedTodoId] = useState(null);
 	const droppableRef = useRef(null);
-
-	// 드래그 위치를 저장하는 shared values
-	const offset = { x: useSharedValue(0), y: useSharedValue(0) };
 
 	// 섹션이 변경될 때 선택된 할 일 ID를 초기화
 	useEffect(() => {
@@ -73,22 +65,6 @@ const Content = ({
 		}
 	};
 
-	// Pan 제스처 정의 (드래그 동작)
-	const pan = Gesture.Pan()
-		.onStart(() => {})
-		.onUpdate((event) => {
-			// 드래그 중인 동안 x, y 좌표를 업데이트
-			offset.x.value = event.translationX;
-			offset.y.value = event.translationY;
-			runOnJS(setCurrentPosition)({ x: event.absoluteX, y: event.absoluteY });
-		})
-		.onEnd(() => {
-			// 드래그 종료 시 좌표 초기화 (원래 위치로 복귀)
-			offset.x.value = withSpring(0);
-			offset.y.value = withSpring(0);
-			runOnJS(setDraggingTodoId)(null);
-		});
-
 	if (isEllipsed) {
 		const previews = todos.slice(0, 1);
 		return (
@@ -107,7 +83,6 @@ const Content = ({
 						{...item}
 						type={type}
 						onLongPress={handleTodoLongPress}
-						offset={offset}
 					/>
 				))}
 				{todos.length > 1 && (
@@ -125,16 +100,13 @@ const Content = ({
 				keyExtractor={({ id }) => id}
 				style={styles.flatList}
 				renderItem={({ item }) => (
-					<GestureDetector gesture={pan}>
-						<TodoItem
-							{...item}
-							type={type}
-							isButtonsVisible={selectedTodoId === item.id}
-							onLongPress={handleTodoLongPress}
-							onEditButtonPress={onEditButtonPress}
-							offset={offset}
-						/>
-					</GestureDetector>
+					<TodoItem
+						{...item}
+						type={type}
+						isButtonsVisible={selectedTodoId === item.id}
+						onLongPress={handleTodoLongPress}
+						onEditButtonPress={onEditButtonPress}
+					/>
 				)}
 			/>
 			{/* 드래그 중인 오버레이 */}
