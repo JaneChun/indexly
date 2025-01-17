@@ -7,11 +7,14 @@ export const useInsideZone = () => {
 
 	const { x, y } = currentPosition;
 
-	for (const [zoneName, zoneBounds] of Object.entries(droppableZones)) {
-		if (zoneBounds) {
-			const { startX, startY, endX, endY } = zoneBounds;
-			if (x >= startX && x <= endX && y >= startY && y <= endY) {
-				return zoneName;
+	for (const [zoneName, zones] of Object.entries(droppableZones)) {
+		for (const zone of Object.values(zones)) {
+			if (zone) {
+				const { startX, endX, startY, endY } = zone;
+				// 현재 위치가 드롭 영역 안에 있는지 확인
+				if (x >= startX && x <= endX && y >= startY && y <= endY) {
+					return zoneName;
+				}
 			}
 		}
 	}

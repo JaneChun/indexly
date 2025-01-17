@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
 import { Colors } from '../../constants/color';
 
 import Content from './Content';
+import { useDragDropContext } from '@/store/DragDropContext';
+import { useInsideZone } from '@/hooks/useInsideZone';
 
 const CollapsibleView = ({
 	type,
@@ -17,7 +19,27 @@ const CollapsibleView = ({
 	onPressBackground,
 	onEditButtonPress,
 }) => {
+	const { memorizeDroppableZones } = useDragDropContext();
 	const [animation] = useState(new Animated.Value(0));
+	const indexRef = useRef(null);
+	const isInside = type === useInsideZone();
+
+	// 인덱스 영역의 위치와 크기를 저장
+	useLayoutEffect(() => {
+		setTimeout(() => {
+			indexRef?.current?.measureInWindow((x, y, width, height) => {
+				memorizeDroppableZones({
+					type,
+					index: {
+						startX: x,
+						startY: y,
+						endX: x + width,
+						endY: y + height,
+					},
+				});
+			});
+		}, 100);
+	}, [currentSection]);
 
 	const primaryColor = Colors[`${type.toLowerCase()}`];
 	const secondaryColor = Colors[`${type.toLowerCase()}_light`];
@@ -54,6 +76,7 @@ const CollapsibleView = ({
 		<View style={styles.container}>
 			{/* 움직이는 인덱스 */}
 			<Animated.View
+				ref={indexRef}
 				style={[
 					styles.indexContainer,
 					{
@@ -68,6 +91,7 @@ const CollapsibleView = ({
 					style={({ pressed }) => [
 						styles.index,
 						{ backgroundColor: primaryColor },
+						isInside && styles.pressed,
 						pressed && styles.pressed,
 					]}
 					onPress={onToggle}

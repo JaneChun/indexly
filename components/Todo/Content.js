@@ -33,7 +33,7 @@ const Content = ({
 			droppableRef?.current?.measureInWindow((x, y, width, height) => {
 				memorizeDroppableZones({
 					type,
-					zone: {
+					content: {
 						startX: x,
 						startY: y,
 						endX: x + width,

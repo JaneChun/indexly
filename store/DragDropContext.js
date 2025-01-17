@@ -6,17 +6,20 @@ export const DragDropContextProvider = ({ children }) => {
 	const [draggingTodoId, setDraggingTodoId] = useState(null);
 	const [currentPosition, setCurrentPosition] = useState(null);
 	const [droppableZones, setDroppableZones] = useState({
-		Monthly: null,
-		Weekly: null,
-		Daily: null,
+		Monthly: { content: null, index: null },
+		Weekly: { content: null, index: null },
+		Daily: { content: null, index: null },
 	});
 
-	const memorizeDroppableZones = ({ type, zone }) => {
-		setDroppableZones((curDroppableZones) => {
-			curDroppableZones[type] = zone;
-
-			return curDroppableZones;
-		});
+	const memorizeDroppableZones = ({ type, content, index }) => {
+		setDroppableZones((curDroppableZones) => ({
+			...curDroppableZones,
+			[type]: {
+				...curDroppableZones[type],
+				content: content ? content : curDroppableZones[type]?.content,
+				index: index ? index : curDroppableZones[type]?.index,
+			},
+		}));
 	};
 
 	return (
