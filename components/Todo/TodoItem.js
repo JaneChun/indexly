@@ -17,6 +17,7 @@ const TodoItem = ({
 	id,
 	text,
 	isCompleted,
+	type,
 	isButtonsVisible,
 	onLongPress,
 	onEditButtonPress,
@@ -61,12 +62,15 @@ const TodoItem = ({
 			console.log('dragDestination', dragDestination);
 
 			if (dragDestination) {
-				runOnJS(moveTodo)({ id, destination: dragDestination });
-			} else {
-				offset.x.value = withSpring(0);
-				offset.y.value = withSpring(0);
+				if (type !== dragDestination) {
+					runOnJS(moveTodo)({ id, destination: dragDestination });
+				}
 			}
+
+			offset.x.value = withSpring(0);
+			offset.y.value = withSpring(0);
 			runOnJS(setDraggingTodoId)(null);
+			runOnJS(setCurrentPosition)(null);
 		});
 
 	return (
