@@ -29,6 +29,11 @@ const Content = ({
 
 	// 현재 드롭 가능한 영역의 위치와 크기를 저장
 	useLayoutEffect(() => {
+		if (!droppableRef?.current) {
+			console.warn(`${type} ref is not initialized.`);
+			return;
+		}
+
 		setTimeout(() => {
 			droppableRef?.current?.measureInWindow((x, y, width, height) => {
 				memorizeDroppableZones({
@@ -67,7 +72,8 @@ const Content = ({
 			style={
 				isInside && {
 					...styles.isInside,
-					backgroundColor: Colors.daily_light,
+					backgroundColor:
+						type == 'Daily' ? Colors.daily_medium : Colors.daily_light,
 				}
 			}
 		>

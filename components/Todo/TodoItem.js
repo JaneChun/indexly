@@ -85,7 +85,7 @@ const TodoItem = ({
 				>
 					<View style={styles.container}>
 						<View style={styles.todo}>
-							<View style={styles.iconContainer}>
+							<View style={styles.checkContainer}>
 								<IconButton
 									type='FontAwesome'
 									icon={isCompleted ? 'check-circle' : 'circle-thin'}
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
 	touchableHighlight: {
 		zIndex: 100,
 		borderRadius: 4,
-		paddingHorizontal: 12,
 	},
 	container: {
 		flexDirection: 'row',
@@ -136,8 +135,8 @@ const styles = StyleSheet.create({
 	todo: {
 		flexDirection: 'row',
 	},
-	iconContainer: {
-		marginRight: 8,
+	checkContainer: {
+		marginHorizontal: 8,
 	},
 	text: {
 		fontSize: 12,
