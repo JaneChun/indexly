@@ -16,13 +16,9 @@ const Content = ({
 	onEditButtonPress,
 }) => {
 	const todos = useTypedTodos(type);
-	const {
-		memorizeDroppableZones,
-		setCurrentPosition,
-		draggingTodoId,
-		setDraggingTodoId,
-	} = useDragDropContext();
-	const isInside = useInsideZone(type);
+	const { memorizeDroppableZones, draggingTodoId, setDraggingTodoId } =
+		useDragDropContext();
+	const isInside = type === useInsideZone();
 	const [selectedTodoId, setSelectedTodoId] = useState(null);
 	const droppableRef = useRef(null);
 

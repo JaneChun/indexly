@@ -33,6 +33,10 @@ export const updateTodo = async ({ id, text }) => {
 	return await db.runAsync('UPDATE todo SET text = ? WHERE id = ?', [text, id]);
 };
 
+export const updateTypeTodo = async ({ id, type }) => {
+	return await db.runAsync('UPDATE todo SET type = ? WHERE id = ?', [type, id]);
+};
+
 export const deleteTodo = async ({ id }) => {
 	return await db.runAsync('DELETE FROM todo WHERE id = ?', [id]);
 };

@@ -11,6 +11,7 @@ import IconButton from './IconButton';
 import { Colors } from '../../constants/color';
 import { useTodoContext } from '../../store/TodoContext';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useInsideZone } from '@/hooks/useInsideZone';
 
 const TodoItem = ({
 	id,
@@ -21,9 +22,10 @@ const TodoItem = ({
 	onEditButtonPress,
 }) => {
 	// 드래그 위치를 저장하는 shared values
-	const { toggleTodo, removeTodo } = useTodoContext();
+	const { toggleTodo, removeTodo, moveTodo } = useTodoContext();
 	const { draggingTodoId, setDraggingTodoId, setCurrentPosition } =
 		useDragDropContext();
+	const dragDestination = useInsideZone();
 	const offset = { x: useSharedValue(0), y: useSharedValue(0) };
 
 	const isDragging = draggingTodoId === id;
@@ -56,9 +58,14 @@ const TodoItem = ({
 			runOnJS(setCurrentPosition)({ x: event.absoluteX, y: event.absoluteY });
 		})
 		.onEnd(() => {
-			// 드래그 종료 시 좌표 초기화 (원래 위치로 복귀)
-			offset.x.value = withSpring(0);
-			offset.y.value = withSpring(0);
+			console.log('dragDestination', dragDestination);
+
+			if (dragDestination) {
+				runOnJS(moveTodo)({ id, destination: dragDestination });
+			} else {
+				offset.x.value = withSpring(0);
+				offset.y.value = withSpring(0);
+			}
 			runOnJS(setDraggingTodoId)(null);
 		});
 

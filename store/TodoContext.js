@@ -6,6 +6,7 @@ import {
 	deleteTodo,
 	toggleTodoCompletion,
 	deleteAllCompletedTodos,
+	updateTypeTodo,
 } from '../util/database';
 
 const TodoContext = createContext();
@@ -52,6 +53,15 @@ export const TodoContextProvider = ({ children }) => {
 		}
 	};
 
+	const moveTodo = async ({ id, destination }) => {
+		try {
+			await updateTypeTodo({ id, type: destination });
+			await loadTodos();
+		} catch (err) {
+			console.log('Failed to move todo:', err);
+		}
+	};
+
 	const removeTodo = async ({ id }) => {
 		console.log('delete', id);
 		try {
@@ -87,6 +97,7 @@ export const TodoContextProvider = ({ children }) => {
 				loadTodos,
 				addTodo,
 				editTodo,
+				moveTodo,
 				removeTodo,
 				toggleTodo,
 				removeCompletedTodo,

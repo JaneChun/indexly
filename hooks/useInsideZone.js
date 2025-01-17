@@ -1,9 +1,9 @@
 import { useDragDropContext } from '../store/DragDropContext';
 
-export const useInsideZone = (type) => {
+export const useInsideZone = () => {
 	const { currentPosition, droppableZones } = useDragDropContext();
 
-	if (!currentPosition || !droppableZones) return false;
+	if (!currentPosition || !droppableZones) return null;
 
 	const { x, y } = currentPosition;
 
@@ -11,10 +11,10 @@ export const useInsideZone = (type) => {
 		if (zoneBounds) {
 			const { startX, startY, endX, endY } = zoneBounds;
 			if (x >= startX && x <= endX && y >= startY && y <= endY) {
-				return zoneName === type;
+				return zoneName;
 			}
 		}
 	}
 
-	return false;
+	return null;
 };
