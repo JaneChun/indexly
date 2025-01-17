@@ -61,59 +61,59 @@ const Content = ({
 		}
 	};
 
-	if (isEllipsed) {
-		const previews = todos.slice(0, 1);
-		return (
-			<View
-				ref={droppableRef}
-				style={
-					isInside && {
-						...styles.isInside,
-						backgroundColor: Colors.daily_light,
-					}
-				}
-			>
-				{previews.map((item) => (
-					<TodoItem
-						key={item.id}
-						{...item}
-						type={type}
-						onLongPress={handleTodoLongPress}
-					/>
-				))}
-				{todos.length > 1 && (
-					<Text style={styles.hiddenCount}>+ {todos.length - 1}개의 할 일</Text>
-				)}
-			</View>
-		);
-	}
-
 	return (
-		<Pressable onPress={handlePressBackground} style={styles.content}>
-			{/* 할 일 리스트 */}
-			<FlatList
-				data={todos}
-				keyExtractor={({ id }) => id}
-				style={styles.flatList}
-				renderItem={({ item }) => (
-					<TodoItem
-						{...item}
-						type={type}
-						isButtonsVisible={selectedTodoId === item.id}
-						onLongPress={handleTodoLongPress}
-						onEditButtonPress={onEditButtonPress}
+		<View
+			ref={droppableRef}
+			style={
+				isInside && {
+					...styles.isInside,
+					backgroundColor: Colors.daily_light,
+				}
+			}
+		>
+			{isEllipsed ? (
+				<>
+					{todos.slice(0, 1).map((item) => (
+						<TodoItem
+							key={item.id}
+							{...item}
+							type={type}
+							onLongPress={handleTodoLongPress}
+						/>
+					))}
+					{todos.length > 1 && (
+						<Text style={styles.hiddenCount}>
+							+ {todos.length - 1}개의 할 일
+						</Text>
+					)}
+				</>
+			) : (
+				<Pressable onPress={handlePressBackground} style={styles.content}>
+					{/* 할 일 리스트 */}
+					<FlatList
+						data={todos}
+						keyExtractor={({ id }) => id}
+						style={styles.flatList}
+						renderItem={({ item }) => (
+							<TodoItem
+								{...item}
+								type={type}
+								isButtonsVisible={selectedTodoId === item.id}
+								onLongPress={handleTodoLongPress}
+								onEditButtonPress={onEditButtonPress}
+							/>
+						)}
 					/>
-				)}
-			/>
-			{/* 드래그 중인 오버레이 */}
-		</Pressable>
+				</Pressable>
+			)}
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {},
 	content: {
-		flex: 1,
+		height: '100%',
 	},
 	isInside: {
 		borderRadius: 8,
