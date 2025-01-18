@@ -96,7 +96,9 @@ const TodoItem = ({
 									onPress={() => handleCheckButtonPress({ id, isCompleted })}
 								/>
 							</View>
-							<Text style={styles.text}>{text}</Text>
+							<Text style={[styles.text, isCompleted && { color: 'gray' }]}>
+								{text}
+							</Text>
 						</View>
 						{isButtonsVisible && (
 							<View style={styles.buttonsContainer}>
