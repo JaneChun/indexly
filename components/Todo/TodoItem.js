@@ -51,7 +51,10 @@ const TodoItem = ({
 
 	// Pan 제스처 정의 (드래그 동작)
 	const pan = Gesture.Pan()
-		.onStart(() => {})
+		.activateAfterLongPress(1000)
+		.onStart(() => {
+			runOnJS(onLongPress)(id);
+		})
 		.onUpdate((event) => {
 			// 드래그 중인 동안 x, y 좌표를 업데이트
 			offset.x.value = event.translationX;
@@ -77,7 +80,7 @@ const TodoItem = ({
 		<GestureDetector gesture={pan}>
 			<TouchableHighlight
 				style={styles.touchableHighlight}
-				onLongPress={() => onLongPress(id)}
+				// onLongPress={() => onLongPress(id)}
 				underlayColor={Colors.daily_light}
 			>
 				<Animated.View

@@ -69,13 +69,14 @@ const Content = ({
 	return (
 		<View
 			ref={droppableRef}
-			style={
+			style={[
+				styles.droppableRef,
 				isInside && {
 					...styles.isInside,
 					backgroundColor:
 						type == 'Daily' ? Colors.daily_medium : Colors.daily_light,
-				}
-			}
+				},
+			]}
 		>
 			{isEllipsed ? (
 				<>
@@ -120,6 +121,9 @@ const styles = StyleSheet.create({
 	container: {},
 	content: {
 		height: '100%',
+	},
+	droppableRef: {
+		minHeight: 60,
 	},
 	isInside: {
 		borderRadius: 8,
