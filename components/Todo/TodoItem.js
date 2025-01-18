@@ -80,7 +80,6 @@ const TodoItem = ({
 		<GestureDetector gesture={pan}>
 			<TouchableHighlight
 				style={styles.touchableHighlight}
-				// onLongPress={() => onLongPress(id)}
 				underlayColor={Colors.daily_light}
 			>
 				<Animated.View
@@ -142,6 +141,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 8,
 	},
 	text: {
+		flex: 1,
 		fontSize: 12,
 	},
 	buttonsContainer: {
