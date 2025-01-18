@@ -78,6 +78,7 @@ const Todo = ({ route }) => {
 			width: '100%',
 			offsetX: -180,
 			offsetY: 0,
+			height: contentHeight - 95,
 			isEllipsed: activeSections.has(WEEKLY) || activeSections.has(DAILY),
 		},
 		{
@@ -89,6 +90,7 @@ const Todo = ({ route }) => {
 				(currentSection === WEEKLY || currentSection === DAILY)
 					? 0
 					: 100,
+			height: contentHeight - 95,
 			isEllipsed: activeSections.has(DAILY),
 		},
 		{
@@ -96,6 +98,7 @@ const Todo = ({ route }) => {
 			width: '90%',
 			offsetX: 0,
 			offsetY: isKeyboardVisible && currentSection === DAILY ? 0 : 200,
+			height: contentHeight - 95,
 			isEllipsed: false,
 		},
 	];
@@ -113,13 +116,8 @@ const Todo = ({ route }) => {
 				{collapsibleConfigs.map((config) => (
 					<CollapsibleView
 						key={config.type}
-						type={config.type}
-						width={config.width}
-						contentHeight={contentHeight}
-						offsetX={config.offsetX}
-						offsetY={config.offsetY}
+						{...config}
 						isCollapsed={activeSections.has(config.type)}
-						isEllipsed={config.isEllipsed}
 						currentSection={currentSection}
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}

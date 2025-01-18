@@ -1,5 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	Animated,
+	Dimensions,
+} from 'react-native';
 import { Colors } from '../../constants/color';
 
 import Content from './Content';
@@ -11,7 +18,7 @@ const CollapsibleView = ({
 	width,
 	offsetX,
 	offsetY,
-	contentHeight,
+	height,
 	isCollapsed,
 	onToggle,
 	isEllipsed,
@@ -23,6 +30,8 @@ const CollapsibleView = ({
 	const [animation] = useState(new Animated.Value(0));
 	const indexRef = useRef(null);
 	const isInside = type === useInsideZone();
+
+	const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 	// 인덱스 영역의 위치와 크기를 저장
 	useLayoutEffect(() => {
@@ -49,14 +58,23 @@ const CollapsibleView = ({
 		outputRange: [0, offsetX],
 	});
 
+	let adjustedOffsetY = offsetY + 9;
+	let adjustedHeight = height + 3;
+
+	// iPhone 13 mini
+	if (screenWidth === 375 && screenHeight === 812) {
+		adjustedOffsetY = offsetY + 4;
+		adjustedHeight = height - 2.5;
+	}
+
 	const indexYTranslate = animation.interpolate({
 		inputRange: [0, 1],
-		outputRange: [offsetY, contentHeight - 95],
+		outputRange: [adjustedOffsetY, adjustedHeight],
 	});
 
 	const heightInterpolate = animation.interpolate({
 		inputRange: [0, 1],
-		outputRange: [contentHeight - 89 - offsetY, 0],
+		outputRange: [height - offsetY, 0],
 	});
 
 	const borderBottomRightRadiusInterpolate = animation.interpolate({
