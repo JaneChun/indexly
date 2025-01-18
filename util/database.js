@@ -16,16 +16,18 @@ export const init = async () => {
       id INTEGER PRIMARY KEY NOT NULL,
 			type TEXT NOT NULL,
       text TEXT NOT NULL,
-      isCompleted BOOLEAN NOT NULL
+      isCompleted BOOLEAN NOT NULL,
+			orderIndex INTEGER NOT NULL
     )`);
 };
 
-export const insertTodo = async ({ type, text }) => {
+export const insertTodo = async ({ type, text, orderIndex }) => {
 	return await db.runAsync(
-		'INSERT INTO todo (type, text, isCompleted) VALUES (?, ?, ?)',
+		'INSERT INTO todo (type, text, isCompleted, orderIndex) VALUES (?, ?, ?, ?)',
 		type,
 		text,
 		false,
+		orderIndex,
 	);
 };
 
@@ -37,8 +39,11 @@ export const updateTypeTodo = async ({ id, type }) => {
 	return await db.runAsync('UPDATE todo SET type = ? WHERE id = ?', [type, id]);
 };
 
-export const deleteTodo = async ({ id }) => {
-	return await db.runAsync('DELETE FROM todo WHERE id = ?', [id]);
+export const updateOrderIndexTodo = async ({ id, orderIndex }) => {
+	return await db.runAsync('UPDATE todo SET orderIndex = ? WHERE id = ?', [
+		orderIndex,
+		id,
+	]);
 };
 
 export const toggleTodoCompletion = async ({ id, isCompleted }) => {
@@ -46,6 +51,10 @@ export const toggleTodoCompletion = async ({ id, isCompleted }) => {
 		isCompleted,
 		id,
 	]);
+};
+
+export const deleteTodo = async ({ id }) => {
+	return await db.runAsync('DELETE FROM todo WHERE id = ?', [id]);
 };
 
 export const fetchAllTodos = async () => {

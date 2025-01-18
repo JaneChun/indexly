@@ -7,6 +7,7 @@ import {
 	toggleTodoCompletion,
 	deleteAllCompletedTodos,
 	updateTypeTodo,
+	updateOrderIndexTodo,
 } from '../util/database';
 
 const TodoContext = createContext();
@@ -20,16 +21,46 @@ export const TodoContextProvider = ({ children }) => {
 		})();
 	}, []);
 
-	const sortTodos = (todos) => {
-		todos.sort((a, b) => {
-			if (a.isCompleted !== b.isCompleted) {
-				return a.isCompleted - b.isCompleted;
+	const sortTodos = async () => {
+		const { Monthly, Weekly, Daily } = todos;
+
+		const sortedMonthly = await sortByIsCompleted(Monthly);
+		const sortedWeekly = await sortByIsCompleted(Weekly);
+		const sortedDaily = await sortByIsCompleted(Daily);
+
+		setTodos({
+			Monthly: sortedMonthly,
+			Weekly: sortedWeekly,
+			Daily: sortedDaily,
+		});
+	};
+
+	const sortByIsCompleted = async (todos) => {
+		try {
+			// 정렬 로직
+			const sortedTodos = todos.sort((a, b) => {
+				if (a.isCompleted !== b.isCompleted) {
+					return a.isCompleted - b.isCompleted;
+				}
+				return a.id - b.id;
+			});
+
+			// 정렬된 순서를 기반으로 데이터베이스 업데이트
+			for (let i = 0; i < sortedTodos.length; i++) {
+				await updateOrderIndexTodo(
+					{ id: sortedTodos[i].id, orderIndex: i }, // 새로운 order 값 부여
+				);
 			}
 
-			return b.id - a.id;
-		});
+			return sortedTodos; // 정렬된 데이터를 반환
+		} catch (err) {
+			console.log('Failed to update orderIndices:', err);
+			return todos; // 에러 시 원래 데이터를 반환
+		}
+	};
 
-		return todos;
+	const sortByOrderIndex = (todos) => {
+		return todos.sort((a, b) => a.orderIndex - b.orderIndex);
 	};
 
 	const loadTodos = async () => {
@@ -37,10 +68,11 @@ export const TodoContextProvider = ({ children }) => {
 			const monthlyTodos = await fetchTypedTodos({ type: 'Monthly' });
 			const weeklyTodos = await fetchTypedTodos({ type: 'Weekly' });
 			const dailyTodos = await fetchTypedTodos({ type: 'Daily' });
+
 			setTodos({
-				Monthly: sortTodos(monthlyTodos),
-				Weekly: sortTodos(weeklyTodos),
-				Daily: sortTodos(dailyTodos),
+				Monthly: sortByOrderIndex(monthlyTodos),
+				Weekly: sortByOrderIndex(weeklyTodos),
+				Daily: sortByOrderIndex(dailyTodos),
 			});
 		} catch (err) {
 			console.log('Failed to load todos:', err);
@@ -49,7 +81,12 @@ export const TodoContextProvider = ({ children }) => {
 
 	const addTodo = async ({ type, text }) => {
 		try {
-			await insertTodo({ type, text });
+			const typedTodos = todos[type];
+			const maxOrder = typedTodos.length
+				? Math.max(...typedTodos.map((todo) => todo.orderIndex))
+				: 0;
+
+			await insertTodo({ type, text, orderIndex: maxOrder + 1 });
 			await loadTodos();
 		} catch (err) {
 			console.log('Failed to add todo:', err);
@@ -106,6 +143,7 @@ export const TodoContextProvider = ({ children }) => {
 		<TodoContext.Provider
 			value={{
 				todos,
+				sortTodos,
 				loadTodos,
 				addTodo,
 				editTodo,

@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
 import DeleteCompletedButton from '../components/Todo/DeleteCompletedButton';
+import SortButton from '../components/Todo/SortButton';
 
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
@@ -113,6 +114,9 @@ const Todo = ({ route }) => {
 				}}
 			>
 				<DeleteCompletedButton />
+				<View style={styles.sortButtonContainer}>
+					<SortButton />
+				</View>
 				{collapsibleConfigs.map((config) => (
 					<CollapsibleView
 						key={config.type}
@@ -149,6 +153,13 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 24,
+	},
+	sortButtonContainer: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		paddingHorizontal: 32,
+		paddingVertical: 24,
 	},
 });
 

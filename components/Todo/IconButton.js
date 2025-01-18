@@ -1,5 +1,9 @@
 import { StyleSheet, Pressable } from 'react-native';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import {
+	FontAwesome,
+	MaterialCommunityIcons,
+	MaterialIcons,
+} from '@expo/vector-icons';
 
 const IconButton = ({ type, icon, size, color, onPress }) => {
 	return (
@@ -17,6 +21,14 @@ const IconButton = ({ type, icon, size, color, onPress }) => {
 			)}
 			{type === 'MaterialIcons' && (
 				<MaterialIcons
+					styles={styles.button}
+					name={icon}
+					size={size}
+					color={color}
+				/>
+			)}
+			{type === 'MaterialCommunityIcons' && (
+				<MaterialCommunityIcons
 					styles={styles.button}
 					name={icon}
 					size={size}
