@@ -11,10 +11,12 @@ import CollapsibleView from '../components/Todo/CollapsibleView';
 import Input from '../components/Todo/Input';
 import DeleteCompletedButton from '../components/Todo/DeleteCompletedButton';
 import SortButton from '../components/Todo/SortButton';
+import DraggingTodoItem from '../components/Todo/DraggingTodoItem';
 
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
 import { useTodoContext } from '../store/TodoContext';
+import { useDragDropContext } from '@/store/DragDropContext';
 
 const MONTHLY = 'Monthly';
 const WEEKLY = 'Weekly';
@@ -29,6 +31,7 @@ const Todo = ({ route }) => {
 	const { currentSection, activeSections, toggleSection } =
 		useActiveSections(null);
 	const { addTodo, editTodo } = useTodoContext();
+	const { draggingTodo } = useDragDropContext();
 
 	const { params: { type } = {} } = route;
 
@@ -106,6 +109,10 @@ const Todo = ({ route }) => {
 
 	return (
 		<SafeAreaView style={styles.screen}>
+			{/* 드래그 중인 아이템 렌더링 */}
+			<View style={styles.draggingTodoContianer}>
+				{draggingTodo && <DraggingTodoItem />}
+			</View>
 			<View
 				style={styles.container}
 				onLayout={(event) => {
@@ -160,6 +167,15 @@ const styles = StyleSheet.create({
 		left: 0,
 		paddingHorizontal: 32,
 		paddingVertical: 24,
+	},
+	draggingTodoContianer: {
+		borderWidth: 3,
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		height: '100%',
+		zIndex: 999,
+		pointerEvents: 'box-none',
 	},
 });
 

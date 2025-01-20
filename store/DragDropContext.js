@@ -3,8 +3,9 @@ import { useState, useContext, createContext } from 'react';
 const DragDropContext = createContext();
 
 export const DragDropContextProvider = ({ children }) => {
-	const [draggingTodoId, setDraggingTodoId] = useState(null);
+	const [draggingTodo, setDraggingTodo] = useState(null);
 	const [currentPosition, setCurrentPosition] = useState(null);
+	const [dragStartPosition, setDragStartPosition] = useState(null);
 	const [droppableZones, setDroppableZones] = useState({
 		Monthly: { content: null, index: null },
 		Weekly: { content: null, index: null },
@@ -25,10 +26,12 @@ export const DragDropContextProvider = ({ children }) => {
 	return (
 		<DragDropContext.Provider
 			value={{
-				draggingTodoId,
-				setDraggingTodoId,
+				draggingTodo,
+				setDraggingTodo,
 				currentPosition,
 				setCurrentPosition,
+				dragStartPosition,
+				setDragStartPosition,
 				droppableZones,
 				memorizeDroppableZones,
 			}}

@@ -24,12 +24,16 @@ const TodoItem = ({
 }) => {
 	// 드래그 위치를 저장하는 shared values
 	const { toggleTodo, removeTodo, moveTodo } = useTodoContext();
-	const { draggingTodoId, setDraggingTodoId, setCurrentPosition } =
-		useDragDropContext();
+	const {
+		draggingTodo,
+		setDraggingTodo,
+		setCurrentPosition,
+		setDragStartPosition,
+	} = useDragDropContext();
 	const dragDestination = useInsideZone();
 	const offset = { x: useSharedValue(0), y: useSharedValue(0) };
 
-	const isDragging = draggingTodoId === id;
+	const isDragging = draggingTodo?.id === id;
 
 	const handleCheckButtonPress = async ({ id, isCompleted }) => {
 		await toggleTodo({ id, isCompleted });
@@ -52,8 +56,12 @@ const TodoItem = ({
 	// Pan 제스처 정의 (드래그 동작)
 	const pan = Gesture.Pan()
 		.activateAfterLongPress(500)
-		.onStart(() => {
-			runOnJS(onLongPress)(id);
+		.onStart((event) => {
+			const todo = { id, text, isCompleted, type };
+
+			runOnJS(setDraggingTodo)(todo);
+			runOnJS(onLongPress)(todo);
+			runOnJS(setDragStartPosition)({ x: event.x, y: event.y });
 		})
 		.onUpdate((event) => {
 			// 드래그 중인 동안 x, y 좌표를 업데이트
@@ -65,26 +73,26 @@ const TodoItem = ({
 			console.log('dragDestination', dragDestination);
 
 			if (dragDestination) {
-				if (type !== dragDestination) {
+				if (type === dragDestination) {
+					offset.x.value = withSpring(0);
+					offset.y.value = withSpring(0);
+				} else {
 					runOnJS(moveTodo)({ id, destination: dragDestination });
 				}
 			}
 
-			offset.x.value = withSpring(0);
-			offset.y.value = withSpring(0);
-			runOnJS(setDraggingTodoId)(null);
+			runOnJS(setDraggingTodo)(null);
 			runOnJS(setCurrentPosition)(null);
+			runOnJS(setDragStartPosition)(null);
 		});
 
 	return (
 		<GestureDetector gesture={pan}>
 			<TouchableHighlight
-				style={styles.touchableHighlight}
+				style={[styles.touchableHighlight, isDragging && { opacity: 0 }]}
 				underlayColor={Colors.daily_light}
 			>
-				<Animated.View
-					style={[animatedStyles, isDragging && styles.isDragging]}
-				>
+				<Animated.View style={animatedStyles}>
 					<View style={styles.container}>
 						<View style={styles.todo}>
 							<View style={styles.checkContainer}>
@@ -149,11 +157,6 @@ const styles = StyleSheet.create({
 	buttonsContainer: {
 		flexDirection: 'row',
 		gap: 5,
-	},
-	isDragging: {
-		borderWidth: 1,
-		borderRadius: 8,
-		borderColor: Colors.daily,
 	},
 });
 

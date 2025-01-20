@@ -23,7 +23,7 @@ const Content = ({
 	onEditButtonPress,
 }) => {
 	const todos = useTypedTodos(type);
-	const { memorizeDroppableZones, draggingTodoId, setDraggingTodoId } =
+	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } =
 		useDragDropContext();
 	const isInside = type === useInsideZone();
 	const [selectedTodoId, setSelectedTodoId] = useState(null);
@@ -52,17 +52,15 @@ const Content = ({
 	});
 
 	// 할 일을 길게 눌렀을 때 드래그 상태로 설정
-	const handleTodoLongPress = (id) => {
-		console.log('long press!');
-		setDraggingTodoId(id);
+	const handleTodoLongPress = (todo) => {
+		setDraggingTodo(todo);
 	};
 
 	// 배경을 눌렀을 때 선택 상태 해제
 	const handlePressBackground = () => {
-		console.log('press!');
-		if (selectedTodoId || draggingTodoId) {
+		if (selectedTodoId || draggingTodo) {
 			setSelectedTodoId(null);
-			setDraggingTodoId(null);
+			setDraggingTodo(null);
 		} else {
 			onPressBackground();
 		}
