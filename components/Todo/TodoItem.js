@@ -6,6 +6,7 @@ import Animated, {
 	withSpring,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 
 import IconButton from './IconButton';
 import { Colors } from '../../constants/color';
@@ -36,6 +37,7 @@ const TodoItem = ({
 	const isDragging = draggingTodo?.id === id;
 
 	const handleCheckButtonPress = async ({ id, isCompleted }) => {
+		Haptics.selectionAsync(Haptics.ImpactFeedbackStyle.Light);
 		await toggleTodo({ id, isCompleted });
 	};
 
@@ -57,6 +59,7 @@ const TodoItem = ({
 	const pan = Gesture.Pan()
 		.activateAfterLongPress(500)
 		.onStart((event) => {
+			runOnJS(Haptics.selectionAsync)(Haptics.ImpactFeedbackStyle.Light);
 			const todo = { id, text, isCompleted, type };
 
 			runOnJS(setDraggingTodo)(todo);
@@ -70,8 +73,6 @@ const TodoItem = ({
 			runOnJS(setCurrentPosition)({ x: event.absoluteX, y: event.absoluteY });
 		})
 		.onEnd(() => {
-			console.log('dragDestination', dragDestination);
-
 			if (dragDestination) {
 				if (type === dragDestination) {
 					offset.x.value = withSpring(0);
