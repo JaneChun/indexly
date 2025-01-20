@@ -51,7 +51,7 @@ const TodoItem = ({
 
 	// Pan 제스처 정의 (드래그 동작)
 	const pan = Gesture.Pan()
-		.activateAfterLongPress(1000)
+		.activateAfterLongPress(500)
 		.onStart(() => {
 			runOnJS(onLongPress)(id);
 		})

@@ -6,6 +6,7 @@ import {
 	Pressable,
 	Animated,
 	Dimensions,
+	InteractionManager,
 } from 'react-native';
 import { Colors } from '../../constants/color';
 
@@ -32,23 +33,6 @@ const CollapsibleView = ({
 	const isInside = type === useInsideZone();
 
 	const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-
-	// 인덱스 영역의 위치와 크기를 저장
-	useLayoutEffect(() => {
-		setTimeout(() => {
-			indexRef?.current?.measureInWindow((x, y, width, height) => {
-				memorizeDroppableZones({
-					type,
-					index: {
-						startX: x,
-						startY: y,
-						endX: x + width,
-						endY: y + height,
-					},
-				});
-			});
-		}, 100);
-	}, [currentSection]);
 
 	const primaryColor = Colors[`${type.toLowerCase()}`];
 	const secondaryColor = Colors[`${type.toLowerCase()}_light`];
@@ -87,8 +71,23 @@ const CollapsibleView = ({
 			toValue: isCollapsed ? 0 : 1,
 			duration: 300,
 			useNativeDriver: false,
-		}).start();
-	}, [isCollapsed]);
+		}).start(() => {
+			// 인덱스 영역의 위치와 크기를 저장
+			InteractionManager.runAfterInteractions(() => {
+				indexRef?.current?.measureInWindow((x, y, width, height) => {
+					memorizeDroppableZones({
+						type,
+						index: {
+							startX: x,
+							startY: y,
+							endX: x + width,
+							endY: y + height,
+						},
+					});
+				});
+			});
+		});
+	}, [isCollapsed, currentSection]);
 
 	return (
 		<View style={styles.container}>

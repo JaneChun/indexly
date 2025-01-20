@@ -1,4 +1,10 @@
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import {
+	Text,
+	View,
+	StyleSheet,
+	Pressable,
+	InteractionManager,
+} from 'react-native';
 import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -29,12 +35,7 @@ const Content = ({
 
 	// 현재 드롭 가능한 영역의 위치와 크기를 저장
 	useLayoutEffect(() => {
-		if (!droppableRef?.current) {
-			console.warn(`${type} ref is not initialized.`);
-			return;
-		}
-
-		setTimeout(() => {
+		InteractionManager.runAfterInteractions(() => {
 			droppableRef?.current?.measureInWindow((x, y, width, height) => {
 				memorizeDroppableZones({
 					type,
@@ -46,8 +47,8 @@ const Content = ({
 					},
 				});
 			});
-		}, 100);
-	}, [currentSection]);
+		}, [currentSection]);
+	});
 
 	// 할 일을 길게 눌렀을 때 드래그 상태로 설정
 	const handleTodoLongPress = (id) => {
