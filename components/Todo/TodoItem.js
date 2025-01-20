@@ -5,7 +5,11 @@ import Animated, {
 	useSharedValue,
 	withSpring,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+	Gesture,
+	GestureDetector,
+	TapGestureHandler,
+} from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
 import IconButton from './IconButton';
@@ -21,6 +25,7 @@ const TodoItem = ({
 	type,
 	isButtonsVisible,
 	onLongPress,
+	onDoubleTap,
 	onEditButtonPress,
 	isEllipsed,
 }) => {
@@ -89,60 +94,72 @@ const TodoItem = ({
 			runOnJS(setDragStartPosition)(null);
 		});
 
+	const handleDoubleTapActivated = () => {
+		if (isEllipsed) return;
+		onDoubleTap({ id });
+	};
 	return (
 		<GestureDetector gesture={pan}>
-			<TouchableHighlight
-				style={[styles.touchableHighlight, isDragging && { opacity: 0 }]}
-				underlayColor={Colors.daily_light}
+			<TapGestureHandler
+				numberOfTaps={2}
+				onActivated={handleDoubleTapActivated}
 			>
-				<Animated.View style={animatedStyles}>
-					<View style={styles.container}>
-						<View style={styles.todo}>
-							<View style={styles.checkContainer}>
-								<IconButton
-									type='FontAwesome'
-									icon={isCompleted ? 'check-circle' : 'circle-thin'}
-									color={Colors.daily}
-									size={18}
-									onPress={() => handleCheckButtonPress({ id, isCompleted })}
-								/>
+				<TouchableHighlight
+					style={[styles.touchableHighlight, isDragging && { opacity: 0 }]}
+					underlayColor={Colors.daily_light}
+				>
+					<Animated.View style={animatedStyles}>
+						<View style={styles.container}>
+							{/* 할 일 텍스트와 체크 아이콘 */}
+							<View style={styles.todo}>
+								<View style={styles.checkContainer}>
+									<IconButton
+										type='FontAwesome'
+										icon={isCompleted ? 'check-circle' : 'circle-thin'}
+										color={Colors.daily}
+										size={18}
+										onPress={() => handleCheckButtonPress({ id, isCompleted })}
+									/>
+								</View>
+								<Text
+									style={[styles.text, isCompleted && { color: 'gray' }]}
+									numberOfLines={isEllipsed ? 1 : undefined}
+									ellipsizeMode={isEllipsed ? 'tail' : undefined}
+								>
+									{text}
+								</Text>
 							</View>
-							<Text
-								style={[styles.text, isCompleted && { color: 'gray' }]}
-								numberOfLines={isEllipsed ? 1 : undefined}
-								ellipsizeMode={isEllipsed ? 'tail' : undefined}
-							>
-								{text}
-							</Text>
-						</View>
-						{isButtonsVisible && (
+							{/* 버튼 컨테이너 */}
 							<View style={styles.buttonsContainer}>
-								<IconButton
-									type='MaterialIcons'
-									icon='edit'
-									color={Colors.weekly}
-									size={16}
-									onPress={() => onEditButtonPress({ id, text })}
-								/>
-								<IconButton
-									type='MaterialIcons'
-									icon='remove-circle'
-									color={Colors.weekly}
-									size={16}
-									onPress={() => handleDeleteButtonPress({ id })}
-								/>
+								{isButtonsVisible && (
+									<>
+										<IconButton
+											type='MaterialIcons'
+											icon='edit'
+											color={Colors.weekly}
+											size={16}
+											onPress={() => onEditButtonPress({ id, text })}
+										/>
+										<IconButton
+											type='MaterialIcons'
+											icon='remove-circle'
+											color={Colors.weekly}
+											size={16}
+											onPress={() => handleDeleteButtonPress({ id })}
+										/>
+									</>
+								)}
 							</View>
-						)}
-					</View>
-				</Animated.View>
-			</TouchableHighlight>
+						</View>
+					</Animated.View>
+				</TouchableHighlight>
+			</TapGestureHandler>
 		</GestureDetector>
 	);
 };
 
 const styles = StyleSheet.create({
 	touchableHighlight: {
-		zIndex: 100,
 		borderRadius: 4,
 	},
 	container: {
@@ -152,7 +169,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	todo: {
+		flex: 1,
 		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	checkContainer: {
 		marginHorizontal: 8,

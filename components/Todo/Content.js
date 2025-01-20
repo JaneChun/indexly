@@ -56,6 +56,14 @@ const Content = ({
 		setDraggingTodo(todo);
 	};
 
+	const handleTodoDoubleTap = ({ id }) => {
+		if (selectedTodoId !== id) {
+			setSelectedTodoId(id);
+		} else {
+			setSelectedTodoId(null);
+		}
+	};
+
 	// 배경을 눌렀을 때 선택 상태 해제
 	const handlePressBackground = () => {
 		if (selectedTodoId || draggingTodo) {
@@ -64,6 +72,11 @@ const Content = ({
 		} else {
 			onPressBackground();
 		}
+	};
+
+	const handleEditButtonPress = ({ id, text }) => {
+		onEditButtonPress({ id, text });
+		setSelectedTodoId(null);
 	};
 
 	return (
@@ -109,7 +122,8 @@ const Content = ({
 								type={type}
 								isButtonsVisible={selectedTodoId === item.id}
 								onLongPress={handleTodoLongPress}
-								onEditButtonPress={onEditButtonPress}
+								onDoubleTap={handleTodoDoubleTap}
+								onEditButtonPress={handleEditButtonPress}
 							/>
 						)}
 					/>
