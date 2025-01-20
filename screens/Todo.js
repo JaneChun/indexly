@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 24,
 	},
 	draggingTodoContianer: {
-		borderWidth: 3,
 		position: 'absolute',
 		top: 0,
 		left: 0,

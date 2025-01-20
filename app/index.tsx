@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
 
 import Home from '../screens/Home';
 import Todo from '../screens/Todo';
@@ -34,15 +35,23 @@ export default function Index() {
 	}
 
 	return (
-		<GestureHandlerRootView>
-			<DragDropContextProvider>
-				<TodoContextProvider>
-					<Stack.Navigator screenOptions={{ headerShown: false }}>
-						<Stack.Screen name='Home' component={Home} />
-						<Stack.Screen name='Todo' component={Todo} />
-					</Stack.Navigator>
-				</TodoContextProvider>
-			</DragDropContextProvider>
-		</GestureHandlerRootView>
+		<>
+			<StatusBar backgroundColor='#ffffff' hidden={true} />
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<DragDropContextProvider>
+					<TodoContextProvider>
+						<Stack.Navigator
+							screenOptions={{
+								headerShown: false,
+								contentStyle: { backgroundColor: '#ffffff' },
+							}}
+						>
+							<Stack.Screen name='Home' component={Home} />
+							<Stack.Screen name='Todo' component={Todo} />
+						</Stack.Navigator>
+					</TodoContextProvider>
+				</DragDropContextProvider>
+			</GestureHandlerRootView>
+		</>
 	);
 }
