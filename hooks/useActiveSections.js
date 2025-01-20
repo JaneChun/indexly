@@ -6,7 +6,9 @@ const DAILY = 'Daily';
 
 export const useActiveSections = (initialSection) => {
 	const [currentSection, setCurrentSection] = useState(initialSection);
-	const [activeSections, setActiveSections] = useState(new Set());
+	const [activeSections, setActiveSections] = useState(
+		new Set([MONTHLY, WEEKLY, DAILY]),
+	);
 
 	const toggleSection = useCallback((section) => {
 		setActiveSections((curActiveSections) => {

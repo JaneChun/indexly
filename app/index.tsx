@@ -46,7 +46,7 @@ export default function Index() {
 								contentStyle: { backgroundColor: '#ffffff' },
 							}}
 						>
-							<Stack.Screen name='Home' component={Home} />
+							{/* <Stack.Screen name='Home' component={Home} /> */}
 							<Stack.Screen name='Todo' component={Todo} />
 						</Stack.Navigator>
 					</TodoContextProvider>

@@ -29,7 +29,7 @@ const Todo = ({ route }) => {
 	const [isInputVisible, setIsInputVisible] = useState(false);
 	const { isKeyboardVisible } = useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } =
-		useActiveSections(null);
+		useActiveSections(DAILY);
 	const { addTodo, editTodo } = useTodoContext();
 	const { draggingTodo } = useDragDropContext();
 

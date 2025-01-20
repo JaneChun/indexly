@@ -4,7 +4,7 @@ import { Colors } from '../constants/color';
 const Loading = () => {
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>Loading...</Text>
+			{/* <Text style={styles.text}>Loading...</Text> */}
 		</View>
 	);
 };
