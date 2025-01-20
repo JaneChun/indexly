@@ -22,6 +22,7 @@ const TodoItem = ({
 	isButtonsVisible,
 	onLongPress,
 	onEditButtonPress,
+	isEllipsed,
 }) => {
 	// 드래그 위치를 저장하는 shared values
 	const { toggleTodo, removeTodo, moveTodo } = useTodoContext();
@@ -106,7 +107,11 @@ const TodoItem = ({
 									onPress={() => handleCheckButtonPress({ id, isCompleted })}
 								/>
 							</View>
-							<Text style={[styles.text, isCompleted && { color: 'gray' }]}>
+							<Text
+								style={[styles.text, isCompleted && { color: 'gray' }]}
+								numberOfLines={isEllipsed ? 1 : undefined}
+								ellipsizeMode={isEllipsed ? 'tail' : undefined}
+							>
 								{text}
 							</Text>
 						</View>

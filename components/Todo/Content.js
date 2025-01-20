@@ -87,6 +87,7 @@ const Content = ({
 							{...item}
 							type={type}
 							onLongPress={handleTodoLongPress}
+							isEllipsed={true}
 						/>
 					))}
 					{todos.length > 1 && (
