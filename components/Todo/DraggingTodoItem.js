@@ -6,8 +6,12 @@ import { Colors } from '@/constants/color';
 import { useDragDropContext } from '@/store/DragDropContext';
 
 const DraggingTodoItem = () => {
-	const { draggingTodo, currentPosition, dragStartPosition } =
-		useDragDropContext();
+	const {
+		draggingTodo,
+		currentPosition = { x: 0, y: 0 },
+		dragStartPosition = { x: 0, y: 0 },
+	} = useDragDropContext();
+
 	return (
 		<Animated.View
 			style={[

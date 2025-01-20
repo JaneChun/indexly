@@ -74,13 +74,14 @@ const TodoItem = ({
 		})
 		.onEnd(() => {
 			if (dragDestination) {
-				if (type === dragDestination) {
-					offset.x.value = withSpring(0);
-					offset.y.value = withSpring(0);
-				} else {
+				if (type !== dragDestination) {
 					runOnJS(moveTodo)({ id, destination: dragDestination });
+					offset.x.value = withSpring(0);
 				}
 			}
+
+			offset.x.value = withSpring(0);
+			offset.y.value = withSpring(0);
 
 			runOnJS(setDraggingTodo)(null);
 			runOnJS(setCurrentPosition)(null);
