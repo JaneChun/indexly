@@ -121,7 +121,7 @@ const Todo = ({ route }) => {
 					<CollapsibleView
 						key={config.type}
 						{...config}
-						isCollapsed={activeSections.has(config.type)}
+						isCollapsed={!activeSections.has(config.type)}
 						currentSection={currentSection}
 						onToggle={() => toggleSection(config.type)}
 						onPressBackground={handleBackgroundPress}

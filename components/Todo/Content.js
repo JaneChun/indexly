@@ -17,6 +17,7 @@ import { useInsideZone } from '../../hooks/useInsideZone';
 const Content = ({
 	type,
 	isEllipsed,
+	isCollapsed,
 	currentSection,
 	onPressBackground,
 	onEditButtonPress,
@@ -72,6 +73,7 @@ const Content = ({
 			ref={droppableRef}
 			style={[
 				styles.droppableRef,
+				isCollapsed && { opacity: 0 },
 				isInside && {
 					...styles.isInside,
 					backgroundColor:

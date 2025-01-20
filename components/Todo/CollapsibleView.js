@@ -68,7 +68,7 @@ const CollapsibleView = ({
 
 	useEffect(() => {
 		Animated.timing(animation, {
-			toValue: isCollapsed ? 0 : 1,
+			toValue: isCollapsed ? 1 : 0,
 			duration: 300,
 			useNativeDriver: false,
 		}).start(() => {
@@ -133,6 +133,7 @@ const CollapsibleView = ({
 				<View style={styles.content}>
 					<Content
 						type={type}
+						isCollapsed={isCollapsed}
 						isEllipsed={isEllipsed}
 						currentSection={currentSection}
 						onPressBackground={onPressBackground}
