@@ -28,7 +28,7 @@ const CollapsibleView = ({
 	onEditButtonPress,
 }) => {
 	const { memorizeDroppableZones } = useDragDropContext();
-	const [animation] = useState(new Animated.Value(0));
+	const animation = useRef(new Animated.Value(0)).current;
 	const indexRef = useRef(null);
 	const isInside = type === useInsideZone();
 
@@ -87,7 +87,7 @@ const CollapsibleView = ({
 				});
 			});
 		});
-	}, [isCollapsed, currentSection]);
+	}, [isCollapsed, memorizeDroppableZones, type]);
 
 	return (
 		<View style={styles.container}>
