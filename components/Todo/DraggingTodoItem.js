@@ -6,19 +6,23 @@ import { Colors } from '@/constants/color';
 import { useDragDropContext } from '@/store/DragDropContext';
 
 const DraggingTodoItem = () => {
-	const {
-		draggingTodo,
-		currentPosition = { x: 0, y: 0 },
-		dragStartPosition = { x: 0, y: 0 },
-	} = useDragDropContext();
+	const { draggingTodo, currentPosition, dragStartPosition } =
+		useDragDropContext();
+
+	if (!draggingTodo || !currentPosition) {
+		return null;
+	}
+
+	const { x: curPosX = 0, y: curPosY = 0 } = currentPosition;
+	const { x: dragPosX = 0, y: dragPosY = 0 } = dragStartPosition;
 
 	return (
 		<Animated.View
 			style={[
 				{
 					transform: [
-						{ translateX: currentPosition.x - dragStartPosition.x },
-						{ translateY: currentPosition.y - dragStartPosition.y - 70 },
+						{ translateX: curPosX - dragPosX },
+						{ translateY: curPosY - dragPosY - 70 },
 					],
 				},
 			]}
