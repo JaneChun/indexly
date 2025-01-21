@@ -1,50 +1,31 @@
-# Welcome to your Expo app 👋
+# 🗂️ indexly
+### indexly: 간단하고 효율적인 투두 관리 앱!
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+indexly는 독창적인 인덱스 기반 정리 시스템으로 투두 목록을 효과적으로 관리할 수 있도록 도와줍니다. Monthly, Weekly, Daily 뷰를 전환하며 일정에 맞게 작업을 관리하세요.
 
-## Get started
+- 인덱스 기반 관리: Monthly, Weekly, Daily 인덱스 아래 작업 정리.
+- 유연한 관리: 필요한 작업에 집중할 수 있도록 인덱스를 열고 닫기 가능.
+- 심플하고 깔끔한 디자인: 생산성을 높이는 사용자 친화적인 인터페이스.
 
-1. Install dependencies
+장기 목표, 주간 프로젝트, 또는 일상적인 할 일을 계획하든, indexly는 작업 관리를 직관적이고 간편하게 만들어줍니다.
 
-   ```bash
-   npm install
-   ```
+![Expo App Icon   Splash (Community)](https://github.com/user-attachments/assets/8330e543-8948-415c-9b62-0250c783b4f5)
 
-2. Start the app
+## 📆 개발 정보
+- 개발자: JaneChun  
+- 개발 기간: 2025년 1월 15일 ~ 1월 20일 (7일)
 
-   ```bash
-    npx expo start
-   ```
+## 🚀 기술 스택
+- 프레임워크: React Native, Expo
+- 빌드 도구: Expo
+- 데이터베이스: SQLite
+- 상태관리: React Context API
 
-In the output, you'll find options to open the app in a
+## 📋 주요 기능
+- 투두 CRUD: 투두 항목을 생성(Create), 읽기(Read), 수정(Update), 삭제(Delete)할 수 있습니다.
+- 로컬 저장소 사용: SQLite를 이용해 투두 데이터를 로컬 기기에 저장, 오프라인에서도 안정적인 사용이 가능합니다.
+- 드래그 앤 드롭: 라이브러리를 사용하지 않고 직접 구현. 투두 항목을 드래그하여 다른 목록으로 간편하게 이동할 수 있습니다.
+- 정렬 및 전체 삭제: 완료된 투두 항목을 하단으로 정렬하거나 전체 삭제할 수 있습니다.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📷 스크린샷
+![2025-01-217 43 45-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/2aaaa599-c38e-4068-9815-8b094aece7f8)
