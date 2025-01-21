@@ -49,7 +49,7 @@ const Content = ({
 					},
 				});
 			});
-		}, [currentSection]);
+		}, [currentSection, memorizeDroppableZones]);
 	});
 
 	// 할 일을 길게 눌렀을 때 드래그 상태로 설정
@@ -85,12 +85,13 @@ const Content = ({
 			ref={droppableRef}
 			style={[
 				styles.droppableRef,
-				isCollapsed && { opacity: 0 },
-				isInside && {
-					...styles.isInside,
-					backgroundColor:
-						type == DAILY ? Colors.daily_medium : Colors.daily_light,
-				},
+				isCollapsed && styles.isCollapsed,
+				isInside && [
+					styles.isInside,
+					type === DAILY
+						? styles.dailyMediumBackground
+						: styles.dailyLightBackground,
+				],
 			]}
 		>
 			{isEllipsed ? (
@@ -154,6 +155,9 @@ const styles = StyleSheet.create({
 		marginLeft: 16,
 		opacity: 0.5,
 	},
+	isCollapsed: { opacity: 0 },
+	dailyMediumBackground: { backgroundColor: Colors.daily_medium },
+	dailyLightBackground: { backgroundColor: Colors.daily_light },
 });
 
 export default Content;

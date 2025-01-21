@@ -79,11 +79,9 @@ const TodoItem = ({
 			runOnJS(setCurrentPosition)({ x: event.absoluteX, y: event.absoluteY });
 		})
 		.onEnd(() => {
-			if (dragDestination) {
-				if (type !== dragDestination) {
-					runOnJS(moveTodo)({ id, destination: dragDestination });
-					offset.x.value = withSpring(0);
-				}
+			if (dragDestination && type !== dragDestination) {
+				runOnJS(moveTodo)({ id, destination: dragDestination });
+				offset.x.value = withSpring(0);
 			}
 
 			offset.x.value = withSpring(0);
@@ -105,7 +103,7 @@ const TodoItem = ({
 				onActivated={handleDoubleTapActivated}
 			>
 				<TouchableHighlight
-					style={[styles.touchableHighlight, isDragging && { opacity: 0 }]}
+					style={[styles.touchableHighlight, isDragging && styles.isDragging]}
 					underlayColor={Colors.daily_light}
 				>
 					<Animated.View style={animatedStyles}>
@@ -162,6 +160,7 @@ const styles = StyleSheet.create({
 	touchableHighlight: {
 		borderRadius: 4,
 	},
+	isDragging: { opacity: 0 },
 	container: {
 		flexDirection: 'row',
 		paddingVertical: 6,
