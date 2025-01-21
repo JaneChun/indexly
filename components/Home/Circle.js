@@ -1,4 +1,5 @@
 import { View, StyleSheet, Dimensions, Pressable, Text } from 'react-native';
+import { MONTHLY, WEEKLY, DAILY } from '@/constants/type';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -12,15 +13,15 @@ const Circle = ({ children, type, onPress }) => {
 		let backgroundColor;
 
 		switch (type) {
-			case 'Monthly':
+			case MONTHLY:
 				size = monthlySize;
 				backgroundColor = '#FFE2E2';
 				break;
-			case 'Weekly':
+			case WEEKLY:
 				size = weeklySize;
 				backgroundColor = '#FFB9B9';
 				break;
-			case 'Daily':
+			case DAILY:
 				size = dailySize;
 				backgroundColor = '#FF8383';
 				break;

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { MONTHLY, WEEKLY, DAILY } from '@/constants/type';
 import {
 	fetchTypedTodos,
 	insertTodo,
@@ -65,9 +66,9 @@ export const TodoContextProvider = ({ children }) => {
 
 	const loadTodos = async () => {
 		try {
-			const monthlyTodos = await fetchTypedTodos({ type: 'Monthly' });
-			const weeklyTodos = await fetchTypedTodos({ type: 'Weekly' });
-			const dailyTodos = await fetchTypedTodos({ type: 'Daily' });
+			const monthlyTodos = await fetchTypedTodos({ type: MONTHLY });
+			const weeklyTodos = await fetchTypedTodos({ type: WEEKLY });
+			const dailyTodos = await fetchTypedTodos({ type: DAILY });
 
 			setTodos({
 				Monthly: sortByOrderIndex(monthlyTodos),

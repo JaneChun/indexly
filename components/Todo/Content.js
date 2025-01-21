@@ -9,6 +9,7 @@ import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
 import TodoItem from './TodoItem';
+import { MONTHLY, WEEKLY, DAILY } from '@/constants/type';
 import { Colors } from '@/constants/color';
 import { useTypedTodos } from '../../store/TodoContext';
 import { useDragDropContext } from '@/store/DragDropContext';
@@ -88,7 +89,7 @@ const Content = ({
 				isInside && {
 					...styles.isInside,
 					backgroundColor:
-						type == 'Daily' ? Colors.daily_medium : Colors.daily_light,
+						type == DAILY ? Colors.daily_medium : Colors.daily_light,
 				},
 			]}
 		>

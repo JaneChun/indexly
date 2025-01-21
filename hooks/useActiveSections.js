@@ -1,8 +1,5 @@
 import { useState, useCallback } from 'react';
-
-const MONTHLY = 'Monthly';
-const WEEKLY = 'Weekly';
-const DAILY = 'Daily';
+import { MONTHLY, WEEKLY, DAILY } from '@/constants/type';
 
 export const useActiveSections = (initialSection) => {
 	const [currentSection, setCurrentSection] = useState(initialSection);

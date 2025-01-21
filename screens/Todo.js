@@ -13,14 +13,11 @@ import DeleteCompletedButton from '../components/Todo/DeleteCompletedButton';
 import SortButton from '../components/Todo/SortButton';
 import DraggingTodoItem from '../components/Todo/DraggingTodoItem';
 
+import { MONTHLY, WEEKLY, DAILY } from '@/constants/type';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useActiveSections } from '../hooks/useActiveSections';
 import { useTodoContext } from '../store/TodoContext';
 import { useDragDropContext } from '@/store/DragDropContext';
-
-const MONTHLY = 'Monthly';
-const WEEKLY = 'Weekly';
-const DAILY = 'Daily';
 
 const Todo = ({ route }) => {
 	const [contentHeight, setContentHeight] = useState(0);
@@ -110,7 +107,7 @@ const Todo = ({ route }) => {
 	return (
 		<SafeAreaView style={styles.screen}>
 			{/* 드래그 중인 아이템 렌더링 */}
-			<View style={styles.draggingTodoContianer}>
+			<View style={styles.draggingTodoContainer}>
 				{draggingTodo && <DraggingTodoItem />}
 			</View>
 			<View
@@ -168,7 +165,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 32,
 		paddingVertical: 24,
 	},
-	draggingTodoContianer: {
+	draggingTodoContainer: {
 		position: 'absolute',
 		top: 0,
 		left: 0,

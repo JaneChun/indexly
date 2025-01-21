@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { DAILY, MONTHLY, WEEKLY } from '@/constants/type';
 import Circle from '../components/Home/Circle';
 
 const Home = () => {
@@ -10,9 +11,9 @@ const Home = () => {
 	};
 	return (
 		<View style={styles.container}>
-			<Circle type='Monthly' onPress={onPress}>
-				<Circle type='Weekly' onPress={onPress}>
-					<Circle type='Daily' onPress={onPress}></Circle>
+			<Circle type={MONTHLY} onPress={onPress}>
+				<Circle type={WEEKLY} onPress={onPress}>
+					<Circle type={DAILY} onPress={onPress}></Circle>
 				</Circle>
 			</Circle>
 		</View>
