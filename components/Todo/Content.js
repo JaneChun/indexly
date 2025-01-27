@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
 		padding: 2,
 	},
 	flatList: {
-		overflow: 'visible',
+		overflow: 'hidden',
 	},
 	hiddenCount: {
 		fontSize: 12,
