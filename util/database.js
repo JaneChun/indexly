@@ -12,6 +12,14 @@ const getDbInstance = async () => {
 export const init = async () => {
 	await getDbInstance();
 
+	// meta 테이블 생성
+	await db.execAsync(`CREATE TABLE IF NOT EXISTS meta (
+		id INTEGER PRIMARY KEY NOT NULL,
+		key TEXT NOT NULL,
+		value TEXT NOT NULL
+	)`);
+
+	// todo 테이블 생성
 	await db.execAsync(`CREATE TABLE IF NOT EXISTS todo (
       id INTEGER PRIMARY KEY NOT NULL,
 			type TEXT NOT NULL,
@@ -19,6 +27,26 @@ export const init = async () => {
       isCompleted BOOLEAN NOT NULL,
 			orderIndex INTEGER NOT NULL
     )`);
+
+	// 초기화 여부 확인
+	const isInitialized = await db.getFirstAsync(
+		`SELECT value FROM meta WHERE key = ?`,
+		['is_initialized'],
+	);
+
+	if (!isInitialized) {
+		await db.execAsync(`
+				INSERT INTO todo (type, text, isCompleted, orderIndex)
+				VALUES
+				('Daily', '두번 탭해서 수정하기', 1, 1),
+				('Daily', '두번 탭해서 삭제하기', 0, 2),
+				('Daily', '꾹 눌러서 드래그하기', 0, 3)
+			`);
+
+		await db.execAsync(
+			`INSERT INTO meta (key, value) VALUES ('is_initialized', true)`,
+		);
+	}
 };
 
 export const insertTodo = async ({ type, text, orderIndex }) => {
