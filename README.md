@@ -1,4 +1,6 @@
 # 🗂️ indexly
+[<img src="https://github.com/user-attachments/assets/c87d9c47-f8bc-446f-9d02-2ed561fc41c4" width="100px" />](https://apps.apple.com/us/app/indexly/id6740793736)
+
 ### indexly: 간단하고 효율적인 투두 관리 앱!
 
 indexly는 독창적인 인덱스 기반 정리 시스템으로 투두 목록을 효과적으로 관리할 수 있도록 도와줍니다. Monthly, Weekly, Daily 뷰를 전환하며 일정에 맞게 작업을 관리하세요.
