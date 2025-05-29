@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		flex: 1,
-		fontSize: 12,
+		fontSize: 14,
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
