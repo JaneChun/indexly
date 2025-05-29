@@ -42,16 +42,33 @@ const Todo = ({ route }) => {
 		}
 	}, [isKeyboardVisible]);
 
-	const handleBackgroundPress = () => {
-		// 인풋이 보이면 닫고, 아니면 열기
-		setIsInputVisible((prev) => !prev);
-
-		// 새로운 입력을 위한 상태 초기화
-		setInputValue('');
+	const resetInput = () => {
 		setId(null);
+		setInputValue('');
+		setIsInputVisible(false);
 	};
 
-	const handleInputValueSubmit = async ({ inputValue }) => {
+	const toggleInput = () => {
+		setId(null);
+		setInputValue('');
+		setIsInputVisible((prev) => !prev);
+	};
+
+	const handleEditSubmit = async ({ id, text }) => {
+		setId(id);
+		setInputValue(text);
+		setIsInputVisible(true);
+	};
+
+	const handleBackgroundPress = () => {
+		if (isInputVisible) {
+			resetInput(); // 열려있으면 닫기
+		} else {
+			toggleInput(); // 닫혀있으면 열기
+		}
+	};
+
+	const handleSubmit = async ({ inputValue }) => {
 		if (!inputValue.trim()) {
 			Alert.alert('할 일을 입력해주세요.', '');
 			setIsInputVisible(false);
@@ -59,23 +76,16 @@ const Todo = ({ route }) => {
 		}
 
 		try {
-			const action = id
-				? editTodo({ id, text: inputValue })
-				: addTodo({ type: currentSection, text: inputValue });
+			if (id) {
+				await editTodo({ id, text: inputValue });
+			} else {
+				await addTodo({ type: currentSection, text: inputValue });
+			}
 
-			await action;
-			setId(null);
+			resetInput();
 		} catch (err) {
 			console.log(err);
-		} finally {
-			setIsInputVisible(false);
 		}
-	};
-
-	const handleEditButtonPress = async ({ id, text }) => {
-		setIsInputVisible(true);
-		setInputValue(text);
-		setId(id);
 	};
 
 	const collapsibleConfigs = [
@@ -115,6 +125,8 @@ const Todo = ({ route }) => {
 			<View style={styles.draggingTodoContainer}>
 				{draggingTodo && <DraggingTodoItem />}
 			</View>
+
+			{/* 투두 리스트 */}
 			<View
 				style={styles.container}
 				onLayout={(event) => {
@@ -122,10 +134,13 @@ const Todo = ({ route }) => {
 					setContentHeight(height);
 				}}
 			>
+				{/* 완료 항목 삭제 */}
 				<DeleteCompletedButton />
 				<View style={styles.sortButtonContainer}>
 					<SortButton />
 				</View>
+
+				{/* 섹션 */}
 				{collapsibleConfigs.map((config) => (
 					<CollapsibleView
 						key={config.type}
@@ -133,19 +148,17 @@ const Todo = ({ route }) => {
 						isCollapsed={!activeSections.has(config.type)}
 						currentSection={currentSection}
 						onToggle={() => {
-							// 상태 초기화
-							setIsInputVisible(false);
-							setInputValue('');
-							setId(null);
-
+							resetInput();
 							toggleSection(config.type);
 						}}
 						onPressBackground={handleBackgroundPress}
-						onEditButtonPress={handleEditButtonPress}
+						onEditButtonPress={handleEditSubmit}
 						editingId={id}
 					/>
 				))}
 			</View>
+
+			{/* 인풋 */}
 			<KeyboardAvoidingView
 				enabled={true}
 				behavior='padding'
@@ -155,7 +168,7 @@ const Todo = ({ route }) => {
 					<Input
 						inputValue={inputValue}
 						setInputValue={setInputValue}
-						onSubmitInputValue={handleInputValueSubmit}
+						onSubmit={handleSubmit}
 					/>
 				)}
 			</KeyboardAvoidingView>

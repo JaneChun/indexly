@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
-const Input = ({ inputValue, setInputValue, onSubmitInputValue }) => {
+const Input = ({ inputValue, setInputValue, onSubmit }) => {
 	const handleInputSubmit = async () => {
-		await onSubmitInputValue({ inputValue });
-		setInputValue('');
+		await onSubmit({ inputValue });
 	};
 
 	return (
