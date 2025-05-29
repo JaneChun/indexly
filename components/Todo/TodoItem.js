@@ -1,36 +1,34 @@
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import {
+	Gesture,
+	GestureDetector,
+	TapGestureHandler,
+} from 'react-native-gesture-handler';
 import Animated, {
 	runOnJS,
 	useAnimatedStyle,
 	useSharedValue,
 	withSpring,
 } from 'react-native-reanimated';
-import {
-	Gesture,
-	GestureDetector,
-	TapGestureHandler,
-} from 'react-native-gesture-handler';
-import * as Haptics from 'expo-haptics';
 
-import IconButton from './IconButton';
+import { useInsideZone } from '@/hooks/useInsideZone';
+import { useDragDropContext } from '@/store/DragDropContext';
 import { Colors } from '../../constants/color';
 import { useTodoContext } from '../../store/TodoContext';
-import { useDragDropContext } from '@/store/DragDropContext';
-import { useInsideZone } from '@/hooks/useInsideZone';
+import IconButton from './IconButton';
 
 const TodoItem = ({
 	id,
 	text,
 	isCompleted,
 	type,
-	isButtonsVisible,
 	onLongPress,
 	onDoubleTap,
-	onEditButtonPress,
 	isEllipsed,
 }) => {
 	// 드래그 위치를 저장하는 shared values
-	const { toggleTodo, removeTodo, moveTodo } = useTodoContext();
+	const { toggleTodo, moveTodo } = useTodoContext();
 	const {
 		draggingTodo,
 		setDraggingTodo,
@@ -45,10 +43,6 @@ const TodoItem = ({
 	const handleCheckButtonPress = async ({ id, isCompleted }) => {
 		Haptics.selectionAsync(Haptics.ImpactFeedbackStyle.Light);
 		await toggleTodo({ id, isCompleted });
-	};
-
-	const handleDeleteButtonPress = async ({ id }) => {
-		await removeTodo({ id });
 	};
 
 	// 애니메이션 스타일: 드래그 위치에 따라 뷰의 위치를 변경
@@ -126,27 +120,6 @@ const TodoItem = ({
 								>
 									{text}
 								</Text>
-							</View>
-							{/* 버튼 컨테이너 */}
-							<View style={styles.buttonsContainer}>
-								{isButtonsVisible && (
-									<>
-										<IconButton
-											type='MaterialIcons'
-											icon='edit'
-											color={Colors.weekly}
-											size={16}
-											onPress={() => onEditButtonPress({ id, text })}
-										/>
-										<IconButton
-											type='MaterialIcons'
-											icon='remove-circle'
-											color={Colors.weekly}
-											size={16}
-											onPress={() => handleDeleteButtonPress({ id })}
-										/>
-									</>
-								)}
 							</View>
 						</View>
 					</Animated.View>

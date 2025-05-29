@@ -1,19 +1,21 @@
+import { useLayoutEffect, useRef } from 'react';
 import {
+	Alert,
+	InteractionManager,
+	Pressable,
+	StyleSheet,
 	Text,
 	View,
-	StyleSheet,
-	Pressable,
-	InteractionManager,
 } from 'react-native';
-import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
-import TodoItem from './TodoItem';
-import { MONTHLY, WEEKLY, DAILY } from '@/constants/type';
 import { Colors } from '@/constants/color';
-import { useTypedTodos } from '../../store/TodoContext';
+import { DAILY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useInsideZone } from '../../hooks/useInsideZone';
+import { useTodoContext, useTypedTodos } from '../../store/TodoContext';
+import TodoItem from './TodoItem';
 
 const Content = ({
 	type,
@@ -24,16 +26,12 @@ const Content = ({
 	onEditButtonPress,
 }) => {
 	const todos = useTypedTodos(type);
+	const { removeTodo } = useTodoContext();
 	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } =
 		useDragDropContext();
 	const isInside = type === useInsideZone();
-	const [selectedTodoId, setSelectedTodoId] = useState(null);
 	const droppableRef = useRef(null);
-
-	// 섹션이 변경될 때 선택된 할 일 ID를 초기화
-	useEffect(() => {
-		setSelectedTodoId(null);
-	}, [currentSection]);
+	const { showActionSheetWithOptions } = useActionSheet();
 
 	// 현재 드롭 가능한 영역의 위치와 크기를 저장
 	useLayoutEffect(() => {
@@ -57,27 +55,46 @@ const Content = ({
 		setDraggingTodo(todo);
 	};
 
-	const handleTodoDoubleTap = ({ id }) => {
-		if (selectedTodoId !== id) {
-			setSelectedTodoId(id);
-		} else {
-			setSelectedTodoId(null);
-		}
+	const handleTodoDoubleTap = ({ id, text }) => {
+		const options = ['수정', '삭제', '취소'];
+		const cancelButtonIndex = 2;
+
+		showActionSheetWithOptions(
+			{
+				options,
+				cancelButtonIndex,
+			},
+			async (selectedIndex) => {
+				if (selectedIndex === 0) {
+					onEditButtonPress({ id, text });
+				} else if (selectedIndex === 1) {
+					Alert.alert('항목 삭제', '삭제하시겠습니까?', [
+						{
+							text: 'Cancel',
+							onPress: () => {
+								return;
+							},
+							style: 'cancel',
+						},
+						{
+							text: 'OK',
+							onPress: async () => {
+								await removeTodo({ id });
+							},
+						},
+					]);
+				}
+			},
+		);
 	};
 
 	// 배경을 눌렀을 때 선택 상태 해제
 	const handlePressBackground = () => {
-		if (selectedTodoId || draggingTodo) {
-			setSelectedTodoId(null);
+		if (draggingTodo) {
 			setDraggingTodo(null);
 		} else {
 			onPressBackground();
 		}
-	};
-
-	const handleEditButtonPress = ({ id, text }) => {
-		onEditButtonPress({ id, text });
-		setSelectedTodoId(null);
 	};
 
 	return (
@@ -122,10 +139,8 @@ const Content = ({
 							<TodoItem
 								{...item}
 								type={type}
-								isButtonsVisible={selectedTodoId === item.id}
 								onLongPress={handleTodoLongPress}
 								onDoubleTap={handleTodoDoubleTap}
-								onEditButtonPress={handleEditButtonPress}
 							/>
 						)}
 					/>
