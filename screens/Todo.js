@@ -1,23 +1,23 @@
-import {
-	View,
-	StyleSheet,
-	SafeAreaView,
-	KeyboardAvoidingView,
-	Alert,
-} from 'react-native';
 import { useEffect, useState } from 'react';
+import {
+	Alert,
+	KeyboardAvoidingView,
+	SafeAreaView,
+	StyleSheet,
+	View,
+} from 'react-native';
 
 import CollapsibleView from '../components/Todo/CollapsibleView';
-import Input from '../components/Todo/Input';
 import DeleteCompletedButton from '../components/Todo/DeleteCompletedButton';
-import SortButton from '../components/Todo/SortButton';
 import DraggingTodoItem from '../components/Todo/DraggingTodoItem';
+import Input from '../components/Todo/Input';
+import SortButton from '../components/Todo/SortButton';
 
-import { MONTHLY, WEEKLY, DAILY } from '@/constants/type';
-import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
-import { useActiveSections } from '../hooks/useActiveSections';
-import { useTodoContext } from '../store/TodoContext';
+import { DAILY, MONTHLY, WEEKLY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useActiveSections } from '../hooks/useActiveSections';
+import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
+import { useTodoContext } from '../store/TodoContext';
 
 const Todo = ({ route }) => {
 	const [contentHeight, setContentHeight] = useState(0);
@@ -43,7 +43,12 @@ const Todo = ({ route }) => {
 	}, [isKeyboardVisible]);
 
 	const handleBackgroundPress = () => {
-		setIsInputVisible(true);
+		// 인풋이 보이면 닫고, 아니면 열기
+		setIsInputVisible((prev) => !prev);
+
+		// 새로운 입력을 위한 상태 초기화
+		setInputValue('');
+		setId(null);
 	};
 
 	const handleInputValueSubmit = async ({ inputValue }) => {
@@ -127,9 +132,17 @@ const Todo = ({ route }) => {
 						{...config}
 						isCollapsed={!activeSections.has(config.type)}
 						currentSection={currentSection}
-						onToggle={() => toggleSection(config.type)}
+						onToggle={() => {
+							// 상태 초기화
+							setIsInputVisible(false);
+							setInputValue('');
+							setId(null);
+
+							toggleSection(config.type);
+						}}
 						onPressBackground={handleBackgroundPress}
 						onEditButtonPress={handleEditButtonPress}
+						editingId={id}
 					/>
 				))}
 			</View>

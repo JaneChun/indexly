@@ -24,6 +24,7 @@ const Content = ({
 	currentSection,
 	onPressBackground,
 	onEditButtonPress,
+	editingId,
 }) => {
 	const todos = useTypedTodos(type);
 	const { removeTodo } = useTodoContext();
@@ -141,6 +142,7 @@ const Content = ({
 								type={type}
 								onLongPress={handleTodoLongPress}
 								onDoubleTap={handleTodoDoubleTap}
+								isEditing={editingId === item.id}
 							/>
 						)}
 					/>

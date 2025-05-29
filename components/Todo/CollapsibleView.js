@@ -1,18 +1,18 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import {
-	View,
-	Text,
-	StyleSheet,
-	Pressable,
 	Animated,
 	Dimensions,
 	InteractionManager,
+	Pressable,
+	StyleSheet,
+	Text,
+	View,
 } from 'react-native';
 import { Colors } from '../../constants/color';
 
-import Content from './Content';
-import { useDragDropContext } from '@/store/DragDropContext';
 import { useInsideZone } from '@/hooks/useInsideZone';
+import { useDragDropContext } from '@/store/DragDropContext';
+import Content from './Content';
 
 const CollapsibleView = ({
 	type,
@@ -26,6 +26,7 @@ const CollapsibleView = ({
 	currentSection,
 	onPressBackground,
 	onEditButtonPress,
+	editingId,
 }) => {
 	const { memorizeDroppableZones } = useDragDropContext();
 	const animation = useRef(new Animated.Value(0)).current;
@@ -138,6 +139,7 @@ const CollapsibleView = ({
 						currentSection={currentSection}
 						onPressBackground={onPressBackground}
 						onEditButtonPress={onEditButtonPress}
+						editingId={editingId}
 					/>
 				</View>
 			</Animated.View>
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 16,
 	},
 	indexText: {
-		fontSize: 12,
+		fontSize: 14,
 		textAlign: 'center',
 	},
 	pressed: {

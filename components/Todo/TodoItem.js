@@ -14,6 +14,7 @@ import Animated, {
 
 import { useInsideZone } from '@/hooks/useInsideZone';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../../constants/color';
 import { useTodoContext } from '../../store/TodoContext';
 import IconButton from './IconButton';
@@ -26,6 +27,7 @@ const TodoItem = ({
 	onLongPress,
 	onDoubleTap,
 	isEllipsed,
+	isEditing,
 }) => {
 	// 드래그 위치를 저장하는 shared values
 	const { toggleTodo, moveTodo } = useTodoContext();
@@ -88,7 +90,7 @@ const TodoItem = ({
 
 	const handleDoubleTapActivated = () => {
 		if (isEllipsed) return;
-		onDoubleTap({ id });
+		onDoubleTap({ id, text });
 	};
 	return (
 		<GestureDetector gesture={pan}>
@@ -121,6 +123,11 @@ const TodoItem = ({
 									{text}
 								</Text>
 							</View>
+
+							{/* 버튼 */}
+							{isEditing && (
+								<MaterialIcons name='edit' color={Colors.weekly} size={16} />
+							)}
 						</View>
 					</Animated.View>
 				</TouchableHighlight>
@@ -151,10 +158,6 @@ const styles = StyleSheet.create({
 	text: {
 		flex: 1,
 		fontSize: 14,
-	},
-	buttonsContainer: {
-		flexDirection: 'row',
-		gap: 5,
 	},
 });
 
