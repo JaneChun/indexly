@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
 	Alert,
+	Dimensions,
 	KeyboardAvoidingView,
 	SafeAreaView,
 	StyleSheet,
@@ -20,7 +21,8 @@ import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useTodoContext } from '../store/TodoContext';
 
 const Todo = ({ route }) => {
-	const [contentHeight, setContentHeight] = useState(0);
+	const screenHeight = Dimensions.get('window').height;
+
 	const [id, setId] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
@@ -88,36 +90,22 @@ const Todo = ({ route }) => {
 		}
 	};
 
-	const collapsibleConfigs = [
-		{
-			type: MONTHLY,
-			width: '100%',
-			offsetX: -180,
-			offsetY: 0,
-			height: contentHeight - 95,
-			isEllipsed: activeSections.has(WEEKLY) || activeSections.has(DAILY),
-		},
-		{
-			type: WEEKLY,
-			width: '95%',
-			offsetX: -90,
-			offsetY:
-				isKeyboardVisible &&
-				(currentSection === WEEKLY || currentSection === DAILY)
-					? 0
-					: 100,
-			height: contentHeight - 95,
-			isEllipsed: activeSections.has(DAILY),
-		},
-		{
-			type: DAILY,
-			width: '90%',
-			offsetX: 0,
-			offsetY: isKeyboardVisible && currentSection === DAILY ? 0 : 200,
-			height: contentHeight - 95,
-			isEllipsed: false,
-		},
-	];
+	const collapsibleConfigs = [MONTHLY, WEEKLY, DAILY].map((type, idx) => {
+		const heightRatio = [0.78, 0.67, 0.56][idx];
+		const height = screenHeight * heightRatio;
+
+		return {
+			type,
+			width: `${100 - idx * 5}%`,
+			offsetX: (2 - idx) * 90,
+			height,
+			isEllipsed:
+				(idx === 0 &&
+					(activeSections.has(WEEKLY) || activeSections.has(DAILY))) ||
+				(idx === 1 && activeSections.has(DAILY)) ||
+				false,
+		};
+	});
 
 	return (
 		<SafeAreaView style={styles.screen}>
@@ -127,13 +115,7 @@ const Todo = ({ route }) => {
 			</View>
 
 			{/* 투두 리스트 */}
-			<View
-				style={styles.container}
-				onLayout={(event) => {
-					const { height } = event.nativeEvent.layout;
-					setContentHeight(height);
-				}}
-			>
+			<View style={styles.container}>
 				{/* 완료 항목 삭제 */}
 				<DeleteCompletedButton />
 				<View style={styles.sortButtonContainer}>

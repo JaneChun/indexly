@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import {
 	Animated,
-	Dimensions,
 	InteractionManager,
 	Pressable,
 	StyleSheet,
@@ -18,7 +17,6 @@ const CollapsibleView = ({
 	type,
 	width,
 	offsetX,
-	offsetY,
 	height,
 	isCollapsed,
 	onToggle,
@@ -33,33 +31,23 @@ const CollapsibleView = ({
 	const indexRef = useRef(null);
 	const isInside = type === useInsideZone();
 
-	const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-
 	const primaryColor = Colors[`${type.toLowerCase()}`];
 	const secondaryColor = Colors[`${type.toLowerCase()}_light`];
 
+	// 0: 펼침, 1: 접음
 	const indexXTranslate = animation.interpolate({
 		inputRange: [0, 1],
 		outputRange: [0, offsetX],
 	});
 
-	let adjustedOffsetY = offsetY + 9;
-	let adjustedHeight = height + 3;
-
-	// iPhone 13 mini
-	if (screenWidth === 375 && screenHeight === 812) {
-		adjustedOffsetY = offsetY + 4;
-		adjustedHeight = height - 2.5;
-	}
-
 	const indexYTranslate = animation.interpolate({
 		inputRange: [0, 1],
-		outputRange: [adjustedOffsetY, adjustedHeight],
+		outputRange: [height, 0],
 	});
 
 	const heightInterpolate = animation.interpolate({
 		inputRange: [0, 1],
-		outputRange: [height - offsetY, 0],
+		outputRange: [height, 0],
 	});
 
 	const borderBottomRightRadiusInterpolate = animation.interpolate({
@@ -98,10 +86,8 @@ const CollapsibleView = ({
 				style={[
 					styles.indexContainer,
 					{
-						transform: [
-							{ translateX: indexXTranslate },
-							{ translateY: indexYTranslate },
-						],
+						bottom: indexYTranslate,
+						right: indexXTranslate,
 					},
 				]}
 			>
@@ -123,10 +109,10 @@ const CollapsibleView = ({
 				style={[
 					styles.contentContainer,
 					{
-						borderColor: primaryColor,
-						backgroundColor: secondaryColor,
 						width: width,
 						height: heightInterpolate,
+						borderColor: primaryColor,
+						backgroundColor: secondaryColor,
 						borderBottomRightRadius: borderBottomRightRadiusInterpolate,
 					},
 				]}
@@ -155,6 +141,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 	},
 	indexContainer: {
+		position: 'absolute',
 		zIndex: 10,
 		alignSelf: 'flex-end',
 		backgroundColor: 'transparent',
