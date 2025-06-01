@@ -1,14 +1,18 @@
-import { StyleSheet, Pressable } from 'react-native';
 import {
 	FontAwesome,
 	MaterialCommunityIcons,
 	MaterialIcons,
 } from '@expo/vector-icons';
+import { Pressable, StyleSheet } from 'react-native';
 
-const IconButton = ({ type, icon, size, color, onPress }) => {
+const IconButton = ({ type, icon, size, color, onPress, style }) => {
 	return (
 		<Pressable
-			style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+			style={({ pressed }) => [
+				style,
+				styles.container,
+				pressed && styles.pressed,
+			]}
 			onPress={onPress}
 		>
 			{type === 'FontAwesome' && (

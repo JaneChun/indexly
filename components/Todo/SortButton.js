@@ -1,7 +1,7 @@
 import { useTodoContext } from '@/store/TodoContext';
 import IconButton from './IconButton';
 
-const SortButton = () => {
+const SortButton = ({ style }) => {
 	const { sortTodos } = useTodoContext();
 
 	const handleSortButtonPress = async () => {
@@ -10,6 +10,7 @@ const SortButton = () => {
 
 	return (
 		<IconButton
+			style={style}
 			type='MaterialCommunityIcons'
 			icon='sort-bool-ascending-variant'
 			size={24}
