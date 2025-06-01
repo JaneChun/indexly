@@ -3,6 +3,7 @@ import {
 	Alert,
 	Dimensions,
 	KeyboardAvoidingView,
+	Platform,
 	SafeAreaView,
 	StyleSheet,
 	View,
@@ -16,13 +17,14 @@ import SortButton from '../components/Todo/SortButton';
 
 import { DAILY, MONTHLY, WEEKLY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useActiveSections } from '../hooks/useActiveSections';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useTodoContext } from '../store/TodoContext';
 
-const Todo = ({ route }) => {
-	const screenHeight = Dimensions.get('window').height;
+const SORT_BUTTON_HEIGHT = 60;
 
+const Todo = ({ route }) => {
 	const [id, setId] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
@@ -33,6 +35,11 @@ const Todo = ({ route }) => {
 	const { draggingTodo } = useDragDropContext();
 
 	const { params: { type } = {} } = route;
+
+	const insets = useSafeAreaInsets();
+	const safeAreaHeight =
+		Dimensions.get('window').height - insets.top * 1.4 - insets.bottom;
+	const CONTENT_HEIGHT = safeAreaHeight - SORT_BUTTON_HEIGHT;
 
 	useEffect(() => {
 		if (type) toggleSection(type);
@@ -91,14 +98,14 @@ const Todo = ({ route }) => {
 	};
 
 	const collapsibleConfigs = [MONTHLY, WEEKLY, DAILY].map((type, idx) => {
-		const heightRatio = [0.78, 0.67, 0.56][idx];
-		const height = screenHeight * heightRatio;
+		const height = CONTENT_HEIGHT - 100 * idx;
+		const foldedHeight = CONTENT_HEIGHT * 0.5;
 
 		return {
 			type,
 			width: `${100 - idx * 5}%`,
 			offsetX: (2 - idx) * 90,
-			height,
+			height: isInputVisible ? foldedHeight : height,
 			isEllipsed:
 				(idx === 0 &&
 					(activeSections.has(WEEKLY) || activeSections.has(DAILY))) ||
@@ -118,9 +125,11 @@ const Todo = ({ route }) => {
 			<View style={styles.container}>
 				{/* 완료 항목 삭제 */}
 				<DeleteCompletedButton />
-				<View style={styles.sortButtonContainer}>
-					<SortButton />
-				</View>
+				{!isInputVisible && (
+					<View style={styles.sortButtonContainer}>
+						<SortButton style={styles.sortButton} />
+					</View>
+				)}
 
 				{/* 섹션 */}
 				{collapsibleConfigs.map((config) => (
@@ -143,7 +152,7 @@ const Todo = ({ route }) => {
 			{/* 인풋 */}
 			<KeyboardAvoidingView
 				enabled={true}
-				behavior='padding'
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 				keyboardVerticalOffset={60}
 			>
 				{isInputVisible && (
@@ -167,11 +176,14 @@ const styles = StyleSheet.create({
 		padding: 24,
 	},
 	sortButtonContainer: {
+		height: SORT_BUTTON_HEIGHT,
+		width: '100%',
 		position: 'absolute',
 		top: 0,
-		left: 0,
-		paddingHorizontal: 32,
-		paddingVertical: 24,
+	},
+	sortButton: {
+		alignSelf: 'flex-start',
+		padding: 16,
 	},
 	draggingTodoContainer: {
 		position: 'absolute',
