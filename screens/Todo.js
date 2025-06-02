@@ -115,46 +115,48 @@ const Todo = ({ route }) => {
 	});
 
 	return (
-		<SafeAreaView style={styles.screen}>
-			{/* 드래그 중인 아이템 렌더링 */}
-			<View style={styles.draggingTodoContainer}>
-				{draggingTodo && <DraggingTodoItem />}
-			</View>
+		<KeyboardAvoidingView
+			enabled={true}
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
+			style={{ flex: 1 }}
+		>
+			<SafeAreaView style={styles.screen}>
+				{/* 드래그 중인 아이템 렌더링 */}
+				<View style={styles.draggingTodoContainer}>
+					{draggingTodo && <DraggingTodoItem />}
+				</View>
 
-			{/* 투두 리스트 */}
-			<View style={styles.container}>
-				{/* 완료 항목 삭제 */}
-				<DeleteCompletedButton />
-				{!isInputVisible && (
-					<View style={styles.sortButtonContainer}>
-						<SortButton style={styles.sortButton} />
-					</View>
-				)}
+				{/* 투두 리스트 */}
+				<View style={styles.container}>
+					{/* 완료 항목 삭제 */}
+					<DeleteCompletedButton />
+					{!isInputVisible && (
+						<View style={styles.sortButtonContainer}>
+							<SortButton style={styles.sortButton} />
+						</View>
+					)}
 
-				{/* 섹션 */}
-				{collapsibleConfigs.map((config) => (
-					<CollapsibleView
-						key={config.type}
-						{...config}
-						isCollapsed={!activeSections.has(config.type)}
-						currentSection={currentSection}
-						onToggle={() => {
-							resetInput();
-							toggleSection(config.type);
-						}}
-						onPressBackground={handleBackgroundPress}
-						onEditButtonPress={handleEditSubmit}
-						editingId={id}
-					/>
-				))}
-			</View>
+					{/* 섹션 */}
+					{collapsibleConfigs.map((config) => (
+						<CollapsibleView
+							key={config.type}
+							{...config}
+							isCollapsed={!activeSections.has(config.type)}
+							currentSection={currentSection}
+							onToggle={() => {
+								resetInput();
+								toggleSection(config.type);
+							}}
+							onPressBackground={handleBackgroundPress}
+							onEditButtonPress={handleEditSubmit}
+							editingId={id}
+						/>
+					))}
+				</View>
 
-			{/* 인풋 */}
-			<KeyboardAvoidingView
-				enabled={true}
-				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-				keyboardVerticalOffset={60}
-			>
+				{/* 인풋 */}
+
 				{isInputVisible && (
 					<Input
 						inputValue={inputValue}
@@ -162,13 +164,15 @@ const Todo = ({ route }) => {
 						onSubmit={handleSubmit}
 					/>
 				)}
-			</KeyboardAvoidingView>
-		</SafeAreaView>
+			</SafeAreaView>
+		</KeyboardAvoidingView>
 	);
 };
 
 const styles = StyleSheet.create({
-	screen: { flex: 1 },
+	screen: {
+		flex: 1,
+	},
 	container: {
 		flex: 1,
 		justifyContent: 'center',

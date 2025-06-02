@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "indexly",
 		"slug": "indexly",
-		"version": "1.0.1",
+		"version": "1.0.3",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
 		"userInterfaceStyle": "automatic",
@@ -13,7 +13,13 @@
 			"bundleIdentifier": "com.janechun.indexly",
 			"infoPlist": {
 				"ITSAppUsesNonExemptEncryption": false
-			}
+			},
+			"backgroundColor": "#ffffff"
+		},
+		"android": {
+			"versionCode": 2,
+			"package": "com.janechun.indexly",
+			"backgroundColor": "#ffffff"
 		},
 		"plugins": [
 			"expo-router",
