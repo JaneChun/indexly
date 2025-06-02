@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
 	Alert,
+	Animated,
 	Dimensions,
-	KeyboardAvoidingView,
-	Platform,
 	SafeAreaView,
 	StyleSheet,
 	View,
@@ -28,7 +27,8 @@ const Todo = ({ route }) => {
 	const [id, setId] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
-	const { isKeyboardVisible } = useKeyboardVisibility(setIsInputVisible);
+	const { isKeyboardVisible, keyboardHeight } =
+		useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } =
 		useActiveSections(DAILY);
 	const { addTodo, editTodo } = useTodoContext();
@@ -115,12 +115,7 @@ const Todo = ({ route }) => {
 	});
 
 	return (
-		<KeyboardAvoidingView
-			enabled={true}
-			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-			keyboardVerticalOffset={insets.top}
-			style={{ flex: 1 }}
-		>
+		<Animated.View style={{ flex: 1, paddingBottom: keyboardHeight }}>
 			<SafeAreaView style={styles.screen}>
 				{/* 드래그 중인 아이템 렌더링 */}
 				<View style={styles.draggingTodoContainer}>
@@ -165,7 +160,7 @@ const Todo = ({ route }) => {
 					/>
 				)}
 			</SafeAreaView>
-		</KeyboardAvoidingView>
+		</Animated.View>
 	);
 };
 
