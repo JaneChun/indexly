@@ -8,6 +8,7 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import DeleteCompletedButton from '../components/Todo/DeleteCompletedButton';
@@ -17,7 +18,6 @@ import SortButton from '../components/Todo/SortButton';
 
 import { DAILY, MONTHLY, WEEKLY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useActiveSections } from '../hooks/useActiveSections';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useTodoContext } from '../store/TodoContext';
@@ -118,7 +118,7 @@ const Todo = ({ route }) => {
 		<KeyboardAvoidingView
 			enabled={true}
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-			keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
+			keyboardVerticalOffset={insets.top}
 			style={{ flex: 1 }}
 		>
 			<SafeAreaView style={styles.screen}>
