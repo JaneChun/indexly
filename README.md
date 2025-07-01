@@ -4,7 +4,7 @@
 
 > #### indexly: 간단하고 효율적인 투두 관리 앱! 🍥
 
-<p align="center">
+<div>
   <a href="https://apps.apple.com/us/app/indexly/id6740793736" target="_blank">
     <img src="https://github.com/user-attachments/assets/c170213c-044c-43b3-a464-2a1b4ba87855" height="40px" />
   </a>
@@ -12,7 +12,7 @@
   <a href="https://play.google.com/store/apps/details?id=com.janechun.indexly" target="_blank">
     <img src="https://github.com/user-attachments/assets/6fd1d380-afff-4bbc-be92-91ca2a3efe44" height="40px" />
   </a>
-</p
+</div>
 
 
 <div display='flex'>
@@ -21,9 +21,11 @@
   <img src='https://github.com/user-attachments/assets/4bf7c833-aa87-40bf-90c5-80fc2d0ed388' width='240'/>
   <img src='https://github.com/user-attachments/assets/3879c68c-8c15-4b2d-9ebb-8489b0cf0da0' width='240'/>
 </div>
-
+</div>
 <br/>
 
+<div align='center'>
+  
 ## 🎀 프로젝트 소개
 >indexly는 독창적인 인덱스 기반 정리 시스템으로 투두 목록을 효과적으로 관리할 수 있도록 도와줍니다.
 ><br/>
