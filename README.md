@@ -1,19 +1,46 @@
+<div align='center'>
+
 # 🗂️ indexly
-[<img src="https://github.com/user-attachments/assets/c87d9c47-f8bc-446f-9d02-2ed561fc41c4" width="100px" />](https://apps.apple.com/us/app/indexly/id6740793736)
 
-### indexly: 간단하고 효율적인 투두 관리 앱!
+> #### indexly: 간단하고 효율적인 투두 관리 앱! 🍥
 
-indexly는 독창적인 인덱스 기반 정리 시스템으로 투두 목록을 효과적으로 관리할 수 있도록 도와줍니다. Monthly, Weekly, Daily 뷰를 전환하며 일정에 맞게 작업을 관리하세요.
+<p align="center">
+  <a href="https://apps.apple.com/us/app/indexly/id6740793736" target="_blank">
+    <img src="https://github.com/user-attachments/assets/c170213c-044c-43b3-a464-2a1b4ba87855" height="40px" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://play.google.com/store/apps/details?id=com.janechun.indexly" target="_blank">
+    <img src="https://github.com/user-attachments/assets/6fd1d380-afff-4bbc-be92-91ca2a3efe44" height="40px" />
+  </a>
+</p
 
-- 인덱스 기반 관리: Monthly, Weekly, Daily 인덱스 아래 작업 정리.
-- 유연한 관리: 필요한 작업에 집중할 수 있도록 인덱스를 열고 닫기 가능.
-- 심플하고 깔끔한 디자인: 생산성을 높이는 사용자 친화적인 인터페이스.
 
-장기 목표, 주간 프로젝트, 또는 일상적인 할 일을 계획하든, indexly는 작업 관리를 직관적이고 간편하게 만들어줍니다.
-
-![Expo App Icon   Splash (Community)](https://github.com/user-attachments/assets/8330e543-8948-415c-9b62-0250c783b4f5)
+<div display='flex'>
+  <img src='https://github.com/user-attachments/assets/95b55b69-d380-47e5-8c80-6cc393256d2c' width='240'/>
+  <img src='https://github.com/user-attachments/assets/9027d970-6dcf-46a1-818e-dd124e373da7' width='240'/>
+  <img src='https://github.com/user-attachments/assets/4bf7c833-aa87-40bf-90c5-80fc2d0ed388' width='240'/>
+  <img src='https://github.com/user-attachments/assets/3879c68c-8c15-4b2d-9ebb-8489b0cf0da0' width='240'/>
+</div>
 
 <br/>
+
+## 🎀 프로젝트 소개
+>indexly는 독창적인 인덱스 기반 정리 시스템으로 투두 목록을 효과적으로 관리할 수 있도록 도와줍니다.
+><br/>
+>Monthly, Weekly, Daily 뷰를 전환하며 일정에 맞게 할 일을 관리하세요.
+
+불필요한 요소는 덜고,
+<br/><br/>
+가장 중요한 일에 집중할 수 있게,
+<br/><br/>
+시각적으로 정돈된 일상
+<br/><br/>
+작고 간결한 정리.
+<br/>
+그 안에서 더 명확한 하루를 만들어 보세요.
+
+<br/>
+</div>
 
 ## 📆 개발 정보
 - 개발자: JaneChun  
