@@ -1,13 +1,12 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import IconButton from '@/components/Todo/IconButton';
-import Animated from 'react-native-reanimated';
 import { Colors } from '@/constants/color';
 import { useDragDropContext } from '@/store/DragDropContext';
+import Animated from 'react-native-reanimated';
 
 const DraggingTodoItem = () => {
-	const { draggingTodo, currentPosition, dragStartPosition } =
-		useDragDropContext();
+	const { draggingTodo, currentPosition, dragStartPosition } = useDragDropContext();
 
 	if (!draggingTodo || !currentPosition) {
 		return null;
@@ -20,10 +19,7 @@ const DraggingTodoItem = () => {
 		<Animated.View
 			style={[
 				{
-					transform: [
-						{ translateX: curPosX - dragPosX },
-						{ translateY: curPosY - dragPosY - 70 },
-					],
+					transform: [{ translateX: curPosX - dragPosX }, { translateY: curPosY - dragPosY - 70 }],
 				},
 			]}
 		>
@@ -45,12 +41,7 @@ const DraggingTodoItem = () => {
 							onPress={() => {}}
 						/>
 					</View>
-					<Text
-						style={[
-							styles.todoText,
-							draggingTodo.isCompleted && { color: 'gray' },
-						]}
-					>
+					<Text style={[styles.todoText, draggingTodo.isCompleted && { color: 'gray' }]}>
 						{draggingTodo.text}
 					</Text>
 				</View>
@@ -74,7 +65,7 @@ const styles = StyleSheet.create({
 	},
 	todoText: {
 		flex: 1,
-		fontSize: 12,
+		fontSize: 14,
 	},
 });
 

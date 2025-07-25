@@ -1,27 +1,31 @@
-import { Text, StyleSheet, Pressable, Alert } from 'react-native';
-import { useTodoContext } from '@/store/TodoContext';
 import { useLocalization } from '@/store/LocalizationContext';
+import { useTodoContext } from '@/store/TodoContext';
+import { Alert, Pressable, StyleSheet, Text } from 'react-native';
 
 const DeleteCompletedButton = () => {
 	const { removeCompletedTodo } = useTodoContext();
 	const { t } = useLocalization();
 
 	const handleDeleteCompletedPress = async () => {
-		Alert.alert(t('message.dialog.deleteCompletedTitle'), t('message.dialog.deleteCompletedMessage'), [
-			{
-				text: t('ui.button.cancel'),
-				onPress: () => {
-					return;
+		Alert.alert(
+			t('message.dialog.deleteCompletedTitle'),
+			t('message.dialog.deleteCompletedMessage'),
+			[
+				{
+					text: t('ui.button.cancel'),
+					onPress: () => {
+						return;
+					},
+					style: 'cancel',
 				},
-				style: 'cancel',
-			},
-			{
-				text: t('ui.button.ok'),
-				onPress: async () => {
-					await removeCompletedTodo();
+				{
+					text: t('ui.button.ok'),
+					onPress: async () => {
+						await removeCompletedTodo();
+					},
 				},
-			},
-		]);
+			],
+		);
 	};
 	return (
 		<Pressable
@@ -41,7 +45,7 @@ const styles = StyleSheet.create({
 		opacity: 0.7,
 	},
 	text: {
-		fontSize: 12,
+		fontSize: 14,
 		color: 'gray',
 	},
 });

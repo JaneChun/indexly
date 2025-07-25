@@ -1,21 +1,14 @@
 import { useLayoutEffect, useRef } from 'react';
-import {
-	Alert,
-	InteractionManager,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from 'react-native';
+import { Alert, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { Colors } from '@/constants/color';
 import { DAILY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useLocalization } from '@/store/LocalizationContext';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useInsideZone } from '../../hooks/useInsideZone';
 import { useTodoContext, useTypedTodos } from '../../store/TodoContext';
-import { useLocalization } from '@/store/LocalizationContext';
 import TodoItem from './TodoItem';
 
 const Content = ({
@@ -30,8 +23,7 @@ const Content = ({
 	const todos = useTypedTodos(type);
 	const { t } = useLocalization();
 	const { removeTodo } = useTodoContext();
-	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } =
-		useDragDropContext();
+	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } = useDragDropContext();
 	const isInside = type === useInsideZone();
 	const droppableRef = useRef(null);
 	const { showActionSheetWithOptions } = useActionSheet();
@@ -108,9 +100,7 @@ const Content = ({
 				isCollapsed && styles.isCollapsed,
 				isInside && [
 					styles.isInside,
-					type === DAILY
-						? styles.dailyMediumBackground
-						: styles.dailyLightBackground,
+					type === DAILY ? styles.dailyMediumBackground : styles.dailyLightBackground,
 				],
 			]}
 		>
@@ -171,7 +161,7 @@ const styles = StyleSheet.create({
 	},
 	hiddenCount: {
 		fontSize: 12,
-		marginLeft: 16,
+		marginLeft: 32,
 		opacity: 0.5,
 	},
 	isCollapsed: { opacity: 0 },

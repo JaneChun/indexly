@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-	Alert,
-	Animated,
-	Dimensions,
-	SafeAreaView,
-	StyleSheet,
-	View,
-} from 'react-native';
+import { Alert, Animated, Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import CollapsibleView from '../components/Todo/CollapsibleView';
@@ -17,10 +10,10 @@ import SortButton from '../components/Todo/SortButton';
 
 import { DAILY, MONTHLY, WEEKLY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useLocalization } from '@/store/LocalizationContext';
 import { useActiveSections } from '../hooks/useActiveSections';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useTodoContext } from '../store/TodoContext';
-import { useLocalization } from '@/store/LocalizationContext';
 
 const SORT_BUTTON_HEIGHT = 60;
 
@@ -29,18 +22,15 @@ const Todo = ({ route }) => {
 	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
 	const { t } = useLocalization();
-	const { isKeyboardVisible, keyboardHeight } =
-		useKeyboardVisibility(setIsInputVisible);
-	const { currentSection, activeSections, toggleSection } =
-		useActiveSections(DAILY);
+	const { isKeyboardVisible, keyboardHeight } = useKeyboardVisibility(setIsInputVisible);
+	const { currentSection, activeSections, toggleSection } = useActiveSections(DAILY);
 	const { addTodo, editTodo } = useTodoContext();
 	const { draggingTodo } = useDragDropContext();
 
 	const { params: { type } = {} } = route;
 
 	const insets = useSafeAreaInsets();
-	const safeAreaHeight =
-		Dimensions.get('window').height - insets.top * 1.4 - insets.bottom;
+	const safeAreaHeight = Dimensions.get('window').height - insets.top * 1.4 - insets.bottom;
 	const CONTENT_HEIGHT = safeAreaHeight - SORT_BUTTON_HEIGHT;
 
 	useEffect(() => {
@@ -109,8 +99,7 @@ const Todo = ({ route }) => {
 			offsetX: (2 - idx) * 90,
 			height: isInputVisible ? foldedHeight : height,
 			isEllipsed:
-				(idx === 0 &&
-					(activeSections.has(WEEKLY) || activeSections.has(DAILY))) ||
+				(idx === 0 && (activeSections.has(WEEKLY) || activeSections.has(DAILY))) ||
 				(idx === 1 && activeSections.has(DAILY)) ||
 				false,
 		};
@@ -120,9 +109,7 @@ const Todo = ({ route }) => {
 		<Animated.View style={{ flex: 1, paddingBottom: keyboardHeight }}>
 			<SafeAreaView style={styles.screen}>
 				{/* 드래그 중인 아이템 렌더링 */}
-				<View style={styles.draggingTodoContainer}>
-					{draggingTodo && <DraggingTodoItem />}
-				</View>
+				<View style={styles.draggingTodoContainer}>{draggingTodo && <DraggingTodoItem />}</View>
 
 				{/* 투두 리스트 */}
 				<View style={styles.container}>
@@ -153,13 +140,8 @@ const Todo = ({ route }) => {
 				</View>
 
 				{/* 인풋 */}
-
 				{isInputVisible && (
-					<Input
-						inputValue={inputValue}
-						setInputValue={setInputValue}
-						onSubmit={handleSubmit}
-					/>
+					<Input inputValue={inputValue} setInputValue={setInputValue} onSubmit={handleSubmit} />
 				)}
 			</SafeAreaView>
 		</Animated.View>
@@ -174,7 +156,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 24,
+		padding: 16,
 	},
 	sortButtonContainer: {
 		height: SORT_BUTTON_HEIGHT,
