@@ -1,0 +1,35 @@
+{
+  "ui": {
+    "category": {
+      "monthly": "Monthly",
+      "weekly": "Weekly", 
+      "daily": "Daily"
+    },
+    "button": {
+      "edit": "수정",
+      "delete": "삭제",
+      "cancel": "취소",
+      "ok": "확인",
+      "deleteCompleted": "완료 항목 삭제"
+    }
+  },
+  "message": {
+    "validation": {
+      "inputRequired": "할 일을 입력해주세요."
+    },
+    "dialog": {
+      "deleteTitle": "항목 삭제",
+      "deleteMessage": "삭제하시겠습니까?",
+      "deleteCompletedTitle": "완료 항목 삭제",
+      "deleteCompletedMessage": "삭제하시겠습니까?"
+    },
+    "todo": {
+      "remainingItems": "+ {{count}}개의 할 일"
+    }
+  },
+  "sample": {
+    "todo1": "두번 탭해서 수정하기",
+    "todo2": "두번 탭해서 삭제하기", 
+    "todo3": "꾹 눌러서 드래그하기"
+  }
+}

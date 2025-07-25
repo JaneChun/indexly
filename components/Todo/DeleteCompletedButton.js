@@ -1,20 +1,22 @@
 import { Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { useTodoContext } from '@/store/TodoContext';
+import { useLocalization } from '@/store/LocalizationContext';
 
 const DeleteCompletedButton = () => {
 	const { removeCompletedTodo } = useTodoContext();
+	const { t } = useLocalization();
 
 	const handleDeleteCompletedPress = async () => {
-		Alert.alert('완료 항목 삭제', '삭제하시겠습니까?', [
+		Alert.alert(t('message.dialog.deleteCompletedTitle'), t('message.dialog.deleteCompletedMessage'), [
 			{
-				text: 'Cancel',
+				text: t('ui.button.cancel'),
 				onPress: () => {
 					return;
 				},
 				style: 'cancel',
 			},
 			{
-				text: 'OK',
+				text: t('ui.button.ok'),
 				onPress: async () => {
 					await removeCompletedTodo();
 				},
@@ -26,7 +28,7 @@ const DeleteCompletedButton = () => {
 			style={({ pressed }) => [styles.container, pressed && styles.pressed]}
 			onPress={handleDeleteCompletedPress}
 		>
-			<Text style={styles.text}>완료 항목 삭제</Text>
+			<Text style={styles.text}>{t('ui.button.deleteCompleted')}</Text>
 		</Pressable>
 	);
 };

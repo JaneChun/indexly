@@ -9,6 +9,7 @@ import Todo from '../screens/Todo';
 
 import { DragDropContextProvider } from '@/store/DragDropContext';
 import { TodoContextProvider } from '../store/TodoContext';
+import { LocalizationProvider } from '../store/LocalizationContext';
 import { init } from '../util/database';
 
 const Stack = createNativeStackNavigator();
@@ -38,9 +39,10 @@ export default function Index() {
 		<>
 			<StatusBar backgroundColor='#ffffff' hidden={true} />
 			<GestureHandlerRootView style={{ flex: 1 }}>
-				<ActionSheetProvider>
-					<DragDropContextProvider>
-						<TodoContextProvider>
+				<LocalizationProvider>
+					<ActionSheetProvider>
+						<DragDropContextProvider>
+							<TodoContextProvider>
 							<Stack.Navigator
 								screenOptions={{
 									headerShown: false,
@@ -50,9 +52,10 @@ export default function Index() {
 								{/* <Stack.Screen name='Home' component={Home} /> */}
 								<Stack.Screen name='Todo' component={Todo} />
 							</Stack.Navigator>
-						</TodoContextProvider>
-					</DragDropContextProvider>
-				</ActionSheetProvider>
+							</TodoContextProvider>
+						</DragDropContextProvider>
+					</ActionSheetProvider>
+				</LocalizationProvider>
 			</GestureHandlerRootView>
 		</>
 	);

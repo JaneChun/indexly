@@ -15,6 +15,7 @@ import { useDragDropContext } from '@/store/DragDropContext';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useInsideZone } from '../../hooks/useInsideZone';
 import { useTodoContext, useTypedTodos } from '../../store/TodoContext';
+import { useLocalization } from '@/store/LocalizationContext';
 import TodoItem from './TodoItem';
 
 const Content = ({
@@ -27,6 +28,7 @@ const Content = ({
 	editingId,
 }) => {
 	const todos = useTypedTodos(type);
+	const { t } = useLocalization();
 	const { removeTodo } = useTodoContext();
 	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } =
 		useDragDropContext();
@@ -57,7 +59,7 @@ const Content = ({
 	};
 
 	const handleTodoDoubleTap = ({ id, text }) => {
-		const options = ['수정', '삭제', '취소'];
+		const options = [t('ui.button.edit'), t('ui.button.delete'), t('ui.button.cancel')];
 		const cancelButtonIndex = 2;
 
 		showActionSheetWithOptions(
@@ -69,16 +71,16 @@ const Content = ({
 				if (selectedIndex === 0) {
 					onEditButtonPress({ id, text });
 				} else if (selectedIndex === 1) {
-					Alert.alert('항목 삭제', '삭제하시겠습니까?', [
+					Alert.alert(t('message.dialog.deleteTitle'), t('message.dialog.deleteMessage'), [
 						{
-							text: 'Cancel',
+							text: t('ui.button.cancel'),
 							onPress: () => {
 								return;
 							},
 							style: 'cancel',
 						},
 						{
-							text: 'OK',
+							text: t('ui.button.ok'),
 							onPress: async () => {
 								await removeTodo({ id });
 							},
@@ -125,7 +127,7 @@ const Content = ({
 					))}
 					{todos.length > 1 && (
 						<Text style={styles.hiddenCount}>
-							+ {todos.length - 1}개의 할 일
+							{t('message.todo.remainingItems', { count: todos.length - 1 })}
 						</Text>
 					)}
 				</>

@@ -11,6 +11,8 @@ import { Colors } from '../../constants/color';
 
 import { useInsideZone } from '@/hooks/useInsideZone';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useLocalization } from '@/store/LocalizationContext';
+import { TYPE_TRANSLATION_KEYS } from '@/constants/type';
 import Content from './Content';
 
 const CollapsibleView = ({
@@ -27,6 +29,7 @@ const CollapsibleView = ({
 	editingId,
 }) => {
 	const { memorizeDroppableZones } = useDragDropContext();
+	const { t } = useLocalization();
 	const animation = useRef(new Animated.Value(0)).current;
 	const indexRef = useRef(null);
 	const isInside = type === useInsideZone();
@@ -100,7 +103,7 @@ const CollapsibleView = ({
 					]}
 					onPress={onToggle}
 				>
-					<Text style={styles.indexText}>{type}</Text>
+					<Text style={styles.indexText}>{t(TYPE_TRANSLATION_KEYS[type])}</Text>
 				</Pressable>
 			</Animated.View>
 

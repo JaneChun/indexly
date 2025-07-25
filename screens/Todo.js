@@ -20,6 +20,7 @@ import { useDragDropContext } from '@/store/DragDropContext';
 import { useActiveSections } from '../hooks/useActiveSections';
 import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useTodoContext } from '../store/TodoContext';
+import { useLocalization } from '@/store/LocalizationContext';
 
 const SORT_BUTTON_HEIGHT = 60;
 
@@ -27,6 +28,7 @@ const Todo = ({ route }) => {
 	const [id, setId] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
+	const { t } = useLocalization();
 	const { isKeyboardVisible, keyboardHeight } =
 		useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } =
@@ -79,7 +81,7 @@ const Todo = ({ route }) => {
 
 	const handleSubmit = async ({ inputValue }) => {
 		if (!inputValue.trim()) {
-			Alert.alert('할 일을 입력해주세요.', '');
+			Alert.alert(t('message.validation.inputRequired'), '');
 			setIsInputVisible(false);
 			return;
 		}
