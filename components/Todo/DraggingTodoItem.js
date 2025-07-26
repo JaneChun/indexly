@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import IconButton from '@/components/Todo/IconButton';
-import { Colors } from '@/constants/color';
+import { useTheme } from '@/store/ThemeContext';
 import { useDragDropContext } from '@/store/DragDropContext';
 import Animated from 'react-native-reanimated';
 
 const DraggingTodoItem = () => {
 	const { draggingTodo, currentPosition, dragStartPosition } = useDragDropContext();
+	const { colors: Colors } = useTheme();
 
 	if (!draggingTodo || !currentPosition) {
 		return null;

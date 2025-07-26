@@ -2,10 +2,10 @@ import { useLayoutEffect, useRef } from 'react';
 import { Alert, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { Colors } from '@/constants/color';
 import { DAILY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
 import { useLocalization } from '@/store/LocalizationContext';
+import { useTheme } from '@/store/ThemeContext';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useInsideZone } from '../../hooks/useInsideZone';
 import { useTodoContext, useTypedTodos } from '../../store/TodoContext';
@@ -21,6 +21,7 @@ const Content = ({
 	editingId,
 }) => {
 	const todos = useTypedTodos(type);
+	const { colors: Colors } = useTheme();
 	const { t } = useLocalization();
 	const { removeTodo } = useTodoContext();
 	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } = useDragDropContext();
@@ -100,7 +101,9 @@ const Content = ({
 				isCollapsed && styles.isCollapsed,
 				isInside && [
 					styles.isInside,
-					type === DAILY ? styles.dailyMediumBackground : styles.dailyLightBackground,
+					type === DAILY
+						? { backgroundColor: Colors.daily_medium }
+						: { backgroundColor: Colors.daily_light },
 				],
 			]}
 		>
@@ -165,8 +168,6 @@ const styles = StyleSheet.create({
 		opacity: 0.5,
 	},
 	isCollapsed: { opacity: 0 },
-	dailyMediumBackground: { backgroundColor: Colors.daily_medium },
-	dailyLightBackground: { backgroundColor: Colors.daily_light },
 });
 
 export default Content;

@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Alert, Animated, Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import SettingModal from '../components/Setting/SettingModal';
 import CollapsibleView from '../components/Todo/CollapsibleView';
 import DeleteCompletedButton from '../components/Todo/DeleteCompletedButton';
 import DraggingTodoItem from '../components/Todo/DraggingTodoItem';
 import Input from '../components/Todo/Input';
+import SettingButton from '../components/Todo/SettingButton';
 import SortButton from '../components/Todo/SortButton';
 
 import { DAILY, MONTHLY, WEEKLY } from '@/constants/type';
@@ -21,7 +23,9 @@ const Todo = ({ route }) => {
 	const [id, setId] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
+	const [isSettingVisible, setIsSettingVisible] = useState(false);
 	const { t } = useLocalization();
+
 	const { isKeyboardVisible, keyboardHeight } = useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } = useActiveSections(DAILY);
 	const { addTodo, editTodo } = useTodoContext();
@@ -107,6 +111,11 @@ const Todo = ({ route }) => {
 
 	return (
 		<Animated.View style={{ flex: 1, paddingBottom: keyboardHeight }}>
+			<SettingModal
+				isVisible={isSettingVisible}
+				onBackdropPress={() => setIsSettingVisible(false)}
+			/>
+
 			<SafeAreaView style={styles.screen}>
 				{/* 드래그 중인 아이템 렌더링 */}
 				<View style={styles.draggingTodoContainer}>{draggingTodo && <DraggingTodoItem />}</View>
@@ -116,8 +125,11 @@ const Todo = ({ route }) => {
 					{/* 완료 항목 삭제 */}
 					<DeleteCompletedButton />
 					{!isInputVisible && (
-						<View style={styles.sortButtonContainer}>
-							<SortButton style={styles.sortButton} />
+						<View style={styles.topButtonsContainer}>
+							<SortButton style={styles.topButton} />
+							{activeSections.size === 0 && (
+								<SettingButton style={styles.topButton} onPress={() => setIsSettingVisible(true)} />
+							)}
 						</View>
 					)}
 
@@ -163,14 +175,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 16,
 	},
-	sortButtonContainer: {
+	topButtonsContainer: {
 		height: SORT_BUTTON_HEIGHT,
 		width: '100%',
 		position: 'absolute',
 		top: 0,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 	},
-	sortButton: {
-		alignSelf: 'flex-start',
+	topButton: {
 		padding: 16,
 	},
 	draggingTodoContainer: {

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Animated, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Colors } from '../../constants/color';
+import { useTheme } from '@/store/ThemeContext';
 
 import { TYPE_TRANSLATION_KEYS } from '@/constants/type';
 import { useInsideZone } from '@/hooks/useInsideZone';
@@ -23,6 +23,7 @@ const CollapsibleView = ({
 }) => {
 	const { memorizeDroppableZones } = useDragDropContext();
 	const { t } = useLocalization();
+	const { colors: Colors } = useTheme();
 	const animation = useRef(new Animated.Value(0)).current;
 	const indexRef = useRef(null);
 	const isInside = type === useInsideZone();
