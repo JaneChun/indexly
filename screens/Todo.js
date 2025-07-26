@@ -141,7 +141,12 @@ const Todo = ({ route }) => {
 
 				{/* 인풋 */}
 				{isInputVisible && (
-					<Input inputValue={inputValue} setInputValue={setInputValue} onSubmit={handleSubmit} />
+					<Input
+						inputValue={inputValue}
+						setInputValue={setInputValue}
+						resetInput={resetInput}
+						onSubmit={handleSubmit}
+					/>
 				)}
 			</SafeAreaView>
 		</Animated.View>

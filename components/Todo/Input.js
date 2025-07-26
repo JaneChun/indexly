@@ -2,11 +2,7 @@ import { Colors } from '@/constants/color';
 import { Entypo } from '@expo/vector-icons';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-const Input = ({ inputValue, setInputValue, onSubmit }) => {
-	const handleInputSubmit = async () => {
-		await onSubmit({ inputValue });
-	};
-
+const Input = ({ inputValue, setInputValue, resetInput, onSubmit }) => {
 	return (
 		<View style={styles.container}>
 			<Entypo name='plus' size={24} color={Colors.done} />
@@ -14,7 +10,9 @@ const Input = ({ inputValue, setInputValue, onSubmit }) => {
 				style={styles.input}
 				value={inputValue}
 				onChangeText={setInputValue}
-				onSubmitEditing={handleInputSubmit}
+				onSubmitEditing={() => onSubmit({ inputValue })}
+				onBlur={resetInput}
+				returnKeyType='done'
 				autoFocus={true}
 			/>
 		</View>
