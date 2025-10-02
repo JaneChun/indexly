@@ -1,8 +1,8 @@
+import { CUSTOM_COLORS_KEY, CustomColors, useTheme } from '@/store/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ColorPicker, { ColorFormatsObject, HueSlider, Panel1 } from 'reanimated-color-picker';
-import { CUSTOM_COLORS_KEY, CustomColors } from './SettingModal';
 
 type Type = 'monthly' | 'weekly' | 'daily';
 
@@ -19,6 +19,7 @@ const ColorPickerModal = ({
 	isVisible,
 	onClose,
 }: ColorPickerModalProps) => {
+	const { changeTheme } = useTheme();
 	const [tempColors, setTempColors] = useState<CustomColors>(customColors);
 	const [selectedType, setSelectedType] = useState<Type>('monthly');
 
@@ -34,7 +35,7 @@ const ColorPickerModal = ({
 		[tempColors],
 	);
 
-	const handleSelectType = useCallback((type: 'monthly' | 'weekly' | 'daily') => {
+	const handleSelectType = useCallback((type: Type) => {
 		setSelectedType(type);
 	}, []);
 
@@ -48,16 +49,17 @@ const ColorPickerModal = ({
 		[selectedType],
 	);
 
-	// AsyncStorage 저장 & 상태 동기화
+	// AsyncStorage 저장 & 상태 동기화 & 테마 적용
 	const handleConfirm = useCallback(async () => {
 		try {
 			await AsyncStorage.setItem(CUSTOM_COLORS_KEY, JSON.stringify(tempColors));
 			setCustomColors(tempColors);
+			await changeTheme('custom1'); // 커스텀 테마 즉시 적용
 			onClose();
 		} catch (e) {
 			console.log('커스텀 색상 저장 실패', e);
 		}
-	}, [onClose, setCustomColors, tempColors]);
+	}, [changeTheme, onClose, setCustomColors, tempColors]);
 
 	const handleCancel = useCallback(() => {
 		setTempColors(customColors); // 변경사항 되돌리기
@@ -100,7 +102,7 @@ const ColorPickerModal = ({
 							<Text style={styles.cancelButtonText}>취소</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-							<Text style={styles.confirmButtonText}>저장</Text>
+							<Text style={styles.confirmButtonText}>확인</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

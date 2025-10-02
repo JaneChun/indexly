@@ -1,4 +1,4 @@
-import { ThemeName, useTheme } from '@/store/ThemeContext';
+import { CUSTOM_COLORS_KEY, CustomColors, ThemeName, useTheme } from '@/store/ThemeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -7,18 +7,10 @@ import ColorPickerModal from './ColorPickerModal';
 import CustomColorGroup from './CustomColorGroup';
 import CustomModal from './CustomModal';
 
-export const CUSTOM_COLORS_KEY = 'customColors';
-
 const DEFAULT_CUSTOM_COLORS: CustomColors = {
 	monthly: '#e0e0e0',
 	weekly: '#e0e0e0',
 	daily: '#e0e0e0',
-};
-
-export type CustomColors = {
-	monthly: string;
-	weekly: string;
-	daily: string;
 };
 
 type SettingModalProps = {
@@ -85,7 +77,10 @@ const SettingModal = ({ isVisible, onBackdropPress }: SettingModalProps) => {
 								style={styles.themeOption}
 								onPress={() => setColorPickerVisible(true)}
 							>
-								<CustomColorGroup customColors={customColors} isSelected={false} />
+								<CustomColorGroup
+								customColors={customColors}
+								isSelected={currentTheme === 'custom1'}
+							/>
 							</TouchableOpacity>
 						</ScrollView>
 					</View>

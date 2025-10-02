@@ -1,6 +1,6 @@
+import { CustomColors } from '@/store/ThemeContext';
 import { Octicons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
-import { CustomColors } from './SettingModal';
 
 const CIRCLE_SIZE = 30;
 const GAP = 20;
