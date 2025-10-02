@@ -1,37 +1,26 @@
-import { ColorThemes } from '@/constants/color';
 import { useTheme } from '@/store/ThemeContext';
-import { Octicons } from '@expo/vector-icons';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import ColorGroup from './ColorGroup';
 import CustomModal from './CustomModal';
 
 const SettingModal = ({ isVisible, onBackdropPress }) => {
 	const { currentTheme, changeTheme, availableThemes, colors: Colors } = useTheme();
 
 	return (
-		<CustomModal
-			isVisible={isVisible}
-			onBackdropPress={onBackdropPress}
-			contentContainerStyle={styles.contentContainerStyle}
-		>
+		<CustomModal isVisible={isVisible} onBackdropPress={onBackdropPress}>
 			<View style={styles.wrapper}>
 				<View style={styles.container}>
-					<ScrollView contentContainerStyle={styles.themeGrid} showsVerticalScrollIndicator={false}>
+					<ScrollView
+						contentContainerStyle={styles.scrollViewContent}
+						showsVerticalScrollIndicator={false}
+					>
 						{availableThemes.map((theme) => (
 							<TouchableOpacity
 								key={theme}
-								style={[styles.themeOption]}
+								style={styles.themeOption}
 								onPress={() => changeTheme(theme)}
 							>
-								<View
-									style={[
-										styles.colorCircle,
-										{
-											backgroundColor: ColorThemes[theme].daily,
-										},
-									]}
-								>
-									{currentTheme === theme && <Octicons name='check' color='#fff' size={24} />}
-								</View>
+								<ColorGroup theme={theme} isSelected={currentTheme === theme} />
 							</TouchableOpacity>
 						))}
 					</ScrollView>
@@ -43,38 +32,25 @@ const SettingModal = ({ isVisible, onBackdropPress }) => {
 
 const styles = StyleSheet.create({
 	wrapper: {
-		width: '60%',
-		aspectRatio: 1,
-		justifyContent: 'flex-end',
-		alignItems: 'flex-start',
+		width: '32%',
+		height: '80%',
+		alignSelf: 'flex-end',
+		marginRight: 16,
+		marginTop: -16,
 	},
 	container: {
 		flex: 1,
-		padding: 24,
+		paddingHorizontal: 16,
+		paddingVertical: 24,
 		borderRadius: 16,
 		backgroundColor: '#fff',
 	},
-	contentContainerStyle: {
-		justifyContent: 'flex-start',
-		alignItems: 'flex-end',
-		paddingTop: 60,
-		paddingRight: 20,
-	},
-	themeGrid: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'space-between',
+	scrollViewContent: {
+		gap: 12,
 	},
 	themeOption: {
-		width: '25%',
-		aspectRatio: 1,
-		padding: 8,
-	},
-	colorCircle: {
 		flex: 1,
-		borderRadius: '50%',
-		justifyContent: 'center',
-		alignItems: 'center',
+		height: 60,
 	},
 });
 
