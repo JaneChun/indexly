@@ -2,7 +2,7 @@
   "ui": {
     "category": {
       "monthly": "Monthly",
-      "weekly": "Weekly", 
+      "weekly": "Weekly",
       "daily": "Daily"
     },
     "button": {
@@ -11,6 +11,11 @@
       "cancel": "취소",
       "ok": "확인",
       "deleteCompleted": "완료 항목 삭제"
+    },
+    "colorPicker": {
+      "title": "색상 선택",
+      "confirm": "확인",
+      "cancel": "취소"
     }
   },
   "message": {

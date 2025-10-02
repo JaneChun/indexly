@@ -11,6 +11,11 @@
 			"cancel": "Cancel",
 			"ok": "OK",
 			"deleteCompleted": "Delete Completed"
+		},
+		"colorPicker": {
+			"title": "Select Color",
+			"confirm": "Confirm",
+			"cancel": "Cancel"
 		}
 	},
 	"message": {

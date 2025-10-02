@@ -1,4 +1,5 @@
 import { CUSTOM_COLORS_KEY, CustomColors, useTheme } from '@/store/ThemeContext';
+import { useLocalization } from '@/store/LocalizationContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -20,6 +21,7 @@ const ColorPickerModal = ({
 	onClose,
 }: ColorPickerModalProps) => {
 	const { changeTheme } = useTheme();
+	const { t } = useLocalization();
 	const [tempColors, setTempColors] = useState<CustomColors>(customColors);
 	const [selectedType, setSelectedType] = useState<Type>('monthly');
 
@@ -70,7 +72,7 @@ const ColorPickerModal = ({
 		<Modal visible={isVisible} transparent={true} animationType='fade' onRequestClose={onClose}>
 			<TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onClose}>
 				<View style={styles.container} onStartShouldSetResponder={() => true}>
-					<Text style={styles.title}>색상 선택</Text>
+					<Text style={styles.title}>{t('ui.colorPicker.title')}</Text>
 
 					<View style={styles.previewContainer}>
 						{tempColorEntries.map(([type, color], index) => (
@@ -99,10 +101,10 @@ const ColorPickerModal = ({
 					</View>
 					<View style={styles.buttonContainer}>
 						<TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
-							<Text style={styles.cancelButtonText}>취소</Text>
+							<Text style={styles.cancelButtonText}>{t('ui.colorPicker.cancel')}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-							<Text style={styles.confirmButtonText}>확인</Text>
+							<Text style={styles.confirmButtonText}>{t('ui.colorPicker.confirm')}</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
