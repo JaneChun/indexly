@@ -11,9 +11,9 @@ export type ThemeName = keyof typeof ColorThemes | 'custom1';
 
 // 기본 색상만 가진 커스텀 색상 타입
 export type CustomColors = {
-	monthly: string;
-	weekly: string;
 	daily: string;
+	weekly: string;
+	monthly: string;
 };
 
 // ThemeContext에서 제공하는 값의 타입

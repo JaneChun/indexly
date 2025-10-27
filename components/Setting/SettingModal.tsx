@@ -8,9 +8,9 @@ import CustomColorGroup from './CustomColorGroup';
 import CustomModal from './CustomModal';
 
 const DEFAULT_CUSTOM_COLORS: CustomColors = {
-	monthly: '#e0e0e0',
-	weekly: '#e0e0e0',
 	daily: '#e0e0e0',
+	weekly: '#e0e0e0',
+	monthly: '#e0e0e0',
 };
 
 type SettingModalProps = {
@@ -52,6 +52,12 @@ const SettingModal = ({ isVisible, onBackdropPress }: SettingModalProps) => {
 		setCustomColors(customColors);
 	}, []);
 
+	const orderedCustomColors: CustomColors = {
+		daily: customColors.daily,
+		weekly: customColors.weekly,
+		monthly: customColors.monthly,
+	};
+
 	return (
 		<>
 			<CustomModal isVisible={isVisible} onBackdropPress={onBackdropPress}>
@@ -78,7 +84,7 @@ const SettingModal = ({ isVisible, onBackdropPress }: SettingModalProps) => {
 								onPress={() => setColorPickerVisible(true)}
 							>
 								<CustomColorGroup
-								customColors={customColors}
+								customColors={orderedCustomColors}
 								isSelected={currentTheme === 'custom1'}
 							/>
 							</TouchableOpacity>
@@ -90,7 +96,7 @@ const SettingModal = ({ isVisible, onBackdropPress }: SettingModalProps) => {
 			<ColorPickerModal
 				isVisible={colorPickerVisible}
 				onClose={() => setColorPickerVisible(false)}
-				customColors={customColors}
+				customColors={orderedCustomColors}
 				setCustomColors={handleCustomColorsChange}
 			/>
 		</>

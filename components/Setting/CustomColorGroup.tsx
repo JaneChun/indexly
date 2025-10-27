@@ -15,7 +15,7 @@ const CustomColorGroup = ({ customColors, isSelected }: CustomColorGroupProps) =
 		<View style={styles.container}>
 			<View style={styles.colorGroupWrapper}>
 				<View
-					style={[styles.colorCircle, styles.leftCircle, { backgroundColor: customColors.monthly }]}
+					style={[styles.colorCircle, styles.leftCircle, { backgroundColor: customColors.daily }]}
 				/>
 				<View
 					style={[
@@ -25,7 +25,11 @@ const CustomColorGroup = ({ customColors, isSelected }: CustomColorGroupProps) =
 					]}
 				/>
 				<View
-					style={[styles.colorCircle, styles.rightCircle, { backgroundColor: customColors.daily }]}
+					style={[
+						styles.colorCircle,
+						styles.rightCircle,
+						{ backgroundColor: customColors.monthly },
+					]}
 				/>
 				{isSelected && (
 					<View style={styles.iconWrapper}>

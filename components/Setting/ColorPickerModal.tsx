@@ -28,7 +28,7 @@ const ColorPickerModal = ({
 	useEffect(() => {
 		if (isVisible) {
 			setTempColors(customColors);
-			setSelectedType('monthly');
+			setSelectedType('daily');
 		}
 	}, [isVisible]);
 
