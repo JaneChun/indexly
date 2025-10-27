@@ -93,13 +93,18 @@ const Todo = ({ route }) => {
 		}
 	};
 
+	const getWidthForType = (type) => {
+		const typeIndex = [MONTHLY, WEEKLY, DAILY].indexOf(type);
+		return `${100 - typeIndex * 5}%`;
+	};
+
 	const collapsibleConfigs = [MONTHLY, WEEKLY, DAILY].map((type, idx) => {
 		const height = CONTENT_HEIGHT - 100 * idx;
 		const foldedHeight = CONTENT_HEIGHT * 0.5;
 
 		return {
 			type,
-			width: `${100 - idx * 5}%`,
+			width: getWidthForType(type),
 			offsetX: (2 - idx) * 90,
 			height: isInputVisible ? foldedHeight : height,
 			isEllipsed:
@@ -118,7 +123,11 @@ const Todo = ({ route }) => {
 
 			<SafeAreaView style={styles.screen}>
 				{/* 드래그 중인 아이템 렌더링 */}
-				<View style={styles.draggingTodoContainer}>{draggingTodo && <DraggingTodoItem />}</View>
+				<View style={styles.draggingTodoContainer}>
+					{draggingTodo && (
+						<DraggingTodoItem containerWidth={getWidthForType(draggingTodo.type)} />
+					)}
+				</View>
 
 				{/* 투두 리스트 */}
 				<View style={styles.container}>
@@ -189,10 +198,13 @@ const styles = StyleSheet.create({
 	draggingTodoContainer: {
 		position: 'absolute',
 		top: 0,
-		left: 0,
+		left: 16,
+		right: 16,
 		height: '100%',
 		zIndex: 999,
 		pointerEvents: 'box-none',
+		paddingHorizontal: 16,
+		alignItems: 'center',
 	},
 });
 

@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import IconButton from '@/components/Todo/IconButton';
-import { useTheme } from '@/store/ThemeContext';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useTheme } from '@/store/ThemeContext';
 import Animated from 'react-native-reanimated';
 
-const DraggingTodoItem = () => {
+const DraggingTodoItem = ({ containerWidth }) => {
 	const { draggingTodo, currentPosition, dragStartPosition } = useDragDropContext();
 	const { colors: Colors } = useTheme();
 
@@ -24,7 +24,7 @@ const DraggingTodoItem = () => {
 				},
 			]}
 		>
-			<View style={styles.todoContainer}>
+			<View style={[styles.todoContainer, { width: containerWidth }]}>
 				<View style={styles.todo}>
 					<IconButton
 						type='MaterialIcons'
