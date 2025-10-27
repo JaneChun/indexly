@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { Alert, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { DAILY } from '@/constants/type';
+import { DAILY, WEEKLY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
 import { useLocalization } from '@/store/LocalizationContext';
 import { useTheme } from '@/store/ThemeContext';
@@ -102,8 +102,10 @@ const Content = ({
 				isInside && [
 					styles.isInside,
 					type === DAILY
-						? { backgroundColor: Colors.daily_medium }
-						: { backgroundColor: Colors.daily_light },
+						? { backgroundColor: Colors.daily_opaque }
+						: type === WEEKLY
+						? { backgroundColor: Colors.weekly_opaque }
+						: { backgroundColor: Colors.monthly_opaque },
 				],
 			]}
 		>
