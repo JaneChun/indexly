@@ -1,0 +1,40 @@
+{
+	"ui": {
+		"category": {
+			"monthly": "Monthly",
+			"weekly": "Weekly",
+			"daily": "Daily"
+		},
+		"button": {
+			"edit": "Edit",
+			"delete": "Delete",
+			"cancel": "Cancel",
+			"ok": "OK",
+			"deleteCompleted": "Delete Completed"
+		},
+		"colorPicker": {
+			"title": "Select Color",
+			"confirm": "Confirm",
+			"cancel": "Cancel"
+		}
+	},
+	"message": {
+		"validation": {
+			"inputRequired": "Please enter a todo item."
+		},
+		"dialog": {
+			"deleteTitle": "Delete Item",
+			"deleteMessage": "Are you sure you want to delete?",
+			"deleteCompletedTitle": "Delete Completed Items",
+			"deleteCompletedMessage": "Are you sure you want to delete?"
+		},
+		"todo": {
+			"remainingItems": "+ {{count}} more"
+		}
+	},
+	"sample": {
+		"todo1": "Double tap to edit",
+		"todo2": "Double tap to delete",
+		"todo3": "Long press to drag"
+	}
+}

@@ -15,7 +15,7 @@ import Animated, {
 import { useInsideZone } from '@/hooks/useInsideZone';
 import { useDragDropContext } from '@/store/DragDropContext';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Colors } from '../../constants/color';
+import { useTheme } from '@/store/ThemeContext';
 import { useTodoContext } from '../../store/TodoContext';
 import IconButton from './IconButton';
 
@@ -31,6 +31,7 @@ const TodoItem = ({
 }) => {
 	// 드래그 위치를 저장하는 shared values
 	const { toggleTodo, moveTodo } = useTodoContext();
+	const { colors: Colors } = useTheme();
 	const {
 		draggingTodo,
 		setDraggingTodo,

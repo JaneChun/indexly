@@ -1,20 +1,20 @@
-import { Colors } from '@/constants/color';
+import { useTheme } from '@/store/ThemeContext';
 import { Entypo } from '@expo/vector-icons';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-const Input = ({ inputValue, setInputValue, onSubmit }) => {
-	const handleInputSubmit = async () => {
-		await onSubmit({ inputValue });
-	};
+const Input = ({ inputValue, setInputValue, resetInput, onSubmit }) => {
+	const { colors: Colors } = useTheme();
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { borderColor: Colors.done }]}>
 			<Entypo name='plus' size={24} color={Colors.done} />
 			<TextInput
 				style={styles.input}
 				value={inputValue}
 				onChangeText={setInputValue}
-				onSubmitEditing={handleInputSubmit}
+				onSubmitEditing={() => onSubmit({ inputValue })}
+				onBlur={resetInput}
+				returnKeyType='done'
 				autoFocus={true}
 			/>
 		</View>
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		paddingHorizontal: 16,
 		borderTopWidth: 1,
-		borderColor: Colors.done,
 	},
 	input: {
 		width: '100%',

@@ -1,16 +1,11 @@
 import { useEffect, useRef } from 'react';
-import {
-	Animated,
-	InteractionManager,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from 'react-native';
-import { Colors } from '../../constants/color';
+import { Animated, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '@/store/ThemeContext';
 
+import { TYPE_TRANSLATION_KEYS } from '@/constants/type';
 import { useInsideZone } from '@/hooks/useInsideZone';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useLocalization } from '@/store/LocalizationContext';
 import Content from './Content';
 
 const CollapsibleView = ({
@@ -27,6 +22,8 @@ const CollapsibleView = ({
 	editingId,
 }) => {
 	const { memorizeDroppableZones } = useDragDropContext();
+	const { t } = useLocalization();
+	const { colors: Colors } = useTheme();
 	const animation = useRef(new Animated.Value(0)).current;
 	const indexRef = useRef(null);
 	const isInside = type === useInsideZone();
@@ -100,7 +97,9 @@ const CollapsibleView = ({
 					]}
 					onPress={onToggle}
 				>
-					<Text style={styles.indexText}>{type}</Text>
+					<Text numberOfLines={1} ellipsizeMode='tail' style={styles.indexText}>
+						{t(TYPE_TRANSLATION_KEYS[type])}
+					</Text>
 				</Pressable>
 			</Animated.View>
 
@@ -152,10 +151,13 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 24,
 		borderTopLeftRadius: 16,
 		borderTopRightRadius: 16,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	indexText: {
 		fontSize: 14,
 		textAlign: 'center',
+		verticalAlign: 'center',
 	},
 	pressed: {
 		opacity: 0.7,

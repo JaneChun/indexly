@@ -1,17 +1,11 @@
 import { useLayoutEffect, useRef } from 'react';
-import {
-	Alert,
-	InteractionManager,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-} from 'react-native';
+import { Alert, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { Colors } from '@/constants/color';
-import { DAILY } from '@/constants/type';
+import { DAILY, WEEKLY } from '@/constants/type';
 import { useDragDropContext } from '@/store/DragDropContext';
+import { useLocalization } from '@/store/LocalizationContext';
+import { useTheme } from '@/store/ThemeContext';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useInsideZone } from '../../hooks/useInsideZone';
 import { useTodoContext, useTypedTodos } from '../../store/TodoContext';
@@ -27,9 +21,10 @@ const Content = ({
 	editingId,
 }) => {
 	const todos = useTypedTodos(type);
+	const { colors: Colors } = useTheme();
+	const { t } = useLocalization();
 	const { removeTodo } = useTodoContext();
-	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } =
-		useDragDropContext();
+	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } = useDragDropContext();
 	const isInside = type === useInsideZone();
 	const droppableRef = useRef(null);
 	const { showActionSheetWithOptions } = useActionSheet();
@@ -57,7 +52,7 @@ const Content = ({
 	};
 
 	const handleTodoDoubleTap = ({ id, text }) => {
-		const options = ['수정', '삭제', '취소'];
+		const options = [t('ui.button.edit'), t('ui.button.delete'), t('ui.button.cancel')];
 		const cancelButtonIndex = 2;
 
 		showActionSheetWithOptions(
@@ -69,16 +64,16 @@ const Content = ({
 				if (selectedIndex === 0) {
 					onEditButtonPress({ id, text });
 				} else if (selectedIndex === 1) {
-					Alert.alert('항목 삭제', '삭제하시겠습니까?', [
+					Alert.alert(t('message.dialog.deleteTitle'), t('message.dialog.deleteMessage'), [
 						{
-							text: 'Cancel',
+							text: t('ui.button.cancel'),
 							onPress: () => {
 								return;
 							},
 							style: 'cancel',
 						},
 						{
-							text: 'OK',
+							text: t('ui.button.ok'),
 							onPress: async () => {
 								await removeTodo({ id });
 							},
@@ -107,8 +102,10 @@ const Content = ({
 				isInside && [
 					styles.isInside,
 					type === DAILY
-						? styles.dailyMediumBackground
-						: styles.dailyLightBackground,
+						? { backgroundColor: Colors.daily_opaque }
+						: type === WEEKLY
+						? { backgroundColor: Colors.weekly_opaque }
+						: { backgroundColor: Colors.monthly_opaque },
 				],
 			]}
 		>
@@ -125,7 +122,7 @@ const Content = ({
 					))}
 					{todos.length > 1 && (
 						<Text style={styles.hiddenCount}>
-							+ {todos.length - 1}개의 할 일
+							{t('message.todo.remainingItems', { count: todos.length - 1 })}
 						</Text>
 					)}
 				</>
@@ -169,12 +166,10 @@ const styles = StyleSheet.create({
 	},
 	hiddenCount: {
 		fontSize: 12,
-		marginLeft: 16,
+		marginLeft: 32,
 		opacity: 0.5,
 	},
 	isCollapsed: { opacity: 0 },
-	dailyMediumBackground: { backgroundColor: Colors.daily_medium },
-	dailyLightBackground: { backgroundColor: Colors.daily_light },
 });
 
 export default Content;

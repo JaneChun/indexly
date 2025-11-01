@@ -41,3 +41,5 @@ certs
 
 # credentials
 credentials.json
+
+ios/

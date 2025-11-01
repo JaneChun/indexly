@@ -20,15 +20,15 @@ export const useKeyboardVisibility = () => {
 			Animated.timing(keyboardHeight, {
 				toValue:
 					e.endCoordinates.height - (Platform.OS === 'ios' ? insets.bottom : 0), // 키보드 높이
-				duration: Platform.OS === 'ios' ? e.duration : 250,
+				duration: 300,
 				useNativeDriver: false,
 			}).start();
 		});
 		const keyboardDidHideListener = Keyboard.addListener(hideEvent, (e) => {
 			setKeyboardVisible(false);
 			Animated.timing(keyboardHeight, {
-				toValue: 0, // 0
-				duration: 200,
+				toValue: 0, // 키보드 높이
+				duration: 300,
 				useNativeDriver: false,
 			}).start();
 		});
