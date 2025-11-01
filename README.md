@@ -16,10 +16,10 @@
 
 
 <div display='flex'>
-  <img src='https://github.com/user-attachments/assets/95b55b69-d380-47e5-8c80-6cc393256d2c' width='240'/>
-  <img src='https://github.com/user-attachments/assets/9027d970-6dcf-46a1-818e-dd124e373da7' width='240'/>
-  <img src='https://github.com/user-attachments/assets/4bf7c833-aa87-40bf-90c5-80fc2d0ed388' width='240'/>
-  <img src='https://github.com/user-attachments/assets/3879c68c-8c15-4b2d-9ebb-8489b0cf0da0' width='240'/>
+  <img width="240"  alt="Frame 22" src="https://github.com/user-attachments/assets/c9c02b26-fcf1-427d-9dac-42b742812d14" />
+  <img width="240"  alt="Frame 19" src="https://github.com/user-attachments/assets/d08511d6-2cc9-46f0-b3d5-132a30b22ed8" />
+  <img width="240"alt="Frame 18" src="https://github.com/user-attachments/assets/94321364-7c07-45e6-a02f-8d33ce9a7541" />
+  <img width="240"  alt="Frame 17" src="https://github.com/user-attachments/assets/87575eb7-dd3a-4ef8-96ce-8af58a6ea11a" />
 </div>
 </div>
 <br/>
@@ -63,6 +63,8 @@
 - 로컬 저장소 사용: SQLite를 이용해 투두 데이터를 로컬 기기에 저장, 오프라인에서도 안정적인 사용이 가능합니다.
 - 드래그 앤 드롭: 라이브러리를 사용하지 않고 직접 구현. 투두 항목을 드래그하여 다른 목록으로 간편하게 이동할 수 있습니다.
 - 정렬 및 전체 삭제: 완료된 투두 항목을 하단으로 정렬하거나 전체 삭제할 수 있습니다.
+- 다국어 지원: expo-localization와 i18n-js를 활용한 디바이스 언어 자동 감지 및 한국어/영어 다국어 지원
+- 사용자 커스텀 테마
 
 <br/>
 
