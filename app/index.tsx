@@ -2,6 +2,7 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { PortalProvider } from '@gorhom/portal';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import * as SystemUI from 'expo-system-ui';
 import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -21,6 +22,9 @@ export default function Index() {
 	const [isDbInitialized, setIsDbInitialized] = useState(false);
 
 	useEffect(() => {
+		// 안전 영역(상태 표시줄·홈 인디케이터)에 보이는 루트 화면 색을 앱 바탕색과 맞춤
+		SystemUI.setBackgroundColorAsync(CommonColors.background);
+
 		const initDatabase = async () => {
 			try {
 				await init();
