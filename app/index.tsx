@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Loading from '../screens/Loading';
 import Todo from '../screens/Todo';
 
+import { CommonColors } from '@/constants/color';
 import { DragDropContextProvider } from '@/store/DragDropContext';
 import { LocalizationProvider } from '../store/LocalizationContext';
 import { TodoContextProvider } from '../store/TodoContext';
@@ -50,7 +51,7 @@ export default function Index() {
 										<Stack.Navigator
 											screenOptions={{
 												headerShown: false,
-												contentStyle: { backgroundColor: '#ffffff' },
+												contentStyle: { backgroundColor: CommonColors.background },
 											}}
 										>
 											{/* <Stack.Screen name='Home' component={Home} /> */}

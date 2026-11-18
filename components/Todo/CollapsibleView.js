@@ -29,7 +29,7 @@ const CollapsibleView = ({
 	const isInside = type === useInsideZone();
 
 	const primaryColor = Colors[`${type.toLowerCase()}`];
-	const secondaryColor = Colors[`${type.toLowerCase()}_light`];
+	const surfaceColor = Colors[`${type.toLowerCase()}_surface`];
 
 	// 0: 펼침, 1: 접음
 	const indexXTranslate = animation.interpolate({
@@ -49,7 +49,12 @@ const CollapsibleView = ({
 
 	const borderBottomRightRadiusInterpolate = animation.interpolate({
 		inputRange: [0, 1],
-		outputRange: [16, 3],
+		outputRange: [18, 3],
+	});
+
+	const borderTopWidthInterpolate = animation.interpolate({
+		inputRange: [0, 1],
+		outputRange: [3, 0],
 	});
 
 	useEffect(() => {
@@ -92,12 +97,16 @@ const CollapsibleView = ({
 					style={({ pressed }) => [
 						styles.index,
 						{ backgroundColor: primaryColor },
-						isInside && styles.pressed,
+						isInside && [styles.dropTarget, { borderColor: Colors.daily }],
 						pressed && styles.pressed,
 					]}
 					onPress={onToggle}
 				>
-					<Text numberOfLines={1} ellipsizeMode='tail' style={styles.indexText}>
+					<Text
+						numberOfLines={1}
+						ellipsizeMode='tail'
+						style={[styles.indexText, { color: Colors.index_text }]}
+					>
 						{t(TYPE_TRANSLATION_KEYS[type])}
 					</Text>
 				</Pressable>
@@ -110,8 +119,10 @@ const CollapsibleView = ({
 					{
 						width: width,
 						height: heightInterpolate,
-						borderColor: primaryColor,
-						backgroundColor: secondaryColor,
+						borderTopColor: primaryColor,
+						borderTopWidth: borderTopWidthInterpolate,
+						backgroundColor: surfaceColor,
+						shadowColor: Colors.shadow,
 						borderBottomRightRadius: borderBottomRightRadiusInterpolate,
 					},
 				]}
@@ -149,27 +160,37 @@ const styles = StyleSheet.create({
 		width: 120,
 		paddingVertical: 12,
 		paddingHorizontal: 24,
-		borderTopLeftRadius: 16,
-		borderTopRightRadius: 16,
+		borderTopLeftRadius: 14,
+		borderTopRightRadius: 14,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	indexText: {
-		fontSize: 14,
+		fontSize: 12,
+		fontWeight: '700',
+		letterSpacing: 0.2,
+		textTransform: 'uppercase',
 		textAlign: 'center',
 		verticalAlign: 'center',
 	},
 	pressed: {
 		opacity: 0.7,
 	},
+	dropTarget: {
+		borderWidth: 2,
+		transform: [{ translateY: -3 }],
+	},
 	contentContainer: {
 		width: '100%',
 		position: 'absolute',
 		bottom: 0,
 		alignSelf: 'flex-end',
-		borderWidth: 3,
-		borderRadius: 16,
+		borderRadius: 18,
 		borderTopRightRadius: 0,
+		shadowOffset: { width: 0, height: -4 },
+		shadowOpacity: 0.12,
+		shadowRadius: 10,
+		elevation: 3,
 	},
 	content: {
 		width: '100%',

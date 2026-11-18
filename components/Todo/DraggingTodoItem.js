@@ -24,25 +24,30 @@ const DraggingTodoItem = ({ containerWidth }) => {
 				},
 			]}
 		>
-			<View style={[styles.todoContainer, { width: containerWidth }]}>
+			<View
+				style={[styles.todoContainer, { width: containerWidth, shadowColor: Colors.shadow }]}
+			>
 				<View style={styles.todo}>
-					<IconButton
-						type='MaterialIcons'
-						icon='drag-indicator'
-						color={Colors.daily}
-						size={18}
-						onPress={() => {}}
-					/>
 					<View style={styles.checkContainer}>
 						<IconButton
 							type='FontAwesome'
 							icon={draggingTodo.isCompleted ? 'check-circle' : 'circle-thin'}
-							color={Colors.daily}
+							color={draggingTodo.isCompleted ? Colors.check_done : Colors.daily}
 							size={18}
 							onPress={() => {}}
 						/>
 					</View>
-					<Text style={[styles.todoText, draggingTodo.isCompleted && { color: 'gray' }]}>
+					<Text
+						style={[
+							styles.todoText,
+							{ color: Colors.text },
+							draggingTodo.isCompleted && {
+								color: Colors.text_done,
+								textDecorationLine: 'line-through',
+								textDecorationColor: Colors.text_done_line,
+							},
+						]}
+					>
 						{draggingTodo.text}
 					</Text>
 				</View>
@@ -54,12 +59,21 @@ const DraggingTodoItem = ({ containerWidth }) => {
 const styles = StyleSheet.create({
 	todoContainer: {
 		flexDirection: 'row',
-		paddingVertical: 6,
+		paddingVertical: 10,
+		paddingHorizontal: 6,
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		backgroundColor: '#FFFFFF',
+		borderRadius: 14,
+		transform: [{ rotate: '-2deg' }, { scale: 1.04 }],
+		shadowOffset: { width: 0, height: 10 },
+		shadowOpacity: 0.25,
+		shadowRadius: 16,
+		elevation: 8,
 	},
 	todo: {
 		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	checkContainer: {
 		marginHorizontal: 8,
@@ -67,6 +81,8 @@ const styles = StyleSheet.create({
 	todoText: {
 		flex: 1,
 		fontSize: 14,
+		fontWeight: '500',
+		letterSpacing: -0.14,
 	},
 });
 
