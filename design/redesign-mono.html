@@ -1,0 +1,507 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>indexly 미니멀 모노 시안</title>
+<style>
+  /* ── Minimal Mono token system ───────────────────────────────
+     Layout: a neutral page holding three phone mockups of indexly's
+     3중 중첩(nested-panel) layout, differentiated only by tone-step
+     + shadow depth; category color appears as a single small accent. */
+  :root {
+    color-scheme: light;
+    --page:          #ECEDEF;
+    --card:          #FFFFFF;   /* panels/cards on the page chrome */
+    --surface-front: #FFFFFF;   /* Daily  — brightest, deepest shadow */
+    --surface-mid:   #FAFAFB;   /* Weekly — middle */
+    --surface-back:  #F4F5F7;   /* Monthly — slightly gray, lightest shadow */
+    --text:          #2E3033;
+    --muted:         #9AA0A8;
+    --faint:         #DDDFE3;   /* hairline-weight separators, used sparingly */
+    --slot:          #E6E8EC;   /* empty drop-slot wash */
+
+    --acc-daily:   #FF8383;
+    --acc-weekly:  #FF9BA8;     /* deepened from #FFB9B9 so it reads on white */
+    --acc-monthly: #FFB3B3;     /* deepened from #FFE2E2 so it reads on white */
+
+    /* neutral black soft shadows, depth = position in the stack */
+    --sh-front: 0 22px 44px -14px rgba(18,20,24,.30), 0 8px 18px -10px rgba(18,20,24,.20);
+    --sh-mid:   0 14px 30px -16px rgba(18,20,24,.20), 0 5px 12px -10px rgba(18,20,24,.12);
+    --sh-back:  0 9px 22px -18px rgba(18,20,24,.14);
+    --sh-chrome:0 1px 2px rgba(18,20,24,.06), 0 10px 26px -18px rgba(18,20,24,.14);
+    --sh-ghost: 0 26px 50px -12px rgba(18,20,24,.38), 0 10px 20px -10px rgba(18,20,24,.22);
+
+    --r-panel: 18px;
+    --r-tab:   14px;
+    --r-card:  14px;
+
+    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page:          #121316;
+      --card:          #1F2125;
+      --surface-front: #2E3136;   /* Daily  — brightest surface in dark */
+      --surface-mid:   #26282C;   /* Weekly */
+      --surface-back:  #1E2023;   /* Monthly — closest to page, lightest shadow */
+      --text:          #E9EAED;
+      --muted:         #868C94;
+      --faint:         #33363B;
+      --slot:          #26282C;
+
+      --acc-daily:   #FF8F8F;
+      --acc-weekly:  #FFA3AE;
+      --acc-monthly: #FFC0C0;
+
+      --sh-front: 0 24px 46px -14px rgba(0,0,0,.66), 0 8px 18px -10px rgba(0,0,0,.5);
+      --sh-mid:   0 16px 32px -16px rgba(0,0,0,.5), 0 5px 12px -10px rgba(0,0,0,.4);
+      --sh-back:  0 10px 24px -18px rgba(0,0,0,.4);
+      --sh-chrome:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -18px rgba(0,0,0,.5);
+      --sh-ghost: 0 28px 54px -12px rgba(0,0,0,.72), 0 10px 20px -10px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page:          #121316;
+    --card:          #1F2125;
+    --surface-front: #2E3136;
+    --surface-mid:   #26282C;
+    --surface-back:  #1E2023;
+    --text:          #E9EAED;
+    --muted:         #868C94;
+    --faint:         #33363B;
+    --slot:          #26282C;
+    --acc-daily:   #FF8F8F;
+    --acc-weekly:  #FFA3AE;
+    --acc-monthly: #FFC0C0;
+    --sh-front: 0 24px 46px -14px rgba(0,0,0,.66), 0 8px 18px -10px rgba(0,0,0,.5);
+    --sh-mid:   0 16px 32px -16px rgba(0,0,0,.5), 0 5px 12px -10px rgba(0,0,0,.4);
+    --sh-back:  0 10px 24px -18px rgba(0,0,0,.4);
+    --sh-chrome:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -18px rgba(0,0,0,.5);
+    --sh-ghost: 0 28px 54px -12px rgba(0,0,0,.72), 0 10px 20px -10px rgba(0,0,0,.55);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--page);
+    color: var(--text);
+    font-family: var(--font-ui);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding-block: 40px 72px;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+
+  /* ── header ── */
+  header { margin-bottom: 36px; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600; margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(26px, 4.6vw, 40px);
+    line-height: 1.12; letter-spacing: -.02em; font-weight: 700;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  h1 .thin { color: var(--muted); font-weight: 500; }
+  .sub {
+    max-width: 62ch; margin: 0; color: var(--muted);
+    font-size: clamp(14px, 1.7vw, 16px); text-wrap: pretty;
+  }
+  .toggle {
+    float: right; margin-left: 16px;
+    appearance: none; border: 0; cursor: pointer;
+    background: var(--card); color: var(--text);
+    box-shadow: var(--sh-chrome);
+    border-radius: 999px; padding: 9px 16px;
+    font: inherit; font-size: 13px; font-weight: 600;
+  }
+  .toggle:focus-visible { outline: 2px solid var(--acc-daily); outline-offset: 2px; }
+
+  /* ── section scaffolding ── */
+  .section-label {
+    display: flex; align-items: baseline; gap: 10px;
+    margin: 0 0 20px; flex-wrap: wrap;
+  }
+  .section-label h2 {
+    font-size: 15px; font-weight: 700; letter-spacing: -.01em; margin: 0;
+  }
+  .section-label span { color: var(--muted); font-size: 13px; }
+  .divider { height: 1px; background: var(--faint); border: 0; margin: 44px 0 36px; }
+
+  /* ── variations grid ── */
+  .variations {
+    display: grid; gap: 28px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 860px) { .variations { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; } }
+
+  .variant { display: flex; flex-direction: column; }
+  .variant .cap {
+    margin-top: 18px;
+  }
+  .variant .cap .name {
+    font-size: 15px; font-weight: 700; margin: 0 0 4px;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .variant .cap .code {
+    font-size: 11px; font-weight: 700; letter-spacing: .08em;
+    color: var(--muted);
+    background: var(--card); box-shadow: inset 0 0 0 1px var(--faint);
+    border-radius: 6px; padding: 2px 7px;
+  }
+  .variant .cap .procon { margin: 0; color: var(--muted); font-size: 13px; }
+  .variant .cap .procon b { color: var(--text); font-weight: 600; }
+
+  /* ── phone mockup ── */
+  .phone {
+    position: relative;
+    width: 100%; max-width: 320px; margin-inline: auto;
+    aspect-ratio: 300 / 592;
+    background: var(--card);
+    border-radius: 34px;
+    box-shadow: var(--sh-chrome);
+    padding: 12px;
+  }
+  .screen {
+    position: relative;
+    width: 100%; height: 100%;
+    background: var(--page);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  .statusbar {
+    position: absolute; top: 0; left: 0; right: 0; height: 30px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 18px; font-size: 11px; font-weight: 600; color: var(--muted);
+    z-index: 40;
+  }
+  .brandrow {
+    position: absolute; top: 34px; left: 18px; z-index: 40;
+    font-size: 15px; font-weight: 700; letter-spacing: -.02em;
+  }
+  .brandrow .dotb { color: var(--acc-daily); }
+
+  /* stage holds the three bottom-anchored nested panels */
+  .stage { position: absolute; inset: 64px 10px 12px; }
+
+  .panel {
+    position: absolute; bottom: 0; right: 0;
+    border-radius: var(--r-panel);
+  }
+  .panel.back  { width: 100%; height: 86%; background: var(--surface-back);  box-shadow: var(--sh-back);  z-index: 1; }
+  .panel.mid   { width: 95%;  height: 76%; background: var(--surface-mid);   box-shadow: var(--sh-mid);   z-index: 2; }
+  .panel.front { width: 90%;  height: 67%; background: var(--surface-front); box-shadow: var(--sh-front); z-index: 3; }
+
+  /* index tab sticks up on the right edge of each panel */
+  .tab {
+    position: absolute; bottom: 100%;
+    display: flex; align-items: center; gap: 7px;
+    height: 34px; padding: 0 14px;
+    border-top-left-radius: var(--r-tab); border-top-right-radius: var(--r-tab);
+    font-size: 12.5px; font-weight: 600; color: var(--text);
+    white-space: nowrap;
+  }
+  .panel.back  .tab { right: 128px; background: var(--surface-back); }
+  .panel.mid   .tab { right: 66px;  background: var(--surface-mid); }
+  .panel.front .tab { right: 4px;   background: var(--surface-front); }
+  /* tabs carry the panel's own soft shadow, clipped to the top half */
+  .panel.back  .tab { box-shadow: var(--sh-back); }
+  .panel.mid   .tab { box-shadow: var(--sh-mid); }
+  .panel.front .tab { box-shadow: var(--sh-front); }
+
+  /* items live in the front (Daily) panel */
+  .items { position: absolute; inset: 14px 16px; margin: 0; padding: 0; list-style: none;
+           display: flex; flex-direction: column; gap: 2px; }
+  .item { display: flex; align-items: center; gap: 10px; padding: 7px 4px; font-size: 13px; }
+  .item .chk {
+    width: 17px; height: 17px; border-radius: 50%; flex: none;
+    box-shadow: inset 0 0 0 1.5px var(--acc-daily);
+    position: relative;
+  }
+  .item.done .chk { box-shadow: none; background: var(--acc-daily); }
+  .item.done .chk::after {
+    content: ""; position: absolute; left: 5px; top: 3px;
+    width: 4px; height: 7px; border: solid #fff; border-width: 0 1.6px 1.6px 0;
+    transform: rotate(42deg);
+  }
+  .item .lbl { color: var(--text); }
+  .item.done .lbl { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); }
+
+  /* empty slot (shown in drag demo front panel) */
+  .slot {
+    height: 32px; border-radius: 8px;
+    background:
+      repeating-linear-gradient(90deg, var(--faint) 0 6px, transparent 6px 12px) center/100% 1.5px no-repeat;
+    box-shadow: inset 0 0 0 1.5px var(--slot);
+    background-color: color-mix(in srgb, var(--slot) 55%, transparent);
+    margin: 3px 4px;
+  }
+
+  /* ── accent expressions (per-variation modifiers) ── */
+  /* D1 dot */
+  .v-dot .tab .acc-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .v-dot .panel.front .tab .acc-dot { background: var(--acc-daily); }
+  .v-dot .panel.mid   .tab .acc-dot { background: var(--acc-weekly); }
+  .v-dot .panel.back  .tab .acc-dot { background: var(--acc-monthly); }
+
+  /* D2 side bar */
+  .v-bar .tab { padding-left: 15px; }
+  .v-bar .tab .acc-bar {
+    position: absolute; left: 6px; top: 8px; bottom: 8px;
+    width: 3.5px; border-radius: 3px; flex: none;
+  }
+  .v-bar .panel.front .tab .acc-bar { background: var(--acc-daily); }
+  .v-bar .panel.mid   .tab .acc-bar { background: var(--acc-weekly); }
+  .v-bar .panel.back  .tab .acc-bar { background: var(--acc-monthly); }
+  /* optional thin accent on the top edge of each panel */
+  .v-bar .panel::before {
+    content: ""; position: absolute; top: 0; left: 16px; right: 16px; height: 2px;
+    border-radius: 2px; opacity: .9;
+  }
+  .v-bar .panel.front::before { background: var(--acc-daily); }
+  .v-bar .panel.mid::before   { background: var(--acc-weekly); }
+  .v-bar .panel.back::before  { background: var(--acc-monthly); }
+
+  /* D3 colored label */
+  .v-label .panel.front .tab .lblx { color: var(--acc-daily); }
+  .v-label .panel.mid   .tab .lblx { color: var(--acc-weekly); }
+  .v-label .panel.back  .tab .lblx { color: var(--acc-monthly); }
+  .v-label .tab .lblx { font-weight: 700; }
+
+  /* ── lower row: drag demo + token spec ── */
+  .lower {
+    display: grid; gap: 28px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+  @media (max-width: 860px) { .lower { grid-template-columns: 1fr; } }
+
+  .panelcard {
+    background: var(--card); border-radius: 20px;
+    box-shadow: var(--sh-chrome); padding: 24px;
+  }
+  .panelcard h3 { margin: 0 0 4px; font-size: 16px; font-weight: 700; letter-spacing: -.01em; }
+  .panelcard .note { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+
+  /* drag demo scene */
+  .dragscene {
+    position: relative; height: 230px; border-radius: 16px;
+    background: var(--page); overflow: hidden;
+  }
+  .dragscene .mini {
+    position: absolute; left: 18px; right: 18px; bottom: 16px; top: 22px;
+    background: var(--surface-front); border-radius: var(--r-panel);
+    box-shadow: var(--sh-front);
+    padding: 16px 14px;
+  }
+  .dragscene .mini .mtab {
+    position: absolute; bottom: 100%; right: 10px; height: 30px; padding: 0 14px;
+    display: flex; align-items: center; gap: 7px;
+    background: var(--surface-front); color: var(--text);
+    border-top-left-radius: var(--r-tab); border-top-right-radius: var(--r-tab);
+    box-shadow: var(--sh-front); font-size: 12px; font-weight: 600;
+  }
+  .dragscene .mini .mtab .acc-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--acc-daily); }
+  .ghost {
+    position: absolute; z-index: 5;
+    top: 92px; left: 50%;
+    transform: translateX(-46%) rotate(-2deg) scale(1.04);
+    width: 210px; max-width: 72%;
+    background: var(--surface-front); border-radius: var(--r-card);
+    box-shadow: var(--sh-ghost);
+    padding: 12px 14px;
+    display: flex; align-items: center; gap: 11px;
+  }
+  .ghost .acc-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--acc-daily); flex: none; }
+  .ghost .chk {
+    width: 17px; height: 17px; border-radius: 50%; flex: none;
+    box-shadow: inset 0 0 0 1.5px var(--acc-daily);
+  }
+  .ghost .lbl { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .ghost-tag {
+    position: absolute; z-index: 6; top: 64px; left: 50%; transform: translateX(42px);
+    font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+    color: var(--text); background: var(--card);
+    box-shadow: var(--sh-chrome); border-radius: 999px; padding: 4px 10px;
+  }
+
+  /* token spec */
+  .spec { display: flex; flex-direction: column; gap: 4px; }
+  .spec .grp { margin-top: 14px; }
+  .spec .grp:first-child { margin-top: 0; }
+  .spec .grp h4 {
+    margin: 0 0 8px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700;
+  }
+  .row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 7px 0; border-bottom: 1px solid var(--faint);
+  }
+  .row:last-child { border-bottom: 0; }
+  .sw { width: 22px; height: 22px; border-radius: 6px; flex: none; box-shadow: inset 0 0 0 1px rgba(128,128,128,.22); }
+  .row .k { font-size: 13px; font-weight: 600; flex: 1; min-width: 0; }
+  .row .v {
+    font-size: 12px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  .shadowchip { width: 30px; height: 22px; border-radius: 6px; background: var(--surface-front); flex: none; }
+  .footnote { margin: 28px 0 0; color: var(--muted); font-size: 12.5px; text-wrap: pretty; }
+</style>
+
+<div class="wrap">
+  <header>
+    <button class="toggle" id="themeToggle" type="button" aria-label="테마 전환">◐ 테마</button>
+    <p class="eyebrow">indexly · 리디자인</p>
+    <h1>미니멀 모노 <span class="thin">최종 시안</span></h1>
+    <p class="sub">3중 중첩 구조(먼슬리·위클리·데일리)는 그대로 유지합니다. 테두리 없이 톤 단계와
+      그림자 깊이만으로 세 패널을 구분하고, 카테고리 색은 작은 악센트로만 씁니다.
+      악센트 표현 방식 <b>D1·D2·D3</b> 중 하나를 고르면 그대로 구현에 들어갑니다.</p>
+  </header>
+
+  <div class="section-label">
+    <h2>악센트 표현 3종 — 하나를 확정</h2>
+    <span>레이아웃은 동일, 탭의 색 표현만 다릅니다</span>
+  </div>
+
+  <div class="variations" id="variations"></div>
+
+  <hr class="divider">
+
+  <div class="lower">
+    <div class="panelcard">
+      <h3>개선된 드래그</h3>
+      <p class="note">아이템을 길게 눌러 다른 카테고리 탭/영역으로 떨어뜨려 재분류합니다.
+        들어 올린 카드는 흰 배경 · 라운드 14 · 소프트 그림자 · 살짝 확대 + 악센트로 떠오르고,
+        원래 자리에는 빈 슬롯이 남습니다.</p>
+      <div class="dragscene">
+        <div class="mini">
+          <span class="mtab"><span class="acc-dot"></span>데일리</span>
+          <ul class="items" style="position:static;inset:auto;">
+            <li class="item"><span class="chk"></span><span class="lbl">운동 30분</span></li>
+            <div class="slot" aria-hidden="true"></div>
+            <li class="item done"><span class="chk"></span><span class="lbl">장보기</span></li>
+          </ul>
+        </div>
+        <span class="ghost-tag">들어 올린 카드</span>
+        <div class="ghost">
+          <span class="acc-dot"></span>
+          <span class="chk"></span>
+          <span class="lbl">디자인 시안 검토</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panelcard">
+      <h3>확정 토큰</h3>
+      <p class="note">아래 값 그대로 구현합니다. 테두리는 어디에도 쓰지 않고, 그림자는 중립 블랙입니다.</p>
+      <div class="spec">
+        <div class="grp">
+          <h4>Surfaces (톤 단계)</h4>
+          <div class="row"><span class="sw" style="background:#FFFFFF"></span><span class="k">Daily · 전면</span><span class="v">#FFFFFF</span></div>
+          <div class="row"><span class="sw" style="background:#FAFAFB"></span><span class="k">Weekly · 중간</span><span class="v">#FAFAFB</span></div>
+          <div class="row"><span class="sw" style="background:#F4F5F7"></span><span class="k">Monthly · 후면</span><span class="v">#F4F5F7</span></div>
+          <div class="row"><span class="sw" style="background:#ECEDEF"></span><span class="k">Page 배경</span><span class="v">#ECEDEF</span></div>
+        </div>
+        <div class="grp">
+          <h4>Text</h4>
+          <div class="row"><span class="sw" style="background:#2E3033"></span><span class="k">Primary</span><span class="v">#2E3033</span></div>
+          <div class="row"><span class="sw" style="background:#9AA0A8"></span><span class="k">Muted / 완료</span><span class="v">#9AA0A8</span></div>
+        </div>
+        <div class="grp">
+          <h4>Accent (악센트 전용)</h4>
+          <div class="row"><span class="sw" style="background:#FF8383"></span><span class="k">Daily</span><span class="v">#FF8383</span></div>
+          <div class="row"><span class="sw" style="background:#FF9BA8"></span><span class="k">Weekly</span><span class="v">#FF9BA8</span></div>
+          <div class="row"><span class="sw" style="background:#FFB3B3"></span><span class="k">Monthly</span><span class="v">#FFB3B3</span></div>
+        </div>
+        <div class="grp">
+          <h4>Shadow · Radius</h4>
+          <div class="row"><span class="shadowchip" style="box-shadow:var(--sh-front)"></span><span class="k">그림자 — 중립 블랙 / 3단 깊이</span><span class="v">front·mid·back</span></div>
+          <div class="row"><span class="shadowchip" style="border-radius:14px"></span><span class="k">Radius — 패널 / 탭 / 카드</span><span class="v">18 · 14 · 14</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="footnote">모든 값은 라이트/다크 양쪽에서 검증했습니다. 다크 모드에서는 전면(데일리)이 가장 밝은
+    표면, 후면(먼슬리)이 페이지에 가장 가까운 표면이 되도록 톤 단계가 반전됩니다.
+    악센트(D1/D2/D3)를 고르면 토큰과 중첩 레이아웃은 위 그대로 적용합니다.</p>
+</div>
+
+<script>
+  // ── shared data for all three phones ──────────────────────────
+  var items = [
+    { t: "운동 30분", done: false },
+    { t: "디자인 시안 검토", done: false },
+    { t: "장보기", done: true },
+    { t: "이메일 회신", done: false },
+    { t: "책 읽기", done: true }
+  ];
+
+  // accent markup per variation, placed inside each tab
+  function accMarkup(variation, cls, label) {
+    if (variation === "dot")   return '<span class="acc-dot"></span><span>' + label + '</span>';
+    if (variation === "bar")   return '<span class="acc-bar"></span><span>' + label + '</span>';
+    /* label */                return '<span class="lblx">' + label + '</span>';
+  }
+
+  function itemsHTML() {
+    return items.map(function (it) {
+      return '<li class="item' + (it.done ? ' done' : '') + '">' +
+               '<span class="chk"></span><span class="lbl">' + it.t + '</span></li>';
+    }).join("");
+  }
+
+  function phoneHTML(variation) {
+    return '' +
+      '<div class="phone v-' + variation + '">' +
+        '<div class="screen">' +
+          '<div class="statusbar"><span>9:41</span><span>●●● ▲ ■</span></div>' +
+          '<div class="brandrow">index<span class="dotb">ly</span></div>' +
+          '<div class="stage">' +
+            '<div class="panel back"><span class="tab">' + accMarkup(variation, "monthly", "먼슬리") + '</span></div>' +
+            '<div class="panel mid"><span class="tab">'  + accMarkup(variation, "weekly",  "위클리") + '</span></div>' +
+            '<div class="panel front"><span class="tab">' + accMarkup(variation, "daily",   "데일리") + '</span>' +
+              '<ul class="items">' + itemsHTML() + '</ul>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  }
+
+  var variants = [
+    { v: "dot",   code: "D1", name: "도트",       pro: "가장 가볍고 중립적",       con: "작아서 멀리서 약함" },
+    { v: "bar",   code: "D2", name: "사이드 바",  pro: "스캔성·존재감 좋음",       con: "장식 요소가 하나 늘어남" },
+    { v: "label", code: "D3", name: "컬러 라벨",  pro: "색·글자 한 번에 전달",      con: "대비 낮아 가독성 주의" }
+  ];
+
+  var root = document.getElementById("variations");
+  root.innerHTML = variants.map(function (x) {
+    return '' +
+      '<div class="variant">' +
+        phoneHTML(x.v) +
+        '<div class="cap">' +
+          '<p class="name"><span class="code">' + x.code + '</span>' + x.name + '</p>' +
+          '<p class="procon"><b>+</b> ' + x.pro + ' · <b>−</b> ' + x.con + '</p>' +
+        '</div>' +
+      '</div>';
+  }).join("");
+
+  // ── theme toggle (per-viewer convenience) ──
+  (function () {
+    var btn = document.getElementById("themeToggle");
+    var rootEl = document.documentElement;
+    function cur() {
+      var set = rootEl.getAttribute("data-theme");
+      if (set) return set;
+      return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+    }
+    btn.addEventListener("click", function () {
+      rootEl.setAttribute("data-theme", cur() === "dark" ? "light" : "dark");
+    });
+  })();
+</script>
