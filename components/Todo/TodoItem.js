@@ -111,13 +111,21 @@ const TodoItem = ({
 									<IconButton
 										type='FontAwesome'
 										icon={isCompleted ? 'check-circle' : 'circle-thin'}
-										color={Colors.daily}
+										color={isCompleted ? Colors.check_done : Colors.daily}
 										size={18}
 										onPress={() => handleCheckButtonPress({ id, isCompleted })}
 									/>
 								</View>
 								<Text
-									style={[styles.text, isCompleted && { color: 'gray' }]}
+									style={[
+										styles.text,
+										{ color: Colors.text },
+										isCompleted && {
+											color: Colors.text_done,
+											textDecorationLine: 'line-through',
+											textDecorationColor: Colors.text_done_line,
+										},
+									]}
 									numberOfLines={isEllipsed ? 1 : undefined}
 									ellipsizeMode={isEllipsed ? 'tail' : undefined}
 								>
@@ -144,7 +152,7 @@ const styles = StyleSheet.create({
 	isDragging: { opacity: 0 },
 	container: {
 		flexDirection: 'row',
-		paddingVertical: 6,
+		paddingVertical: 7,
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
@@ -159,6 +167,8 @@ const styles = StyleSheet.create({
 	text: {
 		flex: 1,
 		fontSize: 14,
+		fontWeight: '500',
+		letterSpacing: -0.14,
 	},
 });
 

@@ -125,6 +125,16 @@ export const ColorThemes = {
 export const CommonColors = {
 	done: '#e1e0df',
 	done_light: '#FCFCFC',
+	background: '#F6F4F3',
+	monthly_surface: '#FBFAF9',
+	weekly_surface: '#FDFCFC',
+	daily_surface: '#FFFFFF',
+	text: '#39322E',
+	text_done: '#B1AAA5',
+	text_done_line: '#D3CCC8',
+	check_done: '#DCD5D1',
+	index_text: '#45282A',
+	shadow: '#46302A',
 };
 
 // 기본 테마는 red

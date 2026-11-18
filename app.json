@@ -13,12 +13,12 @@
 			"infoPlist": {
 				"ITSAppUsesNonExemptEncryption": false
 			},
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#F6F4F3"
 		},
 		"android": {
 			"versionCode": 2,
 			"package": "com.janechun.indexly",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#F6F4F3"
 		},
 		"plugins": [
 			"expo-router",
