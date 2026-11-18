@@ -1,0 +1,650 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>indexly 디자인 리뉴얼 시안</title>
+<style>
+  /* Layout: centered editorial column; 2x2 phone-mockup grid on wide, stacks on narrow.
+     Pastel coral app mockups float on a deliberate warm-neutral ground so the tints pop. */
+  :root {
+    --bg: #f1ece8;            /* warm off-white ground */
+    --bg-2: #f7f3f0;
+    --panel: #ffffff;
+    --fg: #231d1a;
+    --fg-soft: #4c423c;
+    --muted: #8c7f77;
+    --faint: #b8aaa1;
+    --hairline: #e7ddd6;
+    --chip-bg: #efe7e1;
+    --chip-fg: #6e6058;
+
+    /* indexly brand palette (the app's own fixed colors) */
+    --daily: #ff8383;
+    --weekly: #ffb9b9;
+    --monthly: #ffe2e2;
+    --neutral: #e1e0df;
+    --accent: #f2645f;
+    --accent-ink: #b63c37;
+
+    /* device chrome */
+    --device: #1a1512;
+    --device-2: #241d19;
+    --device-edge: #3a302b;
+
+    --shadow-soft: 0 18px 44px -20px rgba(58,34,30,.34);
+    --shadow-lift: 0 26px 60px -24px rgba(58,34,30,.42);
+    --radius-card: 22px;
+
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+            "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "맑은 고딕", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141010;
+      --bg-2: #1c1715;
+      --panel: #211a17;
+      --fg: #f3ebe6;
+      --fg-soft: #d9cdc5;
+      --muted: #a4958c;
+      --faint: #7a6b62;
+      --hairline: #332925;
+      --chip-bg: #2a211d;
+      --chip-fg: #cdbdb3;
+      --accent: #ff8a85;
+      --accent-ink: #ffb5b1;
+      --device: #000000;
+      --device-2: #0e0b0a;
+      --device-edge: #352c27;
+      --shadow-soft: 0 18px 44px -20px rgba(0,0,0,.6);
+      --shadow-lift: 0 28px 64px -24px rgba(0,0,0,.7);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141010;
+    --bg-2: #1c1715;
+    --panel: #211a17;
+    --fg: #f3ebe6;
+    --fg-soft: #d9cdc5;
+    --muted: #a4958c;
+    --faint: #7a6b62;
+    --hairline: #332925;
+    --chip-bg: #2a211d;
+    --chip-fg: #cdbdb3;
+    --accent: #ff8a85;
+    --accent-ink: #ffb5b1;
+    --device: #000000;
+    --device-2: #0e0b0a;
+    --device-edge: #352c27;
+    --shadow-soft: 0 18px 44px -20px rgba(0,0,0,.6);
+    --shadow-lift: 0 28px 64px -24px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    font-family: var(--font);
+    background:
+      radial-gradient(1200px 520px at 50% -8%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+      var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  header.page { padding-block: clamp(40px, 7vw, 76px) 8px; text-align: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-ink); font-weight: 650;
+    padding: 6px 13px; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--daily); box-shadow: -5px 0 0 var(--weekly), -10px 0 0 var(--monthly); margin-left: 10px; }
+  h1.title {
+    font-size: clamp(30px, 6.2vw, 54px);
+    line-height: 1.03; letter-spacing: -.025em; font-weight: 800;
+    margin: 20px auto 0; max-width: 16ch; text-wrap: balance;
+  }
+  h1.title em { font-style: normal; color: var(--accent); }
+  p.sub {
+    margin: 16px auto 0; max-width: 54ch; color: var(--fg-soft);
+    font-size: clamp(15px, 1.7vw, 17px); text-wrap: pretty;
+  }
+  .meta-row {
+    margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .meta-row .pill {
+    font-size: 12.5px; color: var(--chip-fg); background: var(--chip-bg);
+    border-radius: 999px; padding: 7px 14px; font-weight: 550;
+  }
+
+  /* ---------- Drag before/after callout ---------- */
+  .callout {
+    margin: clamp(30px, 5vw, 46px) 0 6px;
+    background: var(--panel);
+    border-radius: 26px;
+    box-shadow: var(--shadow-soft);
+    padding: clamp(20px, 3vw, 30px);
+  }
+  .callout-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .callout-head h2 { font-size: 20px; letter-spacing: -.01em; margin: 0; font-weight: 750; }
+  .callout-head span { color: var(--muted); font-size: 14px; }
+  .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .ba {
+    border-radius: 18px; padding: 20px 18px 22px;
+    position: relative; overflow: hidden; min-height: 168px;
+    display: flex; flex-direction: column;
+  }
+  .ba.before { background: color-mix(in srgb, var(--neutral) 42%, var(--panel)); }
+  .ba.after  { background: color-mix(in srgb, var(--daily) 16%, var(--panel)); }
+  .ba-tag {
+    align-self: flex-start; font-size: 11.5px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; padding: 5px 11px; border-radius: 999px; margin-bottom: 6px;
+  }
+  .ba.before .ba-tag { background: var(--neutral); color: #6c6762; }
+  .ba.after  .ba-tag { background: var(--daily); color: #7d1f1b; }
+  .ba-desc { font-size: 13px; color: var(--fg-soft); margin: 0 0 auto; max-width: 30ch; }
+  .ba-stage { position: relative; height: 70px; margin-top: 14px; }
+
+  /* list row underneath the dragged thing */
+  .ba-list { position: absolute; inset: auto 0 0 0; display: grid; gap: 7px; opacity: .55; }
+  .ba-listrow { height: 15px; border-radius: 7px; background: color-mix(in srgb, var(--fg) 12%, transparent); }
+  .ba-listrow:nth-child(2) { width: 78%; }
+
+  /* BEFORE ghost: text + icon only, no surface */
+  .ghost-flat {
+    position: absolute; left: 8px; top: 6px; display: flex; align-items: center; gap: 9px;
+    font-weight: 600; font-size: 14px; color: var(--fg);
+  }
+  .ghost-flat .ic { width: 18px; height: 18px; color: var(--daily); }
+  .ghost-flat::after { content: "텍스트만 둥둥"; position: absolute; left: 0; top: 24px; font-size: 11px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+
+  /* AFTER ghost: lifted card */
+  .ghost-card {
+    position: absolute; left: 6px; top: 0; transform: rotate(-4deg) scale(1.04);
+    display: flex; align-items: center; gap: 10px;
+    background: var(--panel); color: var(--fg);
+    padding: 11px 15px; border-radius: 14px; font-weight: 650; font-size: 14px;
+    box-shadow: 0 16px 30px -10px rgba(214,60,55,.5), 0 2px 0 rgba(0,0,0,.02);
+  }
+  .ghost-card .ic { width: 18px; height: 18px; color: var(--daily); }
+  .ghost-card::before {
+    content: ""; position: absolute; left: 14px; right: 14px; bottom: -16px; height: 14px;
+    border-radius: 50%; background: radial-gradient(closest-side, rgba(214,60,55,.32), transparent);
+  }
+
+  /* ---------- Mockup grid ---------- */
+  .grid {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 3.2vw, 36px);
+    margin: clamp(26px, 4vw, 42px) 0 10px;
+  }
+  .mockup { display: flex; flex-direction: column; align-items: center; }
+
+  /* caption */
+  .caption { margin-top: 20px; width: 100%; max-width: 380px; }
+  .cap-id {
+    display: inline-flex; align-items: center; gap: 9px; font-size: 12.5px;
+    font-weight: 700; letter-spacing: .04em; color: var(--muted);
+  }
+  .cap-id .swatch { display: inline-flex; }
+  .cap-id .swatch i { width: 12px; height: 12px; border-radius: 4px; display: block; margin-left: -4px; box-shadow: 0 0 0 2px var(--panel); }
+  .cap-name { font-size: 20px; font-weight: 760; letter-spacing: -.015em; margin: 8px 0 0; }
+  .cap-name small { font-weight: 500; color: var(--muted); font-size: 14px; letter-spacing: 0; }
+  .cap-desc { font-size: 13.5px; color: var(--fg-soft); margin: 9px 0 0; text-wrap: pretty; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+  .chip {
+    font-size: 11.5px; font-weight: 600; color: var(--chip-fg); background: var(--chip-bg);
+    border-radius: 8px; padding: 5px 10px;
+  }
+
+  /* ---------- Phone frame ---------- */
+  .phone {
+    width: 360px; max-width: 100%;
+    background: linear-gradient(160deg, var(--device-2), var(--device));
+    border-radius: 46px; padding: 11px;
+    box-shadow: var(--shadow-lift), inset 0 0 0 1px var(--device-edge);
+  }
+  .screen {
+    position: relative; border-radius: 37px; overflow: hidden;
+    background: #fbf7f5; color: #241d1a;
+    color-scheme: light;
+    min-height: 610px;
+    isolation: isolate;
+  }
+  .statusbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 26px 6px; font-size: 13px; font-weight: 650; position: relative; z-index: 5;
+  }
+  .statusbar .ind { display: flex; align-items: center; gap: 5px; }
+  .statusbar .bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 11px; }
+  .statusbar .bars i { width: 3px; background: currentColor; border-radius: 1px; }
+  .statusbar .bars i:nth-child(1){height:4px}.statusbar .bars i:nth-child(2){height:6px}.statusbar .bars i:nth-child(3){height:8px}.statusbar .bars i:nth-child(4){height:11px}
+  .statusbar .batt { width: 22px; height: 11px; border-radius: 3px; border: 1.5px solid currentColor; position: relative; opacity: .9; }
+  .statusbar .batt::before { content:""; position:absolute; inset: 1.5px; width: 62%; background: currentColor; border-radius: 1px; }
+  .statusbar .batt::after { content:""; position:absolute; right:-3px; top: 3px; width: 2px; height: 5px; background: currentColor; border-radius: 1px; }
+  .island {
+    position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+    width: 88px; height: 26px; background: #000; border-radius: 999px; z-index: 6;
+  }
+  .appbar { padding: 6px 24px 4px; display: flex; align-items: center; justify-content: space-between; }
+  .appbar .brand { font-weight: 800; letter-spacing: -.02em; font-size: 19px; }
+  .appbar .brand b { color: var(--accent); }
+  .appbar .date { font-size: 12px; color: #9a8f88; font-weight: 600; }
+  .scr-body { padding: 8px 18px 26px; display: flex; flex-direction: column; gap: 13px; position: relative; }
+
+  /* generic check icon sizing */
+  .check { width: 19px; height: 19px; flex: none; }
+  .label { font-size: 14px; font-weight: 550; letter-spacing: -.01em; }
+  .item.done .label { color: #a9a3a0; text-decoration: line-through; text-decoration-color: #c9c3c0; }
+
+  /* drag ghost shared */
+  .drag-ghost {
+    position: absolute; z-index: 9;
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 15px; border-radius: 15px; font-weight: 650; font-size: 14px;
+    pointer-events: none;
+  }
+  .drop-hint {
+    position: absolute; z-index: 4; border-radius: 14px;
+    border: 2px dashed; font-size: 11px; font-weight: 700; letter-spacing: .03em;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .slot-gap { border-radius: 10px; }
+
+  /* =================================================================
+     시안 A — Soft Fill : borderless tonal cards, tinted ambient shadow
+     ================================================================= */
+  .a-screen { background: #fdf8f6; }
+  .a-card { border-radius: 24px; padding: 15px 16px 16px; position: relative; }
+  .a-card .cat {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 750; letter-spacing: .02em;
+    padding: 6px 13px; border-radius: 999px; margin-bottom: 11px;
+  }
+  .a-card .count { margin-left: auto; font-size: 12px; font-weight: 650; opacity: .6; }
+  .a-head { display: flex; align-items: center; }
+  .a-monthly { background: #fff4f4; box-shadow: 0 14px 30px -16px rgba(255,180,180,.65); }
+  .a-monthly .cat { background: #ffe2e2; color: #b56a6a; }
+  .a-weekly  { background: #ffeded; box-shadow: 0 16px 32px -16px rgba(255,150,150,.6); }
+  .a-weekly  .cat { background: #ffb9b9; color: #8c3a3a; }
+  .a-daily   { background: #ffe0e0; box-shadow: 0 20px 38px -16px rgba(255,105,105,.7); }
+  .a-daily   .cat { background: #ff8383; color: #6e1a17; }
+  .a-item { display: flex; align-items: center; gap: 11px; padding: 8px 4px; }
+  .a-item .check { color: #ff8383; }
+  .a-item.done .check { color: #cfcac7; }
+  .a-slot { height: 38px; margin: 2px 4px; background: rgba(255,131,131,.14); }
+  .a-ghost { background: #fff; color: #2a2320; box-shadow: 0 20px 34px -12px rgba(255,80,80,.5); transform: rotate(-3deg) scale(1.05); left: 40px; top: 250px; }
+  .a-ghost .check { color: #ff8383; }
+
+  /* =================================================================
+     시안 B — Color Blocks : bold saturated surfaces, white pill items
+     ================================================================= */
+  .b-screen { background: #fff6f4; }
+  .b-block { border-radius: 22px; padding: 16px 15px 17px; position: relative; }
+  .b-block .bhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
+  .b-block .bname { font-size: 17px; font-weight: 820; letter-spacing: -.01em; }
+  .b-block .bnum { font-size: 12px; font-weight: 750; padding: 4px 10px; border-radius: 999px; }
+  .b-monthly { background: #ffd9d9; }
+  .b-monthly .bname { color: #9a4a4a; } .b-monthly .bnum { background: rgba(255,255,255,.7); color: #9a4a4a; }
+  .b-weekly  { background: #ff9d9d; }
+  .b-weekly  .bname { color: #fff; } .b-weekly .bnum { background: rgba(255,255,255,.28); color: #fff; }
+  .b-daily   { background: #fb6a6a; }
+  .b-daily   .bname { color: #fff; } .b-daily .bnum { background: rgba(255,255,255,.26); color: #fff; }
+  .b-pill {
+    display: flex; align-items: center; gap: 10px; background: #fff;
+    border-radius: 13px; padding: 10px 13px; margin-top: 8px;
+    box-shadow: 0 5px 14px -8px rgba(90,20,20,.45);
+  }
+  .b-pill .check { color: #fb6a6a; }
+  .b-pill.done { background: rgba(255,255,255,.55); box-shadow: none; }
+  .b-pill.done .label { color: #8c6a6a; }
+  .b-pill.done .check { color: #d79a9a; }
+  .b-slot { height: 42px; margin-top: 8px; border-radius: 13px; background: rgba(255,255,255,.35); border: 2px dashed rgba(255,255,255,.85); }
+  .b-ghost { background: #fff; color: #2a2320; box-shadow: 0 22px 36px -12px rgba(150,20,20,.6); transform: rotate(3deg) scale(1.06); left: 150px; top: 250px; }
+  .b-ghost .check { color: #fb6a6a; }
+
+  /* =================================================================
+     시안 C — Frosted Glass : translucent panels on coral gradient
+     ================================================================= */
+  .c-screen {
+    background:
+      radial-gradient(120% 80% at 80% 0%, #ffd0cb 0%, transparent 55%),
+      radial-gradient(110% 90% at 0% 100%, #ffb0b8 0%, transparent 55%),
+      linear-gradient(165deg, #ff9b8f, #ff7d8e 55%, #ff9aa6);
+  }
+  .c-screen .statusbar, .c-screen .appbar .brand { color: #fff; }
+  .c-screen .appbar .brand b { color: #fff; }
+  .c-screen .appbar .date { color: rgba(255,255,255,.8); }
+  .c-panel {
+    border-radius: 22px; padding: 15px 15px 16px; position: relative;
+    background: rgba(255,255,255,.26);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 12px 26px -14px rgba(120,20,30,.5);
+  }
+  .c-panel::before {
+    content:""; position:absolute; inset:0; border-radius:22px; pointer-events:none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.22);
+  }
+  .c-panel .ctop { display: flex; align-items: center; gap: 9px; margin-bottom: 11px; }
+  .c-panel .cdot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 3px rgba(255,255,255,.4); }
+  .c-panel .cname { font-size: 14px; font-weight: 750; color: #fff; letter-spacing: -.01em; }
+  .c-panel .cnum { margin-left: auto; font-size: 11.5px; color: rgba(255,255,255,.85); font-weight: 650; }
+  .c-row { display: flex; align-items: center; gap: 10px; padding: 8px 4px; }
+  .c-row .label { color: #fff; font-weight: 600; }
+  .c-row .check { color: #fff; }
+  .c-row.done .label { color: rgba(255,255,255,.6); text-decoration-color: rgba(255,255,255,.5); }
+  .c-row.done .check { color: rgba(255,255,255,.55); }
+  .c-monthly .cdot { background: #ffe2e2; } .c-weekly .cdot { background: #ffb9b9; } .c-daily .cdot { background: #ff8383; }
+  .c-slot { height: 38px; margin: 2px 4px; border-radius: 11px; background: rgba(255,255,255,.14); border: 1.5px dashed rgba(255,255,255,.5); }
+  .c-ghost {
+    background: rgba(255,255,255,.62);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+    color: #6e1a17; left: 44px; top: 250px;
+    transform: rotate(-3deg) scale(1.06);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 22px 34px -12px rgba(120,20,30,.6);
+  }
+  .c-ghost .check { color: #e5564f; }
+
+  /* =================================================================
+     시안 D — Minimal + Accent : neutral tones, tiny color accents
+     ================================================================= */
+  .d-screen { background: #f6f4f3; }
+  .d-sec { border-radius: 18px; padding: 14px 16px 15px; position: relative; display: flex; gap: 13px; }
+  .d-accent { width: 4px; border-radius: 4px; flex: none; }
+  .d-body { flex: 1; min-width: 0; }
+  .d-monthly { background: #ffffff; } .d-monthly .d-accent { background: #ffd0d0; } .d-monthly .d-name { color: #b08585; }
+  .d-weekly  { background: #faf8f7; } .d-weekly  .d-accent { background: #ffb9b9; } .d-weekly  .d-name { color: #b06a6a; }
+  .d-daily   { background: #f3f0ef; } .d-daily   .d-accent { background: #ff8383; } .d-daily   .d-name { color: #c24a44; }
+  .d-top { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+  .d-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .d-monthly .d-dot { background: #ffcaca; } .d-weekly .d-dot { background: #ffb9b9; } .d-daily .d-dot { background: #ff8383; }
+  .d-name { font-size: 12px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+  .d-num { margin-left: auto; font-size: 11.5px; color: #a79e98; font-weight: 600; }
+  .d-item { display: flex; align-items: center; gap: 11px; padding: 7px 2px; }
+  .d-item .check { color: #c7c1bd; width: 17px; height: 17px; }
+  .d-item.active .check { color: #ff8383; }
+  .d-item .label { color: #39322e; font-weight: 500; }
+  .d-item.done .label { color: #b1aaa5; }
+  .d-slot { height: 34px; margin: 2px 0; border-radius: 9px; background: #ececea; }
+  .d-ghost { background: #fff; color: #2a2320; left: 150px; top: 252px; transform: rotate(-2deg) scale(1.05); box-shadow: 0 20px 34px -12px rgba(60,40,36,.4); border-left: 4px solid #ff8383; padding-left: 13px; }
+  .d-ghost .check { color: #ff8383; }
+
+  footer.page { padding: 34px 0 48px; text-align: center; color: var(--muted); font-size: 13px; }
+  footer.page b { color: var(--fg-soft); font-weight: 650; }
+
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+    .ba-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mockup { transition: transform .3s ease; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">indexly renewal<span class="dot"></span></span>
+    <h1 class="title">indexly <em>디자인 리뉴얼</em> 시안</h1>
+    <p class="sub">면(surface) 느낌을 살리고 테두리를 줄인, 더 심플하고 아름다운 네 가지 방향.
+      어색했던 드래그도 들어 올려지는 카드로 새로 설계했습니다.</p>
+    <div class="meta-row">
+      <span class="pill">Monthly · Weekly · Daily</span>
+      <span class="pill">면 느낌 강화</span>
+      <span class="pill">테두리 최소화</span>
+      <span class="pill">개선된 드래그</span>
+      <span class="pill">4가지 시안</span>
+    </div>
+  </header>
+
+  <!-- Drag before/after -->
+  <section class="callout" aria-label="드래그 인터랙션 개선">
+    <div class="callout-head">
+      <h2>드래그 인터랙션 개선</h2>
+      <span>항목을 다른 카테고리로 옮길 때 — 집어 든 느낌을 분명하게</span>
+    </div>
+    <div class="ba-grid">
+      <div class="ba before">
+        <span class="ba-tag">변경 전</span>
+        <p class="ba-desc">텍스트와 체크 아이콘만 배경 없이 떠다녀, 무엇을 옮기는지 흐릿합니다.</p>
+        <div class="ba-stage">
+          <div class="ghost-flat">
+            <svg class="ic" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg>
+            회의 준비
+          </div>
+          <div class="ba-list">
+            <div class="ba-listrow"></div>
+            <div class="ba-listrow"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ba after">
+        <span class="ba-tag">변경 후</span>
+        <p class="ba-desc">면·라운드·그림자에 살짝 기울기까지 — ‘집어 든 카드’가 명확하게 떠오릅니다.</p>
+        <div class="ba-stage">
+          <div class="ghost-card">
+            <svg class="ic" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg>
+            회의 준비
+          </div>
+          <div class="ba-list">
+            <div class="ba-listrow"></div>
+            <div class="ba-listrow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 Mockups -->
+  <div class="grid">
+
+    <!-- ===================== 시안 A ===================== -->
+    <div class="mockup">
+      <div class="phone">
+        <div class="screen a-screen">
+          <div class="island"></div>
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="ind">
+              <span class="bars"><i></i><i></i><i></i><i></i></span>
+              <span class="batt"></span>
+            </span>
+          </div>
+          <div class="appbar"><span class="brand">index<b>ly</b></span><span class="date">11월 18일 화</span></div>
+          <div class="scr-body">
+            <!-- Monthly -->
+            <div class="a-card a-monthly">
+              <div class="a-head"><span class="cat">Monthly</span><span class="count">3</span></div>
+              <div class="a-item"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">병원 예약하기</span></div>
+              <div class="a-item"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">전시회 관람</span></div>
+              <div class="a-item done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">월세 이체</span></div>
+            </div>
+            <!-- Weekly -->
+            <div class="a-card a-weekly">
+              <div class="a-head"><span class="cat">Weekly</span><span class="count">3</span></div>
+              <div class="a-item"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">주간 보고서 작성</span></div>
+              <div class="a-item"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">장보기</span></div>
+              <div class="a-item done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">책 30분 읽기</span></div>
+            </div>
+            <!-- Daily -->
+            <div class="a-card a-daily">
+              <div class="a-head"><span class="cat">Daily</span><span class="count">3</span></div>
+              <div class="a-item"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">운동하기</span></div>
+              <!-- slot where item was lifted -->
+              <div class="a-slot slot-gap"></div>
+              <div class="a-item done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">물 2L 마시기</span></div>
+            </div>
+          </div>
+          <!-- lifted card ghost -->
+          <div class="drag-ghost a-ghost">
+            <svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg>
+            <span class="label">회의 준비</span>
+          </div>
+        </div>
+      </div>
+      <div class="caption">
+        <span class="cap-id">시안 A<span class="swatch"><i style="background:#ffe2e2"></i><i style="background:#ffb9b9"></i><i style="background:#ff8383"></i></span></span>
+        <h3 class="cap-name">소프트 필 <small>Soft Fill</small></h3>
+        <p class="cap-desc">테두리를 완전히 걷어내고, 색조로 채운 면과 은은한 그림자만으로 위계를 표현합니다. 여백이 넉넉하고 부드러운 가장 미니멀한 방향.</p>
+        <div class="chips"><span class="chip">테두리 없음</span><span class="chip">radius 24</span><span class="chip">컬러 틴트 그림자</span><span class="chip">리프트 드래그</span></div>
+      </div>
+    </div>
+
+    <!-- ===================== 시안 B ===================== -->
+    <div class="mockup">
+      <div class="phone">
+        <div class="screen b-screen">
+          <div class="island"></div>
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="ind"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span>
+          </div>
+          <div class="appbar"><span class="brand">index<b>ly</b></span><span class="date">11월 18일 화</span></div>
+          <div class="scr-body">
+            <!-- Monthly -->
+            <div class="b-block b-monthly">
+              <div class="bhead"><span class="bname">Monthly</span><span class="bnum">3</span></div>
+              <div class="b-pill"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">병원 예약하기</span></div>
+              <div class="b-pill"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">전시회 관람</span></div>
+              <div class="b-pill done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">월세 이체</span></div>
+            </div>
+            <!-- Weekly -->
+            <div class="b-block b-weekly">
+              <div class="bhead"><span class="bname">Weekly</span><span class="bnum">2</span></div>
+              <div class="b-pill"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">주간 보고서 작성</span></div>
+              <div class="b-pill done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">책 30분 읽기</span></div>
+            </div>
+            <!-- Daily -->
+            <div class="b-block b-daily">
+              <div class="bhead"><span class="bname">Daily</span><span class="bnum">3</span></div>
+              <div class="b-pill"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">운동하기</span></div>
+              <div class="b-slot"></div>
+              <div class="b-pill done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">물 2L 마시기</span></div>
+            </div>
+          </div>
+          <div class="drag-ghost b-ghost">
+            <svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg>
+            <span class="label">회의 준비</span>
+          </div>
+        </div>
+      </div>
+      <div class="caption">
+        <span class="cap-id">시안 B<span class="swatch"><i style="background:#ffd9d9"></i><i style="background:#ff9d9d"></i><i style="background:#fb6a6a"></i></span></span>
+        <h3 class="cap-name">컬러 블록 <small>Color Blocks</small></h3>
+        <p class="cap-desc">파스텔을 넘어 채도를 끌어올린 컬러 면을 전면에 세웁니다. 투두는 면 위에 떠 있는 하얀 알약으로, 또렷하고 경쾌한 손맛.</p>
+        <div class="chips"><span class="chip">채도 높은 면</span><span class="chip">화이트 알약 아이템</span><span class="chip">볼드 헤더</span><span class="chip">촉각적</span></div>
+      </div>
+    </div>
+
+    <!-- ===================== 시안 C ===================== -->
+    <div class="mockup">
+      <div class="phone">
+        <div class="screen c-screen">
+          <div class="island"></div>
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="ind"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span>
+          </div>
+          <div class="appbar"><span class="brand">index<b>ly</b></span><span class="date">11월 18일 화</span></div>
+          <div class="scr-body">
+            <!-- Monthly -->
+            <div class="c-panel c-monthly">
+              <div class="ctop"><span class="cdot"></span><span class="cname">Monthly</span><span class="cnum">3</span></div>
+              <div class="c-row"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">병원 예약하기</span></div>
+              <div class="c-row"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">전시회 관람</span></div>
+              <div class="c-row done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#ff7d8e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">월세 이체</span></div>
+            </div>
+            <!-- Weekly -->
+            <div class="c-panel c-weekly">
+              <div class="ctop"><span class="cdot"></span><span class="cname">Weekly</span><span class="cnum">2</span></div>
+              <div class="c-row"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">주간 보고서 작성</span></div>
+              <div class="c-row done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#ff7d8e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">책 30분 읽기</span></div>
+            </div>
+            <!-- Daily -->
+            <div class="c-panel c-daily">
+              <div class="ctop"><span class="cdot"></span><span class="cname">Daily</span><span class="cnum">3</span></div>
+              <div class="c-row"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">운동하기</span></div>
+              <div class="c-slot"></div>
+              <div class="c-row done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#ff7d8e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">물 2L 마시기</span></div>
+            </div>
+          </div>
+          <div class="drag-ghost c-ghost">
+            <svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg>
+            <span class="label">회의 준비</span>
+          </div>
+        </div>
+      </div>
+      <div class="caption">
+        <span class="cap-id">시안 C<span class="swatch"><i style="background:#ffd0cb"></i><i style="background:#ff9aa6"></i><i style="background:#ff7d8e"></i></span></span>
+        <h3 class="cap-name">글래스 <small>Frosted Glass</small></h3>
+        <p class="cap-desc">코랄 그라데이션 위에 반투명 유리 패널을 겹칩니다. 얇은 내부 하이라이트가 테두리를 대신하는, 2026 iOS 리퀴드 글래스 감성.</p>
+        <div class="chips"><span class="chip">프로스트 글래스</span><span class="chip">백드롭 블러</span><span class="chip">내부 하이라이트</span><span class="chip">Liquid Glass</span></div>
+      </div>
+    </div>
+
+    <!-- ===================== 시안 D ===================== -->
+    <div class="mockup">
+      <div class="phone">
+        <div class="screen d-screen">
+          <div class="island"></div>
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="ind"><span class="bars"><i></i><i></i><i></i><i></i></span><span class="batt"></span></span>
+          </div>
+          <div class="appbar"><span class="brand">index<b>ly</b></span><span class="date">11월 18일 화</span></div>
+          <div class="scr-body">
+            <!-- Monthly -->
+            <div class="d-sec d-monthly">
+              <div class="d-accent"></div>
+              <div class="d-body">
+                <div class="d-top"><span class="d-dot"></span><span class="d-name">Monthly</span><span class="d-num">3</span></div>
+                <div class="d-item active"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">병원 예약하기</span></div>
+                <div class="d-item"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">전시회 관람</span></div>
+                <div class="d-item done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#f6f4f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">월세 이체</span></div>
+              </div>
+            </div>
+            <!-- Weekly -->
+            <div class="d-sec d-weekly">
+              <div class="d-accent"></div>
+              <div class="d-body">
+                <div class="d-top"><span class="d-dot"></span><span class="d-name">Weekly</span><span class="d-num">2</span></div>
+                <div class="d-item active"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">주간 보고서 작성</span></div>
+                <div class="d-item done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#faf8f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">책 30분 읽기</span></div>
+              </div>
+            </div>
+            <!-- Daily -->
+            <div class="d-sec d-daily">
+              <div class="d-accent"></div>
+              <div class="d-body">
+                <div class="d-top"><span class="d-dot"></span><span class="d-name">Daily</span><span class="d-num">3</span></div>
+                <div class="d-item active"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg><span class="label">운동하기</span></div>
+                <div class="d-slot"></div>
+                <div class="d-item done"><svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.3l3 3 6-6.3" stroke="#f3f0ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="label">물 2L 마시기</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="drag-ghost d-ghost">
+            <svg class="check" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2"/></svg>
+            <span class="label">회의 준비</span>
+          </div>
+        </div>
+      </div>
+      <div class="caption">
+        <span class="cap-id">시안 D<span class="swatch"><i style="background:#eceae8"></i><i style="background:#ffd0d0"></i><i style="background:#ff8383"></i></span></span>
+        <h3 class="cap-name">미니멀 모노 <small>Minimal + Accent</small></h3>
+        <p class="cap-desc">거의 무채색 면과 간격만으로 위계를 만들고, 컬러는 작은 포인트로만 등장합니다. 차분하고 에디토리얼한, 극단적으로 심플한 방향.</p>
+        <div class="chips"><span class="chip">모노 뉴트럴</span><span class="chip">보더리스</span><span class="chip">톤 스텝 위계</span><span class="chip">포인트 컬러 최소</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="page">
+    네 가지 모두 <b>Daily=가장 진하게 → Monthly=가장 옅게</b>라는 indexly의 핵심 색 위계를 지킵니다. · 모든 화면은 예시 데이터로 구성한 목업입니다.
+  </footer>
+</div>
