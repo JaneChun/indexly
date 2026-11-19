@@ -7,7 +7,9 @@ const Input = ({ inputValue, setInputValue, resetInput, onSubmit }) => {
 
 	return (
 		<View style={[styles.container, { borderColor: Colors.done }]}>
-			<Entypo name='plus' size={24} color={Colors.done} />
+			<View style={styles.iconBox}>
+				<Entypo name='plus' size={24} color={Colors.done} />
+			</View>
 			<TextInput
 				style={styles.input}
 				value={inputValue}
@@ -25,11 +27,17 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 16,
+		paddingRight: 13,
 		borderTopWidth: 1,
 	},
+	iconBox: {
+		width: 50,
+		height: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 	input: {
-		width: '100%',
+		flex: 1,
 		height: 50,
 		borderRadius: 5,
 		paddingHorizontal: 16,
