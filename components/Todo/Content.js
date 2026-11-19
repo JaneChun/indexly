@@ -9,6 +9,7 @@ import { useTheme } from '@/store/ThemeContext';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useInsideZone } from '../../hooks/useInsideZone';
 import { useTodoContext, useTypedTodos } from '../../store/TodoContext';
+import AddTodoRow from './AddTodoRow';
 import TodoItem from './TodoItem';
 
 const Content = ({
@@ -17,6 +18,7 @@ const Content = ({
 	isCollapsed,
 	currentSection,
 	onPressBackground,
+	onAddPress,
 	onEditButtonPress,
 	editingId,
 }) => {
@@ -142,6 +144,9 @@ const Content = ({
 								isEditing={editingId === item.id}
 							/>
 						)}
+						ListFooterComponent={
+							type === currentSection && <AddTodoRow onPress={onAddPress} />
+						}
 					/>
 				</Pressable>
 			)}

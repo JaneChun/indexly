@@ -10,7 +10,8 @@
 			"delete": "Delete",
 			"cancel": "Cancel",
 			"ok": "OK",
-			"deleteCompleted": "Delete Completed"
+			"deleteCompleted": "Delete Completed",
+			"addTodo": "Add a task"
 		},
 		"colorPicker": {
 			"title": "Select Color",

@@ -10,7 +10,8 @@
       "delete": "삭제",
       "cancel": "취소",
       "ok": "확인",
-      "deleteCompleted": "완료 항목 삭제"
+      "deleteCompleted": "완료 항목 삭제",
+      "addTodo": "할 일 추가"
     },
     "colorPicker": {
       "title": "색상 선택",

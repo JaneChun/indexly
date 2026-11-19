@@ -53,10 +53,11 @@ const Todo = ({ route }) => {
 		setIsInputVisible(false);
 	};
 
-	const toggleInput = () => {
+	// 맨 앞 섹션에 넣을 새 할 일 입력창을 연다
+	const handleAddPress = () => {
 		setId(null);
 		setInputValue('');
-		setIsInputVisible((prev) => !prev);
+		setIsInputVisible(true);
 	};
 
 	const handleEditSubmit = async ({ id, text }) => {
@@ -68,8 +69,6 @@ const Todo = ({ route }) => {
 	const handleBackgroundPress = () => {
 		if (isInputVisible) {
 			resetInput(); // 열려있으면 닫기
-		} else {
-			toggleInput(); // 닫혀있으면 열기
 		}
 	};
 
@@ -154,6 +153,7 @@ const Todo = ({ route }) => {
 								toggleSection(config.type);
 							}}
 							onPressBackground={handleBackgroundPress}
+							onAddPress={handleAddPress}
 							onEditButtonPress={handleEditSubmit}
 							editingId={id}
 						/>
