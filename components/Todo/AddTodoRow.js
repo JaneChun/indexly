@@ -1,5 +1,5 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import CheckBox from './CheckBox';
 
 import { useLocalization } from '@/store/LocalizationContext';
 import { useTheme } from '@/store/ThemeContext';
@@ -15,7 +15,7 @@ const AddTodoRow = ({ onPress }) => {
 			onPress={onPress}
 		>
 			<View style={styles.iconContainer}>
-				<MaterialCommunityIcons name='pencil' size={15} color={Colors.weekly} />
+				<CheckBox dashed color={Colors.weekly} onPress={onPress} />
 			</View>
 			<Text style={[styles.text, { color: Colors.text_done }]}>{t('ui.button.addTodo')}</Text>
 		</Pressable>

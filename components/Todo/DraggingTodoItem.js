@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import IconButton from '@/components/Todo/IconButton';
+import CheckBox from '@/components/Todo/CheckBox';
 import { useDragDropContext } from '@/store/DragDropContext';
 import { useTheme } from '@/store/ThemeContext';
 import Animated from 'react-native-reanimated';
@@ -29,11 +29,9 @@ const DraggingTodoItem = ({ containerWidth }) => {
 			>
 				<View style={styles.todo}>
 					<View style={styles.checkContainer}>
-						<IconButton
-							type='FontAwesome'
-							icon={draggingTodo.isCompleted ? 'check-circle' : 'circle-thin'}
+						<CheckBox
+							isCompleted={draggingTodo.isCompleted}
 							color={draggingTodo.isCompleted ? Colors.check_done : Colors.daily}
-							size={18}
 							onPress={() => {}}
 						/>
 					</View>

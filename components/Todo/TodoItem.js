@@ -17,7 +17,7 @@ import { useDragDropContext } from '@/store/DragDropContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@/store/ThemeContext';
 import { useTodoContext } from '../../store/TodoContext';
-import IconButton from './IconButton';
+import CheckBox from './CheckBox';
 
 const TodoItem = ({
 	id,
@@ -108,11 +108,9 @@ const TodoItem = ({
 							{/* 할 일 텍스트와 체크 아이콘 */}
 							<View style={styles.todo}>
 								<View style={styles.checkContainer}>
-									<IconButton
-										type='FontAwesome'
-										icon={isCompleted ? 'check-circle' : 'circle-thin'}
+									<CheckBox
+										isCompleted={isCompleted}
 										color={isCompleted ? Colors.check_done : Colors.daily}
-										size={18}
 										onPress={() => handleCheckButtonPress({ id, isCompleted })}
 									/>
 								</View>
