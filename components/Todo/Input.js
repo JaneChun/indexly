@@ -1,6 +1,7 @@
 import { useTheme } from '@/store/ThemeContext';
 import { Entypo } from '@expo/vector-icons';
 import { StyleSheet, TextInput, View } from 'react-native';
+import { Fonts } from '@/constants/font';
 
 const Input = ({ inputValue, setInputValue, resetInput, onSubmit }) => {
 	const { colors: Colors } = useTheme();
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		flex: 1,
+		fontFamily: Fonts.regular,
 		height: 50,
 		borderRadius: 5,
 		paddingHorizontal: 16,

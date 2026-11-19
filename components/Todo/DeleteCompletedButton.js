@@ -1,6 +1,7 @@
 import { useLocalization } from '@/store/LocalizationContext';
 import { useTodoContext } from '@/store/TodoContext';
 import { Alert, Pressable, StyleSheet, Text } from 'react-native';
+import { Fonts } from '@/constants/font';
 
 const DeleteCompletedButton = () => {
 	const { removeCompletedTodo } = useTodoContext();
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
+		fontFamily: Fonts.regular,
 		color: 'gray',
 	},
 });

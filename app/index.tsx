@@ -1,6 +1,7 @@
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { PortalProvider } from '@gorhom/portal';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect, useState } from 'react';
@@ -20,6 +21,11 @@ const Stack = createNativeStackNavigator();
 
 export default function Index() {
 	const [isDbInitialized, setIsDbInitialized] = useState(false);
+	const [fontsLoaded] = useFonts({
+		'Pretendard-Regular': require('../assets/fonts/Pretendard-Regular.otf'),
+		'Pretendard-Medium': require('../assets/fonts/Pretendard-Medium.otf'),
+		'Pretendard-SemiBold': require('../assets/fonts/Pretendard-SemiBold.otf'),
+	});
 
 	useEffect(() => {
 		// 안전 영역(상태 표시줄·홈 인디케이터)에 보이는 루트 화면 색을 앱 바탕색과 맞춤
@@ -38,7 +44,7 @@ export default function Index() {
 		initDatabase();
 	}, []);
 
-	if (!isDbInitialized) {
+	if (!isDbInitialized || !fontsLoaded) {
 		return <Loading />;
 	}
 

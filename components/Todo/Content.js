@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Alert, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Fonts } from '@/constants/font';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { DAILY, WEEKLY } from '@/constants/type';
@@ -171,6 +172,7 @@ const styles = StyleSheet.create({
 	},
 	hiddenCount: {
 		fontSize: 12,
+		fontFamily: Fonts.regular,
 		marginLeft: 32,
 		opacity: 0.5,
 	},

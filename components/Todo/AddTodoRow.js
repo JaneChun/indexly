@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Fonts } from '@/constants/font';
 import CheckBox from './CheckBox';
 
 import { useLocalization } from '@/store/LocalizationContext';
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
 	text: {
 		flex: 1,
 		fontSize: 14,
-		fontWeight: '500',
+		fontFamily: Fonts.medium,
 		letterSpacing: -0.14,
 	},
 	pressed: {

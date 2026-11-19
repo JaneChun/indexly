@@ -3,6 +3,7 @@ import { useLocalization } from '@/store/LocalizationContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Fonts } from '@/constants/font';
 import ColorPicker, { ColorFormatsObject, HueSlider, Panel1 } from 'reanimated-color-picker';
 
 type Type = 'monthly' | 'weekly' | 'daily';
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 18,
-		fontWeight: '600',
+		fontFamily: Fonts.semiBold,
 		marginBottom: 20,
 		textAlign: 'center',
 	},
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
 	},
 	cancelButtonText: {
 		fontSize: 16,
+		fontFamily: Fonts.regular,
 		color: '#666',
 	},
 	confirmButton: {
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
 	},
 	confirmButtonText: {
 		fontSize: 16,
-		fontWeight: '600',
+		fontFamily: Fonts.semiBold,
 		color: '#fff',
 	},
 });

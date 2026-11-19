@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Fonts } from '@/constants/font';
 
 import CheckBox from '@/components/Todo/CheckBox';
 import { useDragDropContext } from '@/store/DragDropContext';
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
 	todoText: {
 		flex: 1,
 		fontSize: 14,
-		fontWeight: '500',
+		fontFamily: Fonts.medium,
 		letterSpacing: -0.14,
 	},
 });

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Animated, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Fonts } from '@/constants/font';
 import { useTheme } from '@/store/ThemeContext';
 
 import { TYPE_TRANSLATION_KEYS } from '@/constants/type';
@@ -169,6 +170,7 @@ const styles = StyleSheet.create({
 	},
 	indexText: {
 		fontSize: 12,
+		fontFamily: Fonts.regular,
 		fontWeight: '700',
 		letterSpacing: 0.2,
 		textAlign: 'center',

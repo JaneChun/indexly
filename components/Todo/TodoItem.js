@@ -1,5 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Fonts } from '@/constants/font';
 import {
 	Gesture,
 	GestureDetector,
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
 	text: {
 		flex: 1,
 		fontSize: 14,
-		fontWeight: '500',
+		fontFamily: Fonts.medium,
 		letterSpacing: -0.14,
 	},
 });
