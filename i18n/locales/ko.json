@@ -1,9 +1,9 @@
 {
   "ui": {
     "category": {
-      "monthly": "Monthly",
-      "weekly": "Weekly",
-      "daily": "Daily"
+      "monthly": "이번 달",
+      "weekly": "이번 주",
+      "daily": "오늘"
     },
     "button": {
       "edit": "수정",
