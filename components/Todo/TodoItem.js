@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
 	text: {
 		flex: 1,
 		fontSize: 14,
-		fontFamily: Fonts.medium,
+		fontFamily: Fonts.regular,
 		letterSpacing: -0.14,
 	},
 });
