@@ -168,6 +168,7 @@ const Todo = () => {
 							}}
 							onPressBackground={handleBackgroundPress}
 							onAddPress={handleAddPress}
+							onDrop={openSection}
 							onEditButtonPress={handleEditSubmit}
 							editingId={id}
 						/>

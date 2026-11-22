@@ -20,6 +20,7 @@ const Content = ({
 	currentSection,
 	onPressBackground,
 	onAddPress,
+	onDrop,
 	onEditButtonPress,
 	editingId,
 }) => {
@@ -120,6 +121,7 @@ const Content = ({
 							{...item}
 							type={type}
 							onLongPress={handleTodoLongPress}
+							onDrop={onDrop}
 							isEllipsed={true}
 						/>
 					))}
@@ -142,6 +144,7 @@ const Content = ({
 								{...item}
 								type={type}
 								onLongPress={handleTodoLongPress}
+								onDrop={onDrop}
 								onDoubleTap={handleTodoDoubleTap}
 								isEditing={editingId === item.id}
 							/>

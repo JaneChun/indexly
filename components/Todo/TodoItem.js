@@ -26,6 +26,7 @@ const TodoItem = ({
 	isCompleted,
 	type,
 	onLongPress,
+	onDrop,
 	onDoubleTap,
 	isEllipsed,
 	isEditing,
@@ -79,6 +80,7 @@ const TodoItem = ({
 		.onEnd(() => {
 			if (dragDestination && type !== dragDestination) {
 				runOnJS(moveTodo)({ id, destination: dragDestination });
+				runOnJS(onDrop)(dragDestination);
 				offset.x.value = withSpring(0);
 			}
 
