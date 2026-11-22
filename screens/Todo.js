@@ -21,7 +21,7 @@ import { useTodoContext } from '../store/TodoContext';
 const SORT_BUTTON_HEIGHT = 60;
 const MIN_TOP_MARGIN = 20;
 const INPUT_HEIGHT = 51; // Input 높이 50 + borderTop 1
-const INDEX_HEIGHT = 37; // 인덱스 탭 paddingTop 12 + paddingBottom 10 + 텍스트
+const INDEX_HEIGHT = 41; // 인덱스 탭 paddingTop 14 + paddingBottom 12 + 텍스트
 const CONTAINER_PADDING = 16;
 
 const Todo = () => {

@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
 	},
 	index: {
 		width: 120,
-		paddingTop: 12,
-		paddingBottom: 10,
+		paddingTop: 14,
+		paddingBottom: 12,
 		paddingHorizontal: 24,
 		borderTopLeftRadius: 18,
 		borderTopRightRadius: 18,
