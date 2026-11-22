@@ -34,7 +34,7 @@ const Todo = () => {
 	const { isKeyboardVisible, keyboardHeight, keyboardOffset } =
 		useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection, openSection } = useActiveSections(DAILY);
-	const { addTodo, editTodo } = useTodoContext();
+	const { todos, addTodo, editTodo } = useTodoContext();
 	const { draggingTodo } = useDragDropContext();
 
 	const { type } = useLocalSearchParams();
@@ -61,6 +61,13 @@ const Todo = () => {
 	};
 
 	// 할 일 추가 줄을 누른 섹션에 넣을 새 할 일 입력창을 연다
+	// 다른 목록으로 옮겼을 때, 옮긴 항목이 가려지는 경우에만 그 목록을 연다.
+	// 열려 있는 목록이 비어 있었다면 옮긴 항목이 첫 줄로 바로 보이므로 열지 않는다.
+	const handleDrop = (destination) => {
+		const isShownAsFirstRow = activeSections.has(destination) && todos[destination].length === 0;
+		if (!isShownAsFirstRow) openSection(destination);
+	};
+
 	const handleAddPress = (sectionType) => {
 		openSection(sectionType);
 		setId(null);
@@ -168,7 +175,7 @@ const Todo = () => {
 							}}
 							onPressBackground={handleBackgroundPress}
 							onAddPress={handleAddPress}
-							onDrop={openSection}
+							onDrop={handleDrop}
 							onEditButtonPress={handleEditSubmit}
 							editingId={id}
 						/>
