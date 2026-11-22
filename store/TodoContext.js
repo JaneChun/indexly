@@ -105,7 +105,14 @@ export const TodoContextProvider = ({ children }) => {
 
 	const moveTodo = async ({ id, destination }) => {
 		try {
+			// 옮긴 목록의 맨 아래에 추가
+			const typedTodos = todos[destination];
+			const maxOrder = typedTodos.length
+				? Math.max(...typedTodos.map((todo) => todo.orderIndex))
+				: 0;
+
 			await updateTypeTodo({ id, type: destination });
+			await updateOrderIndexTodo({ id, orderIndex: maxOrder + 1 });
 			await loadTodos();
 		} catch (err) {
 			console.log('Failed to move todo:', err);
