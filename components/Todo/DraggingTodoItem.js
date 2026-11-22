@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: '#FFFFFF',
 		borderRadius: 14,
-		transform: [{ rotate: '-2deg' }, { scale: 1.04 }],
+		transform: [{ scale: 1.04 }],
 		shadowOffset: { width: 0, height: 10 },
 		shadowOpacity: 0.25,
 		shadowRadius: 16,

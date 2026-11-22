@@ -99,7 +99,7 @@ const CollapsibleView = ({
 					style={({ pressed }) => [
 						styles.index,
 						{ backgroundColor: primaryColor },
-						isInside && [styles.dropTarget, { borderColor: Colors.daily }],
+						isInside && styles.pressed,
 						pressed && styles.pressed,
 					]}
 					onPress={onToggle}
@@ -178,10 +178,6 @@ const styles = StyleSheet.create({
 	},
 	pressed: {
 		opacity: 0.7,
-	},
-	dropTarget: {
-		borderWidth: 2,
-		transform: [{ translateY: -3 }],
 	},
 	contentContainer: {
 		width: '100%',
