@@ -33,7 +33,7 @@ const Todo = () => {
 
 	const { isKeyboardVisible, keyboardHeight, keyboardOffset } =
 		useKeyboardVisibility(setIsInputVisible);
-	const { currentSection, activeSections, toggleSection } = useActiveSections(DAILY);
+	const { currentSection, activeSections, toggleSection, openSection } = useActiveSections(DAILY);
 	const { addTodo, editTodo } = useTodoContext();
 	const { draggingTodo } = useDragDropContext();
 
@@ -60,8 +60,9 @@ const Todo = () => {
 		setIsInputVisible(false);
 	};
 
-	// 맨 앞 섹션에 넣을 새 할 일 입력창을 연다
-	const handleAddPress = () => {
+	// 할 일 추가 줄을 누른 섹션에 넣을 새 할 일 입력창을 연다
+	const handleAddPress = (sectionType) => {
+		openSection(sectionType);
 		setId(null);
 		setInputValue('');
 		setIsInputVisible(true);

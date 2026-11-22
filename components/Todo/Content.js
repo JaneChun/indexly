@@ -128,6 +128,7 @@ const Content = ({
 							{t('message.todo.remainingItems', { count: todos.length - 1 })}
 						</Text>
 					)}
+					{todos.length === 0 && <AddTodoRow onPress={() => onAddPress(type)} />}
 				</>
 			) : (
 				<Pressable onPress={handlePressBackground} style={styles.content}>
@@ -146,7 +147,7 @@ const Content = ({
 							/>
 						)}
 						ListFooterComponent={
-							type === currentSection && <AddTodoRow onPress={onAddPress} />
+							type === currentSection && <AddTodoRow onPress={() => onAddPress(type)} />
 						}
 					/>
 				</Pressable>

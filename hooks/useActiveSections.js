@@ -39,5 +39,12 @@ export const useActiveSections = (initialSection) => {
 		});
 	}, []);
 
-	return { currentSection, activeSections, toggleSection };
+	// 해당 섹션이 맨 앞에 오도록 연다 (뒤쪽 섹션은 접힘)
+	const openSection = useCallback((section) => {
+		const order = [MONTHLY, WEEKLY, DAILY];
+		setActiveSections(new Set(order.slice(0, order.indexOf(section) + 1)));
+		setCurrentSection(section);
+	}, []);
+
+	return { currentSection, activeSections, toggleSection, openSection };
 };
