@@ -18,6 +18,10 @@ import { useKeyboardVisibility } from '../hooks/useKeyboardVisibility';
 import { useTodoContext } from '../store/TodoContext';
 
 const SORT_BUTTON_HEIGHT = 60;
+const MIN_TOP_MARGIN = 20;
+const INPUT_HEIGHT = 51; // Input 높이 50 + borderTop 1
+const INDEX_HEIGHT = 37; // 인덱스 탭 paddingTop 12 + paddingBottom 10 + 텍스트
+const CONTAINER_PADDING = 16;
 
 const Todo = ({ route }) => {
 	const [id, setId] = useState(null);
@@ -26,7 +30,8 @@ const Todo = ({ route }) => {
 	const [isSettingVisible, setIsSettingVisible] = useState(false);
 	const { t } = useLocalization();
 
-	const { isKeyboardVisible, keyboardHeight } = useKeyboardVisibility(setIsInputVisible);
+	const { isKeyboardVisible, keyboardHeight, keyboardOffset } =
+		useKeyboardVisibility(setIsInputVisible);
 	const { currentSection, activeSections, toggleSection } = useActiveSections(DAILY);
 	const { addTodo, editTodo } = useTodoContext();
 	const { draggingTodo } = useDragDropContext();
@@ -34,8 +39,9 @@ const Todo = ({ route }) => {
 	const { params: { type } = {} } = route;
 
 	const insets = useSafeAreaInsets();
-	const safeAreaHeight = Dimensions.get('window').height - insets.top * 1.4 - insets.bottom;
-	const CONTENT_HEIGHT = safeAreaHeight - SORT_BUTTON_HEIGHT;
+	const safeAreaHeight = Dimensions.get('window').height - insets.top - insets.bottom;
+	const topMargin = Math.max(insets.top * 0.4, MIN_TOP_MARGIN);
+	const CONTENT_HEIGHT = safeAreaHeight - SORT_BUTTON_HEIGHT - topMargin;
 
 	useEffect(() => {
 		if (type) toggleSection(type);
@@ -99,7 +105,13 @@ const Todo = ({ route }) => {
 
 	const collapsibleConfigs = [MONTHLY, WEEKLY, DAILY].map((type, idx) => {
 		const height = CONTENT_HEIGHT - 100 * idx;
-		const foldedHeight = CONTENT_HEIGHT * 0.5;
+		const foldedHeight =
+			safeAreaHeight -
+			keyboardOffset -
+			INPUT_HEIGHT -
+			CONTAINER_PADDING * 2 -
+			INDEX_HEIGHT -
+			topMargin;
 
 		return {
 			type,
@@ -182,7 +194,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 16,
+		padding: CONTAINER_PADDING,
 	},
 	topButtonsContainer: {
 		height: SORT_BUTTON_HEIGHT,

@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const useKeyboardVisibility = () => {
 	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+	const [keyboardOffset, setKeyboardOffset] = useState(0);
 	const keyboardHeight = useRef(new Animated.Value(0)).current;
 
 	const insets = useSafeAreaInsets();
@@ -17,9 +18,11 @@ export const useKeyboardVisibility = () => {
 		const keyboardDidShowListener = Keyboard.addListener(showEvent, (e) => {
 			setKeyboardVisible(true);
 
+			const offset = e.endCoordinates.height - (Platform.OS === 'ios' ? insets.bottom : 0); // 키보드 높이
+			setKeyboardOffset(offset);
+
 			Animated.timing(keyboardHeight, {
-				toValue:
-					e.endCoordinates.height - (Platform.OS === 'ios' ? insets.bottom : 0), // 키보드 높이
+				toValue: offset,
 				duration: 300,
 				useNativeDriver: false,
 			}).start();
@@ -39,5 +42,5 @@ export const useKeyboardVisibility = () => {
 		};
 	}, []);
 
-	return { isKeyboardVisible, keyboardHeight };
+	return { isKeyboardVisible, keyboardHeight, keyboardOffset };
 };
