@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, useCallback } from 'react';
+import { useState, useContext, createContext, useCallback, useRef } from 'react';
 
 const DragDropContext = createContext();
 
@@ -6,6 +6,10 @@ export const DragDropContextProvider = ({ children }) => {
 	const [draggingTodo, setDraggingTodo] = useState(null);
 	const [currentPosition, setCurrentPosition] = useState(null);
 	const [dragStartPosition, setDragStartPosition] = useState(null);
+	// 드래그 중인 항목의 높이 (다른 항목이 비켜날 거리)
+	const [draggingHeight, setDraggingHeight] = useState(0);
+	// 드롭하면 들어갈 자리 { type, index }. 손가락 아래 목록이 렌더링할 때 갱신한다
+	const dropTargetRef = useRef(null);
 	const [droppableZones, setDroppableZones] = useState({
 		Monthly: { content: null, index: null },
 		Weekly: { content: null, index: null },
@@ -48,6 +52,9 @@ export const DragDropContextProvider = ({ children }) => {
 				setCurrentPosition,
 				dragStartPosition,
 				setDragStartPosition,
+				draggingHeight,
+				setDraggingHeight,
+				dropTargetRef,
 				droppableZones,
 				memorizeDroppableZones,
 			}}

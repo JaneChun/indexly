@@ -103,19 +103,48 @@ export const TodoContextProvider = ({ children }) => {
 		}
 	};
 
-	const moveTodo = async ({ id, destination }) => {
+	// 다른 목록으로 옮긴다. index가 없으면 옮긴 목록의 맨 아래에 추가
+	const moveTodo = async ({ id, destination, index = null }) => {
 		try {
-			// 옮긴 목록의 맨 아래에 추가
-			const typedTodos = todos[destination];
-			const maxOrder = typedTodos.length
-				? Math.max(...typedTodos.map((todo) => todo.orderIndex))
-				: 0;
+			const source = Object.keys(todos).find((type) =>
+				todos[type].some((todo) => todo.id === id),
+			);
+			const movedTodo = { ...todos[source].find((todo) => todo.id === id), type: destination };
+			const destinationTodos = [...todos[destination]];
+			destinationTodos.splice(index ?? destinationTodos.length, 0, movedTodo);
+
+			// 화면을 먼저 갱신해 드롭 직후 깜빡임이 없게 한다
+			setTodos((prev) => ({
+				...prev,
+				[source]: prev[source].filter((todo) => todo.id !== id),
+				[destination]: destinationTodos,
+			}));
 
 			await updateTypeTodo({ id, type: destination });
-			await updateOrderIndexTodo({ id, orderIndex: maxOrder + 1 });
+			for (let i = 0; i < destinationTodos.length; i++) {
+				await updateOrderIndexTodo({ id: destinationTodos[i].id, orderIndex: i });
+			}
 			await loadTodos();
 		} catch (err) {
 			console.log('Failed to move todo:', err);
+		}
+	};
+
+	// 목록 안에서 순서를 바꾼다. ids는 새 순서대로 나열된 할 일 id 배열
+	const reorderTodos = async ({ type, ids }) => {
+		// 화면을 먼저 갱신해 드롭 직후 깜빡임이 없게 한다
+		setTodos((prev) => ({
+			...prev,
+			[type]: ids.map((id) => prev[type].find((todo) => todo.id === id)),
+		}));
+
+		try {
+			for (let i = 0; i < ids.length; i++) {
+				await updateOrderIndexTodo({ id: ids[i], orderIndex: i });
+			}
+			await loadTodos();
+		} catch (err) {
+			console.log('Failed to reorder todos:', err);
 		}
 	};
 
@@ -156,6 +185,7 @@ export const TodoContextProvider = ({ children }) => {
 				addTodo,
 				editTodo,
 				moveTodo,
+				reorderTodos,
 				removeTodo,
 				toggleTodo,
 				removeCompletedTodo,

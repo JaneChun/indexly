@@ -1,4 +1,5 @@
 import * as Haptics from 'expo-haptics';
+import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { Fonts } from '@/constants/font';
 import {
@@ -11,6 +12,7 @@ import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
 	withSpring,
+	withTiming,
 } from 'react-native-reanimated';
 
 import { useInsideZone } from '@/hooks/useInsideZone';
@@ -26,13 +28,15 @@ const TodoItem = ({
 	isCompleted,
 	type,
 	onLongPress,
-	onDrop,
+	onDragEnd,
+	itemRef,
+	shiftY = 0,
 	onDoubleTap,
 	isEllipsed,
 	isEditing,
 }) => {
 	// 드래그 위치를 저장하는 shared values
-	const { toggleTodo, moveTodo } = useTodoContext();
+	const { toggleTodo } = useTodoContext();
 	const { colors: Colors } = useTheme();
 	const {
 		draggingTodo,
@@ -42,8 +46,15 @@ const TodoItem = ({
 	} = useDragDropContext();
 	const dragDestination = useInsideZone();
 	const offset = { x: useSharedValue(0), y: useSharedValue(0) };
+	// 다른 항목을 드래그할 때 자리를 비켜주는 이동량
+	const shift = useSharedValue(0);
 
 	const isDragging = draggingTodo?.id === id;
+
+	// 드래그 중에는 부드럽게 비켜나고, 드래그가 끝나면 바뀐 순서 위치에 바로 맞춘다
+	useEffect(() => {
+		shift.value = draggingTodo ? withTiming(shiftY, { duration: 180 }) : 0;
+	}, [shiftY, draggingTodo]);
 
 	const handleCheckButtonPress = async ({ id, isCompleted }) => {
 		Haptics.selectionAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -55,7 +66,7 @@ const TodoItem = ({
 		return {
 			transform: [
 				{ translateX: offset.x.value },
-				{ translateY: offset.y.value },
+				{ translateY: offset.y.value + shift.value },
 			],
 		};
 	});
@@ -78,18 +89,11 @@ const TodoItem = ({
 			runOnJS(setCurrentPosition)({ x: event.absoluteX, y: event.absoluteY });
 		})
 		.onEnd(() => {
-			if (dragDestination && type !== dragDestination) {
-				runOnJS(moveTodo)({ id, destination: dragDestination });
-				runOnJS(onDrop)(dragDestination);
-				offset.x.value = withSpring(0);
-			}
-
 			offset.x.value = withSpring(0);
 			offset.y.value = withSpring(0);
 
-			runOnJS(setDraggingTodo)(null);
-			runOnJS(setCurrentPosition)(null);
-			runOnJS(setDragStartPosition)(null);
+			// 드래그 상태 초기화와 이동·순서 변경은 한 번에 처리한다 (Content의 handleDragEnd)
+			runOnJS(onDragEnd)(id, dragDestination);
 		});
 
 	const handleDoubleTapActivated = () => {
@@ -107,7 +111,7 @@ const TodoItem = ({
 					underlayColor={Colors.daily_light}
 				>
 					<Animated.View style={animatedStyles}>
-						<View style={styles.container}>
+						<View ref={itemRef} style={styles.container}>
 							{/* 할 일 텍스트와 체크 아이콘 */}
 							<View style={styles.todo}>
 								<View style={styles.checkContainer}>

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Fonts } from '@/constants/font';
 import { FlatList } from 'react-native-gesture-handler';
@@ -27,8 +27,20 @@ const Content = ({
 	const todos = useTypedTodos(type);
 	const { colors: Colors } = useTheme();
 	const { t } = useLocalization();
-	const { removeTodo } = useTodoContext();
-	const { memorizeDroppableZones, draggingTodo, setDraggingTodo } = useDragDropContext();
+	const { moveTodo, removeTodo, reorderTodos } = useTodoContext();
+	const itemRefs = useRef({});
+	const {
+		memorizeDroppableZones,
+		droppableZones,
+		draggingTodo,
+		setDraggingTodo,
+		currentPosition,
+		setCurrentPosition,
+		setDragStartPosition,
+		draggingHeight,
+		setDraggingHeight,
+		dropTargetRef,
+	} = useDragDropContext();
 	const isInside = type === useInsideZone();
 	const droppableRef = useRef(null);
 	const { showActionSheetWithOptions } = useActionSheet();
@@ -49,6 +61,91 @@ const Content = ({
 			});
 		});
 	});
+
+	// 드래그가 시작되면 펼쳐진 목록은 각 항목의 화면 위치를 한 번 측정해 둔다
+	const draggingId = draggingTodo?.id ?? null;
+	const isSource = draggingTodo?.type === type;
+	const [layouts, setLayouts] = useState(null);
+
+	useEffect(() => {
+		if (!draggingId) {
+			setLayouts(null);
+			return;
+		}
+		if (isSource) {
+			itemRefs.current[draggingId]?.measureInWindow((x, y, width, height) =>
+				setDraggingHeight(height),
+			);
+		}
+		if (isEllipsed || isCollapsed) return;
+		Promise.all(
+			todos.map(
+				(todo) =>
+					new Promise((resolve) => {
+						const ref = itemRefs.current[todo.id];
+						if (!ref) return resolve([todo.id, null]);
+						ref.measureInWindow((x, y, width, height) => resolve([todo.id, { y, height }]));
+					}),
+			),
+		).then((entries) => setLayouts(Object.fromEntries(entries)));
+	}, [draggingId]);
+
+	// 손가락이 이 목록 위에 있으면 드래그 항목이 들어갈 자리(다른 항목 기준 인덱스)를 구한다
+	const dragIndex = isSource ? todos.findIndex((todo) => todo.id === draggingId) : -1;
+	const contentZone = droppableZones[type]?.content;
+	const isOverList =
+		isInside &&
+		currentPosition &&
+		contentZone &&
+		currentPosition.y >= contentZone.startY &&
+		currentPosition.y <= contentZone.endY;
+	let targetIndex = null;
+	if (layouts && isOverList) {
+		targetIndex = todos.filter((todo) => {
+			const layout = layouts[todo.id];
+			return todo.id !== draggingId && layout && layout.y + layout.height / 2 < currentPosition.y;
+		}).length;
+	}
+	if (targetIndex !== null) {
+		dropTargetRef.current = { type, index: targetIndex };
+	} else if (dropTargetRef.current?.type === type) {
+		dropTargetRef.current = null;
+	}
+
+	// 각 항목이 비켜날 거리: 드래그 항목이 빠지고 targetIndex에 들어간다고 보고 계산
+	const getShiftY = (index) => {
+		if (!layouts || index === dragIndex) return 0;
+		// 다른 목록에서 끌고 온 경우: 들어갈 자리부터 아래 항목이 내려간다
+		if (dragIndex === -1) return targetIndex !== null && index >= targetIndex ? draggingHeight : 0;
+		// 이 목록 밖으로 끌고 나간 경우: 빈 칸을 닫는다
+		if (targetIndex === null) return index > dragIndex ? -draggingHeight : 0;
+		const indexWithoutDragged = index < dragIndex ? index : index - 1;
+		const newIndex = indexWithoutDragged < targetIndex ? indexWithoutDragged : indexWithoutDragged + 1;
+		return (newIndex - index) * draggingHeight;
+	};
+
+	// 이 목록의 항목 드래그가 끝났을 때: 드래그 상태 초기화와 이동·순서 변경을 한 번에 렌더링해 항목이 튀지 않게 한다
+	const handleDragEnd = (id, destination) => {
+		const dropTarget = dropTargetRef.current;
+		dropTargetRef.current = null;
+		setDraggingTodo(null);
+		setCurrentPosition(null);
+		setDragStartPosition(null);
+
+		if (!destination) return;
+		const index = dropTarget?.type === destination ? dropTarget.index : null;
+
+		if (destination === type) {
+			if (index === null) return;
+			const ids = todos.filter((todo) => todo.id !== id).map((todo) => todo.id);
+			ids.splice(index, 0, id);
+			if (ids.every((todoId, i) => todoId === todos[i].id)) return;
+			reorderTodos({ type, ids });
+		} else {
+			moveTodo({ id, destination, index });
+			onDrop(destination);
+		}
+	};
 
 	// 할 일을 길게 눌렀을 때 드래그 상태로 설정
 	const handleTodoLongPress = (todo) => {
@@ -121,7 +218,10 @@ const Content = ({
 							{...item}
 							type={type}
 							onLongPress={handleTodoLongPress}
-							onDrop={onDrop}
+							onDragEnd={handleDragEnd}
+							itemRef={(ref) => {
+								itemRefs.current[item.id] = ref;
+							}}
 							isEllipsed={true}
 						/>
 					))}
@@ -137,14 +237,19 @@ const Content = ({
 					{/* 할 일 리스트 */}
 					<FlatList
 						data={todos}
+						extraData={`${draggingId}-${targetIndex}-${draggingHeight}-${!!layouts}`}
 						keyExtractor={({ id }) => id}
 						style={styles.flatList}
-						renderItem={({ item }) => (
+						renderItem={({ item, index }) => (
 							<TodoItem
+								shiftY={getShiftY(index)}
 								{...item}
 								type={type}
 								onLongPress={handleTodoLongPress}
-								onDrop={onDrop}
+								onDragEnd={handleDragEnd}
+								itemRef={(ref) => {
+									itemRefs.current[item.id] = ref;
+								}}
 								onDoubleTap={handleTodoDoubleTap}
 								isEditing={editingId === item.id}
 							/>
