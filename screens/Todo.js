@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Animated, Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -23,7 +24,7 @@ const INPUT_HEIGHT = 51; // Input 높이 50 + borderTop 1
 const INDEX_HEIGHT = 37; // 인덱스 탭 paddingTop 12 + paddingBottom 10 + 텍스트
 const CONTAINER_PADDING = 16;
 
-const Todo = ({ route }) => {
+const Todo = () => {
 	const [id, setId] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 	const [isInputVisible, setIsInputVisible] = useState(false);
@@ -36,7 +37,7 @@ const Todo = ({ route }) => {
 	const { addTodo, editTodo } = useTodoContext();
 	const { draggingTodo } = useDragDropContext();
 
-	const { params: { type } = {} } = route;
+	const { type } = useLocalSearchParams();
 
 	const insets = useSafeAreaInsets();
 	const safeAreaHeight = Dimensions.get('window').height - insets.top - insets.bottom;

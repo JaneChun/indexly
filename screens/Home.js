@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from 'expo-router/react-navigation';
 
 import { DAILY, MONTHLY, WEEKLY } from '@/constants/type';
 import Circle from '../components/Home/Circle';

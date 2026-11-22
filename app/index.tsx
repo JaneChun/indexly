@@ -1,10 +1,10 @@
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { PortalProvider } from '@gorhom/portal';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Loading from '../screens/Loading';
@@ -16,8 +16,6 @@ import { LocalizationProvider } from '../store/LocalizationContext';
 import { TodoContextProvider } from '../store/TodoContext';
 import { ThemeProvider } from '../store/ThemeContext';
 import { init } from '../util/database';
-
-const Stack = createNativeStackNavigator();
 
 export default function Index() {
 	const [isDbInitialized, setIsDbInitialized] = useState(false);
@@ -50,7 +48,7 @@ export default function Index() {
 
 	return (
 		<>
-			<StatusBar backgroundColor='#ffffff' hidden={true} />
+			<StatusBar hidden={true} />
 			<PortalProvider>
 				<GestureHandlerRootView style={{ flex: 1 }}>
 					<ThemeProvider>
@@ -58,15 +56,9 @@ export default function Index() {
 							<ActionSheetProvider>
 								<DragDropContextProvider>
 									<TodoContextProvider>
-										<Stack.Navigator
-											screenOptions={{
-												headerShown: false,
-												contentStyle: { backgroundColor: CommonColors.background },
-											}}
-										>
-											{/* <Stack.Screen name='Home' component={Home} /> */}
-											<Stack.Screen name='Todo' component={Todo} />
-										</Stack.Navigator>
+										<View style={{ flex: 1, backgroundColor: CommonColors.background }}>
+											<Todo />
+										</View>
 									</TodoContextProvider>
 								</DragDropContextProvider>
 							</ActionSheetProvider>

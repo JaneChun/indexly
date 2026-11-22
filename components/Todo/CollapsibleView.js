@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Animated, InteractionManager, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Fonts } from '@/constants/font';
 import { useTheme } from '@/store/ThemeContext';
 
@@ -66,7 +66,7 @@ const CollapsibleView = ({
 			useNativeDriver: false,
 		}).start(() => {
 			// 인덱스 영역의 위치와 크기를 저장
-			InteractionManager.runAfterInteractions(() => {
+			requestIdleCallback(() => {
 				indexRef?.current?.measureInWindow((x, y, width, height) => {
 					memorizeDroppableZones({
 						type,
